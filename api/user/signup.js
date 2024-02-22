@@ -1,12 +1,11 @@
-import express, { response } from "express";
-
-import UserModel from "../../models/User.js";
+import express from "express";
 import bcrypt from "bcrypt";
+import UserModel from "../../models/User.js";
 
-const router = express.Router();
+const signupRouter = express.Router();
 
 // signup
-router.post('/signup', (req, res) => {
+signupRouter.post('/', (req, res) => {
     // get post/user input
 
     let { email, password, fullname, phone } = req.body;
@@ -28,12 +27,18 @@ router.post('/signup', (req, res) => {
             mssg: "Fullname must contain only normal letters "
         })
 
-    } else if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email)) {
-        // check if email properly formed
+    } else if (email && !/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email)) {
+        // check if email is properly formed
 
         res.json({
             status: "FAILED",
             mssg: "Your email Is not properly formed"
+        })
+
+    } else if (phone && !/^[0-9, -]+$/.test(phone)) {
+        res.json({
+            status: "FAILED",
+            mssg: "Your phone Is not properly formed"
         })
 
     } else if (password.length < 8) {
@@ -43,7 +48,7 @@ router.post('/signup', (req, res) => {
         })
     } else {
         // check if user with email already exists
-        UserModel.find({ email }).then((result) => {
+        UserModel.find({ $or: [{ email }, { phone }] }).then((result) => {
             if (result.length > 0) {
                 res.json({
                     status: "FAILED",
@@ -51,20 +56,23 @@ router.post('/signup', (req, res) => {
                 })
             } else {
 
-                // find out if the user registered with an email or phone
-                const emailOrPass = email ? `email : ${email}` : `phone : ${phone}`;
 
                 // encrypt the password and store data
                 const salt = 10;
                 bcrypt.hash(password, salt).then((hashedPass) => {
 
-                    // Create a new user instance
-                    const newUser = new UserModel({
+                    // find out if the user registered with an email or phone
+                    const newUser = email ? new UserModel({ // Create a new user instance
                         password: hashedPass,
                         fullname,
-                        emailOrPass
+                        email
+                    }) : new UserModel({
+                        password: hashedPass,
+                        fullname,
+                        phone
                     });
 
+                    // Create a new user instance
                     newUser.save().then(result => {
                         res.json({
                             status: "SUCCESS",
@@ -105,11 +113,4 @@ router.post('/signup', (req, res) => {
 })
 
 
-
-// signin
-router.post('/signin', (req, res) => {
-
-})
-
-
-export default router
+export default signupRouter
