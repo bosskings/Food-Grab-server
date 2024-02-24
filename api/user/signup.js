@@ -101,7 +101,7 @@ signupRouter.post('/', (req, res) => {
 
             res.json({
                 status: "FAILED",
-                mssg: "Ann error occured, please try again"
+                mssg: "Ann error occured, please try again" + err
             })
 
 
