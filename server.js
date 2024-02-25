@@ -19,7 +19,7 @@ app.use('/users/api/v1/signin', signinRouter)
 
 // health check
 app.use('/healthCheck', (req, res) => {
-    res.status(200).send('Service working well, thank you for asking!');
+    res.status(200).send('Service working well, thank you!');
 })
 
 app.listen(port, () => {
