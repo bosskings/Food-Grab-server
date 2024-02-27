@@ -48,7 +48,7 @@ singleUserRouter.get("/:id", async (req, res) => {
             });
         }
     } catch (err) {
-        console.error(`Error getting single user: ${err}`);
+        // console.error(`Error getting single user: ${err}`);
         res.status(500).json({
             status: "FAILED",
             message: "Server error"
