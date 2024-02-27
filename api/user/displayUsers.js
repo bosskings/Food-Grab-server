@@ -5,63 +5,55 @@ const allUsersRouter = express.Router();
 const singleUserRouter = express.Router();
 
 // API to get all registered users
-allUsersRouter.get("/", (req, res) => {
-    // check if the amount is provided, number and not negative or zero
-    const { amount } = req.query;
-    if (!amount || isNaN(Number(amount)) || Number(amount) <= 0) {
-        // return all user in DB
-        UserModel.find({}, "-password -__v")
-            .sort({ createdAt: -1 })
-            .then((users) => {
-                res.status(200).json({
-                    status: "SUCCESS",
-                    data: users
-                });
-            })
-            .catch((err) => {
-                console.log(`Error getting all users : ${err}`);
-                res.status(400).send({
-                    status: "FAILED",
-                    mssg: "Server error"
-                });
-            });
+allUsersRouter.get("/", async (req, res) => {
+    try {
+        const { amount } = req.query;
 
-    } else {
-        // return the amount of users specified in URL params
-        UserModel.find({}, "-password -__v").limit(10).then((users) => {
+        if (!amount || isNaN(Number(amount)) || Number(amount) <= 0) {
+            const users = await UserModel.find({}, "-password -__v").sort({ createdAt: -1 });
             res.status(200).json({
                 status: "SUCCESS",
                 data: users
             });
-        }).catch((err) => {
-            res.status(400).send({
-                status: "FAILED",
-                mssg: "Server error"
+        } else {
+            const limitedUsers = await UserModel.find({}, "-password -__v").limit(Number(amount));
+            res.status(200).json({
+                status: "SUCCESS",
+                data: limitedUsers
             });
+        }
+    } catch (err) {
+        console.error(`Error getting all users : ${err}`);
+        res.status(500).json({
+            status: "FAILED",
+            message: "Server error"
         });
     }
-
 });
 
-
-
-// API to get single users
+// API to get a single user
 singleUserRouter.get("/:id", async (req, res) => {
-    const { id } = req.params;
-
-    UserModel.findById(id, "-password -__v").then((users) => {
-        res.status(200).json({
-            status: "SUCCESS",
-            data: users
-        });
-    }).catch((err) => {
-        res.status(400).send({
+    try {
+        const { id } = req.params;
+        const user = await UserModel.findById(id, "-password -__v");
+        if (user) {
+            res.status(200).json({
+                status: "SUCCESS",
+                data: user
+            });
+        } else {
+            res.status(404).json({
+                status: "FAILED",
+                message: `No user found with id: ${id}`
+            });
+        }
+    } catch (err) {
+        console.error(`Error getting single user: ${err}`);
+        res.status(500).json({
             status: "FAILED",
-            mssg: `No user with id:${id}`
+            message: "Server error"
         });
-    });
+    }
 });
-
-
 
 export { allUsersRouter, singleUserRouter };
