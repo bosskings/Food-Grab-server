@@ -27,4 +27,4 @@ jobs:
     - run: npm ci
     - run: |
         touch .env
-        echo "${{secrets.FOOD_GRAB_SECRETS}}" > .env
+        echo "${{secrets.FOOD_GRAB_SECRETE}}" > .env
