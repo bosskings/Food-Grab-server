@@ -14,14 +14,32 @@ app.use(express.json());
 // parse url encoded bodies
 app.use(express.urlencoded({ extended: true }));
 
-// use router
+// user router
 app.use('/users/api/v1/signup', signupRouter);
 app.use('/users/api/v1/signin', signinRouter);
 
-// api to get all users
-app.use('/users/api/v1/allUsers', allUsersRouter);
-// api to get  a user by id
-app.use('/users/api/v1/singleUser', singleUserRouter);
+app.use('/users/api/v1/allUsers', allUsersRouter); //get all users
+app.use('/users/api/v1/singleUser', singleUserRouter); //get single user
+
+app.use('/users/api/v1/shops', shopsRouter); // shops from both categories(restaurants & chefs) based on a query param
+app.use('/users/api/v1/cuisines', cuisinesRouter); //get all the cuisines offered by a shop.
+app.use('/users/api,v1/checkout', checkout); // prcoess items from cart, store them in DB and show to Merchant
+
+
+
+
+
+
+
+
+
+
+//route for merchants
+app.use('/merchants/api/v1/singup', merchantSignupRouter)
+app.use('/merchants/api/v1/singup', merchantSigninRouter)
+
+
+
 
 // health check for AWS
 app.use('/healthCheck', (req, res) => {

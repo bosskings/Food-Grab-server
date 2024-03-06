@@ -1,25 +1,26 @@
 import express from "express";
 import bcrypt from "bcrypt";
-import UserModel from "../../models/User.js";
-
-const signinRouter = express.Router();
-
-signinRouter.post("/", (req, res) => {
-
-    let { email, password, phone } = req.body;
-    email = email ? email.trim() : false;
-    password = password.trim();
-    phone = phone ? phone.trim() : false;
+import MerchantModel from "../../models/Merchant.js";
 
 
-    if (!password || !phone && !email) {
+const merchantSigninRouter = express.Router();
+
+merchantSigninRouter.post('/', (req, res) => {
+
+    const { fullname, email, password } = req.body;
+
+    if (!fullname || !email || !password) {
+
         res.status(401).json({
-            status: "FAILED",
-            mssg: "All Inputs are requried"
-        })
+            status: 'FAILED',
+            mssg: 'All Fields are requried'
+        });
+
     } else {
-        // check if a user exists with said email 
-        UserModel.find({ $or: [{ email }, { phone }] }).then((data) => {
+
+        // check if user already exists
+        MerchantModel.findOne({ email }).then((data) => {
+
             if (data) {
 
                 // user exists, compare passwords
@@ -48,17 +49,22 @@ signinRouter.post("/", (req, res) => {
                 // user doesnt exists, send error message
                 res.status(401).json({
                     status: "FAILED",
-                    mssg: "No user has these details",
+                    mssg: "No Merchant has these details",
                 })
             }
-        }).catch(err => {
+
+
+        }).catch((err) => {
             res.status(500).json({
                 status: "FAILED",
                 mss: "Server failed to find user, check network and try again"
             })
         })
+
+
+
     }
 
 });
 
-export default signinRouter;
+export default MerchantSigninRouter;

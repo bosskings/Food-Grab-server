@@ -1,20 +1,19 @@
 import express from "express";
 import bcrypt from "bcrypt";
-import UserModel from "../../models/User.js";
+import MerchantModel from "../../models/Merchant.js";
 
-const signupRouter = express.Router();
+const merchantSignupRouter = express.Router();
 
 // signup
-signupRouter.post('/', (req, res) => {
+merchantSignupRouter.post('/', (req, res) => {
     // get post/user input
 
-    let { email, password, fullname, phone } = req.body;
+    let { email, password, fullname } = req.body;
     fullname = fullname.trim();
-    email = email ? email.trim() : false;
+    email = email.trim();
     password = password.trim();
-    phone = phone ? phone.trim() : false;
 
-    if (fullname == "" || password == "" || email == "" && phone == "") {
+    if (fullname == "" || password == "" || email == "") {
         res.json({
             status: "FAILED",
             mssg: "All Inputs are requried"
@@ -35,12 +34,6 @@ signupRouter.post('/', (req, res) => {
             mssg: "Your email Is not properly formed"
         })
 
-    } else if (phone && !/^[0-9, -]+$/.test(phone)) {
-        res.json({
-            status: "FAILED",
-            mssg: "Your phone Is not properly formed"
-        })
-
     } else if (password.length < 8) {
         res.json({
             status: "FAILED",
@@ -52,7 +45,7 @@ signupRouter.post('/', (req, res) => {
             if (result.length > 0) {
                 res.json({
                     status: "FAILED",
-                    mssg: "User with this email already exists"
+                    mssg: "Merchant with this email already exists"
                 })
             } else {
 
@@ -76,14 +69,14 @@ signupRouter.post('/', (req, res) => {
                     newUser.save().then(result => {
                         res.json({
                             status: "SUCCESS",
-                            mssg: "New user saved successfully",
+                            mssg: "New Merchant saved successfully",
                             data: result
 
                         })
                     }).catch((err) => {
                         res.json({
                             status: "FAILED",
-                            mssg: "Error uccured saving user " + err
+                            mssg: "Error uccured saving Merchant " + err
                         })
                     })
 
@@ -110,7 +103,7 @@ signupRouter.post('/', (req, res) => {
 
 
 
-})
+});
 
 
-export default signupRouter
+export default merchantSignupRouter
