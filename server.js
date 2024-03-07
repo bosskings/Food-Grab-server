@@ -18,7 +18,7 @@ const port = process.env.PORT || 9000;
 
 
 // authentication middleware for all routes
-app.use(requireAuth);
+// app.use(requireAuth);
 
 // parse JSON bodies
 app.use(express.json());
