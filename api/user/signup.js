@@ -1,5 +1,6 @@
 import express from "express";
 import bcrypt from "bcrypt";
+import validator from "validator";
 import UserModel from "../../models/User.js";
 
 const signupRouter = express.Router();
@@ -27,7 +28,7 @@ signupRouter.post('/', (req, res) => {
             mssg: "Fullname must contain only normal letters "
         })
 
-    } else if (email && !/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email)) {
+    } else if (email && !validator.isEmail(email)) {
         // check if email is properly formed
 
         res.json({
@@ -41,7 +42,7 @@ signupRouter.post('/', (req, res) => {
             mssg: "Your phone Is not properly formed"
         })
 
-    } else if (password.length < 8) {
+    } else if (!validator.isStrongPassword(password)) {
         res.json({
             status: "FAILED",
             mssg: "Password must be more that 8 chartacter"

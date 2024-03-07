@@ -1,8 +1,17 @@
 import express from "express";
 import bcrypt from "bcrypt";
+import Jwt from "jsonwebtoken";
 import UserModel from "../../models/User.js";
 
 const signinRouter = express.Router();
+
+
+// functino to sign jwt
+const createSignedToken = (_id) => {
+    return Jwt.sign({ _id },
+        process.env.JWT_SECRET,
+        { expiresIn: '36500d' }); // 1 hour token validity
+}
 
 signinRouter.post("/", (req, res) => {
 
@@ -18,7 +27,7 @@ signinRouter.post("/", (req, res) => {
             mssg: "All Inputs are requried"
         })
     } else {
-        // check if a user exists with said email 
+        // check if a user exists with said email or phone
         UserModel.find({ $or: [{ email }, { phone }] }).then((data) => {
             if (data) {
 
@@ -26,11 +35,17 @@ signinRouter.post("/", (req, res) => {
                 const hashedPassword = data[0].password;
                 bcrypt.compare(password, hashedPassword).then((result) => {
                     if (result) {
-                        res.status(200).json({
+
+                        // tokenize user id
+                        const token = createSignedToken(data._id)
+                        data.token = token; //append token
+                        res.header("auth-token", token).status(200).json({
                             status: 'SUCCESS',
                             mss: "Signin Success",
+                            token,
                             data: data
                         })
+
                     } else {
                         req.status(401).json({
                             status: "FAILED",
@@ -40,7 +55,7 @@ signinRouter.post("/", (req, res) => {
                 }).catch(err => {
                     res.status(500).json({
                         status: "FAILED",
-                        mssg: "Sever failed trying to compare passwords"
+                        mssg: "Sever failed trying to compare passwords" + err
                     })
                 })
 

@@ -67,4 +67,4 @@ merchantSigninRouter.post('/', (req, res) => {
 
 });
 
-export default MerchantSigninRouter;
+export default merchantSigninRouter;
