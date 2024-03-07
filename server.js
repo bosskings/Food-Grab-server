@@ -47,7 +47,7 @@ app.use('/merchants/api/v1/singup', merchantSigninRouter)
 
 // health check for AWS
 app.use('/healthCheck', (req, res) => {
-    res.status(200).send('Service working well, thank you!');
+    res.status(200).send('Service working well, thank you..........!');
 })
 
 app.listen(port, () => {
