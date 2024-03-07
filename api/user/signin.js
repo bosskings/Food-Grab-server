@@ -38,7 +38,6 @@ signinRouter.post("/", (req, res) => {
 
                         // tokenize user id
                         const token = createSignedToken(data._id)
-                        data.token = token; //append token
                         res.header("auth-token", token).status(200).json({
                             status: 'SUCCESS',
                             mss: "Signin Success",
