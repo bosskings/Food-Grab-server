@@ -122,11 +122,17 @@ const placeOrders = async (req, res) => {
             amount,
             totalPrice: price * amount
         })
-        order = await order.save();
+        const savedOrder = await order.save();
+        return res.status(404).json({
+            status: 'SUCCES',
+            data: savedOrder
+        });
 
     } catch (err) {
-        console.log(err.message);
-        res.status(500).send("Server error");
+        return res.status(404).json({
+            status: 'FAILED',
+            message: `Network Error Please try again`
+        });
     }
 };
 

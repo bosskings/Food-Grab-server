@@ -43,7 +43,7 @@ const signup = async (req, res) => {
     } else if (!validator.isStrongPassword(password)) {
         res.json({
             status: "FAILED",
-            mssg: "Password must be more that 8 chartacter"
+            mssg: "Your password is weak."
         })
     } else {
         // check if user with email already exists
