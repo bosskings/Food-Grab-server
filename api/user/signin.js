@@ -1,9 +1,6 @@
-import express from "express";
 import bcrypt from "bcrypt";
 import Jwt from "jsonwebtoken";
 import UserModel from "../../models/User.js";
-
-const signinRouter = express.Router();
 
 
 // functino to sign jwt
@@ -13,7 +10,8 @@ const createSignedToken = (_id) => {
         { expiresIn: '36500d' }); // 1 hour token validity
 }
 
-signinRouter.post("/", (req, res) => {
+// function to sign users in
+const signin = async (req, res) => {
 
     let { email, password, phone } = req.body;
     email = email ? email.trim() : false;
@@ -73,6 +71,6 @@ signinRouter.post("/", (req, res) => {
         })
     }
 
-});
+};
 
-export default signinRouter;
+export default signin;

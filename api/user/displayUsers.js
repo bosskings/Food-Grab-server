@@ -1,11 +1,7 @@
-import express from "express";
 import UserModel from "../../models/User.js";
 
-const allUsersRouter = express.Router();
-const singleUserRouter = express.Router();
-
 // API to get all registered users
-allUsersRouter.get("/", async (req, res) => {
+const getAllUsers = async (req, res) => {
     try {
         const { amount } = req.query;
 
@@ -29,10 +25,10 @@ allUsersRouter.get("/", async (req, res) => {
             message: "Server error"
         });
     }
-});
+};
 
 // API to get a single user
-singleUserRouter.get("/:id", async (req, res) => {
+const getSingleUser = async (req, res) => {
     try {
         const { id } = req.params;
         const user = await UserModel.findById(id, "-password -__v");
@@ -54,6 +50,6 @@ singleUserRouter.get("/:id", async (req, res) => {
             message: "Server error"
         });
     }
-});
+};
 
-export { allUsersRouter, singleUserRouter };
+export { getAllUsers, getSingleUser };

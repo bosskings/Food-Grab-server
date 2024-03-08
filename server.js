@@ -1,14 +1,11 @@
 import express from "express";
 
 import "./config/db.js"
-import signupRouter from "./api/user/signup.js"
-import signinRouter from "./api/user/signin.js";
-import { allUsersRouter, singleUserRouter } from "./api/user/displayUsers.js"
+import userRoutes from './routes/user.js'
 
 import merchantSigninRouter from './api/merchant/signin.js'
 import merchantSignupRouter from './api/merchant/signup.js'
 
-import { shopsRouter, cuisinesRouter, ordersRouter } from "./api/user/orderItems.js"
 
 import requireAuth from "./middleware/requrieAuth.js";
 
@@ -18,7 +15,7 @@ const port = process.env.PORT || 9000;
 
 
 // authentication middleware for all routes
-// app.use(requireAuth);
+app.use(requireAuth);
 
 // parse JSON bodies
 app.use(express.json());
@@ -27,15 +24,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // user router
-app.use('/users/api/v1/signup', signupRouter);
-app.use('/users/api/v1/signin', signinRouter);
-
-app.use('/users/api/v1/allUsers', allUsersRouter); //get all users
-app.use('/users/api/v1/singleUser', singleUserRouter); //get single user
-
-app.use('/users/api/v1/shops', shopsRouter); // shops from both categories(restaurants & chefs) based on a query param
-app.use('/users/api/v1/cuisines', cuisinesRouter); //get all the cuisines offered by a shop.
-app.use('/users/api,v1/checkout', ordersRouter); // prcoess items from cart, store them in DB and show to Merchant
+app.use('/users/api/v1', userRoutes);
 
 
 //route for merchants

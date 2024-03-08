@@ -1,12 +1,10 @@
-import express from "express";
 import bcrypt from "bcrypt";
 import validator from "validator";
 import UserModel from "../../models/User.js";
 
-const signupRouter = express.Router();
 
 // signup
-signupRouter.post('/', (req, res) => {
+const signup = async (req, res) => {
     // get post/user input
 
     let { email, password, fullname, phone } = req.body;
@@ -109,9 +107,7 @@ signupRouter.post('/', (req, res) => {
         })
     }
 
+};
 
 
-})
-
-
-export default signupRouter
+export default signup
