@@ -1,7 +1,7 @@
 import express from "express"
 import signin from "../api/user/signin.js";
 import signup from "../api/user/signup.js";
-import { getCuisines, placeOrders, getShops } from "../api/user/orderItems.js";
+import { getCuisines, getSignleCousine, placeOrders, getShops } from "../api/user/orderItems.js";
 import { getAllUsers, getSingleUser } from "../api/user/displayUsers.js";
 
 const router = express.Router();
@@ -23,6 +23,9 @@ router.get("/shops/:name", getShops);
 
 // route to view all dished available 
 router.get("/cuisines", getCuisines);
+
+// route to get a single cuisine
+router.get("/cuisines:id", getSignleCousine)
 
 // route to take users orders
 // process items from cart, store them in DB and show to Merchant

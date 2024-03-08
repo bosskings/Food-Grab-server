@@ -1,11 +1,8 @@
-import express from "express";
 import bcrypt from "bcrypt";
 import MerchantModel from "../../models/Merchant.js";
 
-const merchantSignupRouter = express.Router();
-
 // signup
-merchantSignupRouter.post('/', (req, res) => {
+const merchantSignup = async (req, res) => {
     // get post/user input
 
     let { email, password, fullname } = req.body;
@@ -103,7 +100,7 @@ merchantSignupRouter.post('/', (req, res) => {
 
 
 
-});
+};
 
 
-export default merchantSignupRouter
+export default merchantSignup

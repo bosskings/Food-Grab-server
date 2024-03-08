@@ -3,6 +3,8 @@ import express from "express";
 import "./config/db.js"
 import userRoutes from './routes/user.js'
 
+import merchantRoutes from './routes/merchant.js';
+
 import merchantSigninRouter from './api/merchant/signin.js'
 import merchantSignupRouter from './api/merchant/signup.js'
 
@@ -26,11 +28,8 @@ app.use(express.urlencoded({ extended: true }));
 // user router
 app.use('/users/api/v1', userRoutes);
 
-
 //route for merchants
-app.use('/merchants/api/v1/singup', merchantSignupRouter)
-app.use('/merchants/api/v1/singup', merchantSigninRouter)
-
+app.use('/merchants/api/v1', merchantRoutes)
 
 
 

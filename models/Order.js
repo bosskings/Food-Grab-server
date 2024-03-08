@@ -16,6 +16,45 @@ const OrdersSchema = new mongoose.Schema({
         type: [itemsSchema],
         required: true
     },
+
+    shop: {
+        type: mongoose.Types.ObjectId,
+        ref: 'Shop',
+    },
+
+    courier: {
+        type: mongoose.Types.ObjectId,
+        ref: 'courier'
+    },
+
+    requestTime: {
+        type: Date,
+    },
+
+    deliveryTime: {
+        type: Date,
+    },
+
+    requestStatus: {
+        type: String,
+        enum: {
+            values: ['DELIVERED', 'PENDING', 'DECLINED'],
+            message: "invalid selection"
+        }
+    },
+
+    deliveryStatus: {
+        type: String,
+        enum: {
+            values: ['ON_ROUTE', 'ARRIVED', 'DELIVERD'],
+            message: "invalid selection"
+        }
+    },
+
+    totalPrice: {
+        type: Number
+    },
+
     date: {
         type: Date,
         default: Date.now

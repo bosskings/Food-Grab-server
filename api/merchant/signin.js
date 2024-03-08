@@ -1,11 +1,7 @@
-import express from "express";
 import bcrypt from "bcrypt";
 import MerchantModel from "../../models/Merchant.js";
 
-
-const merchantSigninRouter = express.Router();
-
-merchantSigninRouter.post('/', (req, res) => {
+const merchantSignin = (req, res) => {
 
     const { fullname, email, password } = req.body;
 
@@ -65,6 +61,6 @@ merchantSigninRouter.post('/', (req, res) => {
 
     }
 
-});
+};
 
-export default merchantSigninRouter;
+export default merchantSignin;
