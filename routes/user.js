@@ -1,6 +1,7 @@
 import express from "express"
 import signin from "../api/user/signin.js";
 import signup from "../api/user/signup.js";
+import requireAuth from "../middleware/requrieAuth.js";
 import { getCuisines, getSignleCousine, placeOrders, getShops } from "../api/user/orderItems.js";
 import { getAllUsers, getSingleUser } from "../api/user/displayUsers.js";
 
@@ -12,6 +13,9 @@ router.post("/signin", signin);
 // route to sign users in
 router.post('/signup', signup)
 
+// authentication middleware for all routes excluding signup and signin
+router.use(requireAuth);
+
 // get all the users
 router.get("/allUsers", getAllUsers)
 
@@ -19,7 +23,7 @@ router.get("/allUsers", getAllUsers)
 router.get("/singleUser/:id", getSingleUser)
 
 // route to get restaurants and private chefs for user
-router.get("/shops/:name", getShops);
+router.get("/shops", getShops);
 
 // route to view all dished available 
 router.get("/cuisines", getCuisines);

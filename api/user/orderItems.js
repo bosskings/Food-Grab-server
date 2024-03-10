@@ -8,9 +8,9 @@ const getShops = async (req, res) => {
     try {
         //find out the amount of shops need from query param
         const { amount, search } = req.query;
-        if (!amount || isNaN(Number(amount)) || amount < 1) {
+        if (amount || Number(amount) || amount > 0) {
 
-            const shops = await ShopModel.find({}, "__v").sort({ createdAt: -1 });
+            const shops = await ShopModel.find({}, "-__v").limit(Number(amount)).sort({ createdAt: -1 });
             return res.status(200).json({
                 status: "SUCCESS",
                 data: shops
@@ -18,19 +18,19 @@ const getShops = async (req, res) => {
 
         } else if (search) {
 
-            const shops = await ShopModel.find({}, "__v").sort(search);
+            const shops = await ShopModel.find({}, "-__v").sort(search);
             return res.status(200).json({
                 status: "SUCCESS",
                 data: shops
             });
 
         } else {
-
-            const shops = await ShopModel.find({}, "__v").limit(Number(amount)).sort({ createdAt: -1 });
+            const shops = await ShopModel.find({}, "-__v").sort({ createdAt: -1 });
             return res.status(200).json({
                 status: "SUCCESS",
                 data: shops
             });
+
 
         }
 
@@ -48,28 +48,28 @@ const getCuisines = async (req, res) => {
     try {
         //find out the name or amount of cuisines needed from query param
         const { amount, search } = req.query;
-        if (!amount || isNaN(Number(amount)) || amount < 1) {
+        if (amount && Number(amount) && amount > 0) {
 
-            const cuisines = await CuisineModel.find({}, "__v").sort({ createdAt: -1 });
+            const cuisines = await CuisineModel.find({}, "__v").limit(Number(amount)).sort({ createdAt: -1 });
             return res.status(200).json({
-                status: "SUCCESS",
+                status: "SUCCESS.",
                 data: cuisines
             });
 
         } else if (search) {
 
-            const cusiines = await CuisineModel.find({}, "__v").sort(search);
+            const cuisines = await CuisineModel.find({}, "-__v").sort(search);
             return res.status(200).json({
-                status: "SUCCESS",
-                data: cusiines
+                status: "SUCCESS..",
+                data: cuisines
             });
 
         } else {
 
-            const cusiines = await ShopModel.find({}, "__v").limit(Number(amount)).sort({ createdAt: -1 });
+            const cuisines = await CuisineModel.find({}, "-__v").sort({ createdAt: -1 });
             return res.status(200).json({
-                status: "SUCCESS",
-                data: cusiines
+                status: "SUCCESS...",
+                data: cuisines
             });
 
         }
@@ -114,24 +114,42 @@ const getSignleCousine = async (req, res) => {
 
 const placeOrders = async (req, res) => {
     try {
-        const { price, item, amount, shopId } = req.body;
-        const order = new OrdersModel({
-            userId: req.user._id, //get the _id from the current logged in user
-            dishId: item,
-            shopId: shopId,
-            amount,
-            totalPrice: price * amount
+        const { shopId, requestNote, items } = req.body
+
+        let totalPrice = 0;
+
+        items.map((item) => {
+            totalPrice += item.price * item.amount;
         })
-        const savedOrder = await order.save();
-        return res.status(404).json({
-            status: 'SUCCES',
-            data: savedOrder
+
+        let orderItem = new OrdersModel({
+
+            userId: req.user._id,
+            shopId, // Assuming shopId is defined somewhere in your code
+            totalPrice,
+            requestNote, // Assuming requestNote is defined somewhere in your code
+            items
         });
 
+        let result = await orderItem.save();
+
+        if (result) {
+            return res.status(201).json({
+                status: "SUCCESS",
+                mssg: `${items.length} number of Orders Placed Successfully!`,
+                data: result
+            });
+
+        } else {
+            return res.status(400).json({
+                status: "FAILED",
+                message: "No orders were placed, Please try again."
+            });
+        }
     } catch (err) {
-        return res.status(404).json({
+        return res.status(500).json({
             status: 'FAILED',
-            message: `Network Error Please try again`
+            message: `Unexpected Server Error. Please try again. ${err}`
         });
     }
 };

@@ -4,10 +4,11 @@ import UserModel from "../../models/User.js";
 
 
 // functino to sign jwt
-const createSignedToken = (_id) => {
-    return Jwt.sign({ _id },
+const createSignedToken = (_id, user) => {
+    return Jwt.sign({ _id, user },
         process.env.JWT_SECRET,
-        { expiresIn: '36500d' }); // 1 hour token validity
+        { expiresIn: '36500d' }
+    );
 }
 
 // function to sign users in
@@ -26,19 +27,18 @@ const signin = async (req, res) => {
         })
     } else {
         // check if a user exists with said email or phone
-        UserModel.find({ $or: [{ email }, { phone }] }).then((data) => {
+        UserModel.findOne({ $or: [{ email }, { phone }] }).then((data) => {
             if (data) {
 
                 // user exists, compare passwords
-                const hashedPassword = data[0].password;
+                const hashedPassword = data.password;
                 bcrypt.compare(password, hashedPassword).then((result) => {
                     if (result) {
 
                         // tokenize user id
-                        const token = createSignedToken(data._id)
+                        const token = createSignedToken(data._id, 'user')
                         res.header("auth-token", token).status(200).json({
-                            status: 'SUCCESS......',
-                            mss: "Signin Success",
+                            status: 'SUCCESS',
                             token,
                             data: data
                         })
@@ -52,7 +52,7 @@ const signin = async (req, res) => {
                 }).catch(err => {
                     res.status(500).json({
                         status: "FAILED",
-                        mssg: "Sever failed trying to compare passwords" + err
+                        mssg: "Sever failed trying to compare passwords"
                     })
                 })
 

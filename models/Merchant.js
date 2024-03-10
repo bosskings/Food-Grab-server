@@ -10,13 +10,17 @@ const contactAdressSchema = new mongoose.Schema({
 })
 
 const RidersSchema = new mongoose.Schema({
-    fullname: {
+    firstName: {
         type: String,
-        required: [true, 'fullname must be provided']
+        required: [true, 'firstname must be provided']
+    },
+    lastName: {
+        type: String,
+        required: [true, 'lastname must be provided']
     },
     email: {
         type: String,
-        required: [true, 'Email must be procided']
+        required: [true, 'Email must be provided']
     },
     password: {
         type: String,
@@ -24,6 +28,7 @@ const RidersSchema = new mongoose.Schema({
     },
     phone: {
         type: String,
+        required: [true, 'phone must be provided']
     },
     contactAdress: {
         type: contactAdressSchema,

@@ -1,5 +1,6 @@
 import Jwt from "jsonwebtoken";
 import UserModel from "../models/User.js";
+import MerchantModel from "../models/Merchant.js";
 
 const requireAuth = async (req, res, next) => {
     // verify authentication
@@ -15,9 +16,20 @@ const requireAuth = async (req, res, next) => {
 
     const token = authorization.split(' ')[1];
     try {
-        const { _id } = Jwt.verify(token, process.env.JWT_SECRETE);
-        req.user = await UserModel.findOne({ _id }).select('_id');
-        next();
+        const { _id, user } = Jwt.verify(token, process.env.JWT_SECRET);
+
+        if (user == "user") {
+            req.user = await UserModel.findOne({ _id }).select('_id');
+            next();
+
+        } else if (user == "merchant") {
+            req.user = await MerchantModel.findOne({ _id }).select('_id');
+            next();
+
+        } else {
+            // create one for courier
+        }
+
     } catch (error) {
 
         res.status(401).json({

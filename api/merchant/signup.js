@@ -1,29 +1,31 @@
 import bcrypt from "bcrypt";
+import validator from "validator";
 import MerchantModel from "../../models/Merchant.js";
 
 // signup
 const merchantSignup = async (req, res) => {
     // get post/user input
 
-    let { email, password, fullname } = req.body;
-    fullname = fullname.trim();
+    let { email, password, firstName, lastName, phone } = req.body;
+    firstName = firstName.trim();
+    lastName = lastName.trim();
     email = email.trim();
     password = password.trim();
 
-    if (fullname == "" || password == "" || email == "") {
+    if (lastName == "" || lastName == "" || password == "" || email == "" || phone == "") {
         res.json({
             status: "FAILED",
             mssg: "All Inputs are requried"
         })
 
-    } else if (!/^[a-zA-Z\-,' ]+$/.test(fullname)) {
+    } else if (!/^[a-zA-Z\-,' ]+$/.test(firstName) || !/^[a-zA-Z\-,' ]+$/.test(lastName)) {
         // check if fullname properly formed
         res.json({
             status: "FAILED",
-            mssg: "Fullname must contain only normal letters "
+            mssg: "Names must contain only normal letters "
         })
 
-    } else if (email && !/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email)) {
+    } else if (email && !validator.isEmail(email)) {
         // check if email is properly formed
 
         res.json({
@@ -31,34 +33,31 @@ const merchantSignup = async (req, res) => {
             mssg: "Your email Is not properly formed"
         })
 
-    } else if (password.length < 8) {
+    } else if (password.length < 5) {
         res.json({
             status: "FAILED",
-            mssg: "Password must be more that 8 chartacter"
+            mssg: "Password must be more that 5 chartacter"
         })
     } else {
         // check if user with email already exists
-        UserModel.find({ $or: [{ email }, { phone }] }).then((result) => {
+        MerchantModel.find({ $or: [{ email }, { phone }] }).then((result) => {
             if (result.length > 0) {
                 res.json({
                     status: "FAILED",
-                    mssg: "Merchant with this email already exists"
+                    mssg: "Merchant with same details already exists"
                 })
             } else {
-
 
                 // encrypt the password and store data
                 const salt = 10;
                 bcrypt.hash(password, salt).then((hashedPass) => {
 
                     // find out if the user registered with an email or phone
-                    const newUser = email ? new UserModel({ // Create a new user instance
+                    const newUser = new MerchantModel({ // Create a new user instance
                         password: hashedPass,
-                        fullname,
-                        email
-                    }) : new UserModel({
-                        password: hashedPass,
-                        fullname,
+                        firstName,
+                        lastName,
+                        email,
                         phone
                     });
 
@@ -66,7 +65,6 @@ const merchantSignup = async (req, res) => {
                     newUser.save().then(result => {
                         res.json({
                             status: "SUCCESS",
-                            mssg: "New Merchant saved successfully",
                             data: result
 
                         })

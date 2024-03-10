@@ -1,11 +1,23 @@
 import bcrypt from "bcrypt";
+import Jwt from "jsonwebtoken";
 import MerchantModel from "../../models/Merchant.js";
+
+
+
+// functino to sign jwt
+const createSignedToken = (_id, user) => {
+    return Jwt.sign({ _id, user },
+        process.env.JWT_SECRET,
+        { expiresIn: '36500d' }
+    );
+}
+
 
 const merchantSignin = (req, res) => {
 
-    const { fullname, email, password } = req.body;
+    const { firstName, lastName, email, password } = req.body;
 
-    if (!fullname || !email || !password) {
+    if (!email || !password) {
 
         res.status(401).json({
             status: 'FAILED',
@@ -20,12 +32,14 @@ const merchantSignin = (req, res) => {
             if (data) {
 
                 // user exists, compare passwords
-                const hashedPassword = data[0].password;
+                const hashedPassword = data.password;
                 bcrypt.compare(password, hashedPassword).then((result) => {
                     if (result) {
+
+                        const token = createSignedToken(data._id, 'merchant')
                         res.status(200).json({
                             status: 'SUCCESS',
-                            mss: "Signin Success",
+                            token,
                             data: data
                         })
                     } else {

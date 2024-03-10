@@ -1,20 +1,26 @@
+import { ObjectId } from "mongodb";
 import mongoose from "mongoose";
 
 
 const CuisinesSchema = new mongoose.Schema({
 
     shopId: {
-        type: Number
+        type: ObjectId
     },
     name: {
         type: String,
         required: true
     },
     price: {
-        type: String
+        type: Number
     },
     status: {
-        type: Boolean, default: false //
+        type: String,
+        enum: {
+            values: ['AVAILABLE', 'UNAVAILABLE'],
+            message: '{values} is not a valid'
+        },
+        default: 'UNAVAILABLE'
     },
     description: {
         type: String

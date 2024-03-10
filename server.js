@@ -1,23 +1,10 @@
-import express from "express";
-
 import "./config/db.js"
+import express from "express";
 import userRoutes from './routes/user.js'
-
 import merchantRoutes from './routes/merchant.js';
-
-import merchantSigninRouter from './api/merchant/signin.js'
-import merchantSignupRouter from './api/merchant/signup.js'
-
-
-import requireAuth from "./middleware/requrieAuth.js";
 
 const app = express();
 const port = process.env.PORT || 9000;
-
-
-
-// authentication middleware for all routes
-app.use(requireAuth);
 
 // parse JSON bodies
 app.use(express.json());
@@ -30,8 +17,6 @@ app.use('/users/api/v1', userRoutes);
 
 //route for merchants
 app.use('/merchants/api/v1', merchantRoutes)
-
-
 
 // health check for AWS
 app.use('/healthCheck', (req, res) => {

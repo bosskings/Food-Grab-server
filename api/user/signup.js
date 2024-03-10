@@ -14,14 +14,14 @@ const signup = async (req, res) => {
     phone = phone ? phone.trim() : false;
 
     if (fullname == "" || password == "" || email == "" && phone == "") {
-        res.json({
+        res.status(400).json({
             status: "FAILED",
             mssg: "All Inputs are requried"
         })
 
     } else if (!/^[a-zA-Z\-,' ]+$/.test(fullname)) {
         // check if fullname properly formed
-        res.json({
+        res.status(400).json({
             status: "FAILED",
             mssg: "Fullname must contain only normal letters "
         })
@@ -29,27 +29,27 @@ const signup = async (req, res) => {
     } else if (email && !validator.isEmail(email)) {
         // check if email is properly formed
 
-        res.json({
+        res.status(400).json({
             status: "FAILED",
             mssg: "Your email Is not properly formed"
         })
 
     } else if (phone && !/^[0-9, -]+$/.test(phone)) {
-        res.json({
+        res.status(400).json({
             status: "FAILED",
             mssg: "Your phone Is not properly formed"
         })
 
-    } else if (!validator.isStrongPassword(password)) {
-        res.json({
+    } else if (password.length < 5) {
+        res.status(400).json({
             status: "FAILED",
-            mssg: "Your password is weak."
+            mssg: "Your password must be more than 5 Characters."
         })
     } else {
         // check if user with email already exists
         UserModel.find({ $or: [{ email }, { phone }] }).then((result) => {
             if (result.length > 0) {
-                res.json({
+                res.status(400).json({
                     status: "FAILED",
                     mssg: "User with this email already exists"
                 })
@@ -73,21 +73,21 @@ const signup = async (req, res) => {
 
                     // Create a new user instance
                     newUser.save().then(result => {
-                        res.json({
+                        res.status(200).json({
                             status: "SUCCESS",
                             mssg: "New user saved successfully",
                             data: result
 
                         })
                     }).catch((err) => {
-                        res.json({
+                        res.status(400).json({
                             status: "FAILED",
                             mssg: "Error uccured saving user " + err
                         })
                     })
 
                 }).catch((err) => {
-                    res.json({
+                    res.status(400).json({
                         status: "FAILED",
                         mssg: "Error processing password"
                     })
@@ -98,7 +98,7 @@ const signup = async (req, res) => {
 
         }).catch((err) => {
 
-            res.json({
+            res.status(400).json({
                 status: "FAILED",
                 mssg: "An error occured, please try again" + err
             })

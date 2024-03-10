@@ -2,6 +2,7 @@ import UserModel from "../../models/User.js";
 
 // API to get all registered users
 const getAllUsers = async (req, res) => {
+    console.log(req.user._id);
     try {
         const { amount } = req.query;
 

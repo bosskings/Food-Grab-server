@@ -1,15 +1,16 @@
 import mongoose from "mongoose";
 
 const itemsSchema = new mongoose.Schema({
+    cuisineId: { type: mongoose.Types.ObjectId, ref: 'cuisine', required: true },
     name: { type: String, required: true },
     price: { type: Number, required: true },
     amount: { type: Number }
 })
 
 const OrdersSchema = new mongoose.Schema({
-    user: {
+    userId: {
         type: mongoose.Types.ObjectId,
-        ref: 'User'
+        ref: 'users'
     },
 
     items: {
@@ -17,9 +18,13 @@ const OrdersSchema = new mongoose.Schema({
         required: true
     },
 
-    shop: {
+    shopId: {
         type: mongoose.Types.ObjectId,
-        ref: 'Shop',
+        ref: 'shops',
+    },
+    cuisineId: {
+        type: mongoose.Types.ObjectId,
+        ref: 'cuisines'
     },
 
     courier: {
@@ -29,6 +34,7 @@ const OrdersSchema = new mongoose.Schema({
 
     requestTime: {
         type: Date,
+        default: Date.now
     },
 
     deliveryTime: {
@@ -40,19 +46,25 @@ const OrdersSchema = new mongoose.Schema({
         enum: {
             values: ['DELIVERED', 'PENDING', 'DECLINED'],
             message: "invalid selection"
-        }
+        },
+        default: "PENDING"
     },
 
     deliveryStatus: {
         type: String,
         enum: {
-            values: ['ON_ROUTE', 'ARRIVED', 'DELIVERD'],
+            values: ['ON_ROUTE', 'ARRIVED', 'DELIVERD', 'STATIC'],
             message: "invalid selection"
-        }
+        },
+        default: "STATIC"
     },
 
     totalPrice: {
         type: Number
+    },
+
+    requestNote: {
+        type: String
     },
 
     date: {

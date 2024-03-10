@@ -1,32 +1,49 @@
+import { ObjectId } from "mongodb";
 import mongoose from "mongoose";
+
+const contactAdressSchema = new mongoose.Schema({
+    street: String,
+    city: String,
+    state: String,
+    houseNumber: String
+
+})
 
 const ShopSchema = new mongoose.Schema({
 
-    merchandId: {
-        type: Number
+    merchantId: {
+        type: ObjectId
     },
-    name: {
+
+    shopName: {
         type: String
     },
     description: {
         type: String
     },
     address: {
-        type: String
+        type: contactAdressSchema
     },
     logo: {
         type: String
     },
-    backdropPicture: {
+    backdropPic: {
         type: String
     },
     rating: {
         type: Number
     },  //out of 5 stars
+    approvalStatus: {
+        type: String,
+        enum: {
+            values: ['PENDING', 'APPROVED', 'DECLINED'],
+            message: 'Invalid selection'
+        }
+    },
     type: {
         type: String,   //either can be present or not
         enum: {
-            values: ['Restaurant', 'Chef'],
+            values: ['RESTAURANT', 'CHEFF'],
             message: "invalid selection"
         }
     },
