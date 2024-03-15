@@ -1,7 +1,8 @@
 import bcrypt from "bcrypt";
 import validator from "validator";
 import UserModel from "../../models/User.js";
-
+import { Random } from "random-js";
+import sendEmail from "../../utils/sendMail.js";
 
 // signup
 const signup = async (req, res) => {
@@ -60,36 +61,63 @@ const signup = async (req, res) => {
                 const salt = 10;
                 bcrypt.hash(password, salt).then((hashedPass) => {
 
-                    // find out if the user registered with an email or phone
-                    const newUser = email ? new UserModel({ // Create a new user instance
-                        password: hashedPass,
-                        fullname,
-                        email
-                    }) : new UserModel({
-                        password: hashedPass,
-                        fullname,
-                        phone
-                    });
+                    // send email with verification code
+                    const random = new Random(); // Create a new instance of the Random class
+                    const randomValue = random.integer(1, 100)
+                    bcrypt.hash(String(randomValue), salt).then(code => {
 
-                    // Create a new user instance
-                    newUser.save().then(result => {
-                        res.status(200).json({
-                            status: "SUCCESS",
-                            mssg: "New user saved successfully",
-                            data: result
+                        const message = `<div style="border:2px solid red; padding 20px; text-align:center; ">
+                            <h>Account Verification</h1>
+                            <p>Welcome to FoodGrab, you verificatin code is <h2 style="color:red"> ${code} </h2> </p>   
+                        </div> `;
+                        sendEmail(email, message, "ACCOUNT VERIFICATION").then((success) => {
+
+                            console.log(success)
+                            // find out if the user registered with an email or phone
+                            const newUser = email ? new UserModel({ // Create a new user instance
+                                password: hashedPass,
+                                fullname,
+                                email,
+                                emailVerificationStatus: code
+                            }) : new UserModel({
+                                password: hashedPass,
+                                fullname,
+                                phone,
+                                emailVerificationStatus: code
+                            });
+
+                            // Create a new user instance
+                            newUser.save().then(result => {
+                                res.status(200).json({
+                                    status: "SUCCESS",
+                                    mssg: `Verification Email has been sent to ${email} `,
+                                    data: result
+
+                                })
+                            }).catch((err) => {
+                                res.status(400).json({
+                                    status: "FAILED",
+                                    mssg: "Error uccured saving user " + err
+                                })
+                            })
+                        }).catch((err) => {
+
+
+                            res.status(400).json({
+                                status: "FAILED",
+                                mssg: emailStatus
+                            })
+
 
                         })
-                    }).catch((err) => {
-                        res.status(400).json({
-                            status: "FAILED",
-                            mssg: "Error uccured saving user " + err
-                        })
+
                     })
 
                 }).catch((err) => {
+
                     res.status(400).json({
                         status: "FAILED",
-                        mssg: "Error processing password"
+                        mssg: "Error processing password" + err
                     })
 
                 });

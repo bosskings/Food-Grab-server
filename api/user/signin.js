@@ -11,6 +11,58 @@ const createSignedToken = (_id, user) => {
     );
 }
 
+// function to verify code
+const verifyCode = async (req, res) => {
+
+    try {
+        const { code, email } = req.body;
+
+        if (!code || !email) {
+            throw new Error("Invalid Code");
+
+        } else {
+
+            // get the user by email and check the verification code
+            let user = await UserModel.findOne({ email });
+            if (user) {
+                // compare the sent code with the stored one in DB
+                const isMatch = await bcrypt.compare(code, user.verificationCode);
+                if (isMatch) {
+
+                    // update the status of the user
+                    user = await UserModel.updateOne({ _id: user._id }, { $set: { emailVerificationStatus: 'verified' } }).then((result) => {
+
+                        if (result.nModified > 0) {
+                            res.status(201).send({
+                                status: "SUCCESS",
+                                data: user,
+                            })
+                        } else {
+                            throw new Error("Verification Failed, please try again later.")
+                        }
+                    })
+                    // generate a signed token for this
+
+                } else {
+                    throw new Error('Wrong Verification Code!');
+                }
+            } else {
+                throw new Error('No such user');
+            }
+
+        }
+
+    } catch (error) {
+        res.status(401).send({
+            status: "FAILED",
+            mssg: error,
+        })
+    }
+
+}
+
+
+
 // function to sign users in
 const signin = async (req, res) => {
 
@@ -30,31 +82,37 @@ const signin = async (req, res) => {
         UserModel.findOne({ $or: [{ email }, { phone }] }).then((data) => {
             if (data) {
 
-                // user exists, compare passwords
-                const hashedPassword = data.password;
-                bcrypt.compare(password, hashedPassword).then((result) => {
-                    if (result) {
+                if (data.emailVerificationStatus == "verified") {
 
-                        // tokenize user id
-                        const token = createSignedToken(data._id, 'user')
-                        res.header("auth-token", token).status(200).json({
-                            status: 'SUCCESS',
-                            token,
-                            data: data
-                        })
+                    // user exists, compare passwords
+                    const hashedPassword = data.password;
+                    bcrypt.compare(password, hashedPassword).then((result) => {
+                        if (result) {
 
-                    } else {
-                        req.status(401).json({
+                            // tokenize user id
+                            const token = createSignedToken(data._id, 'user')
+                            res.header("auth-token", token).status(200).json({
+                                status: 'SUCCESS',
+                                token,
+                                data: data
+                            })
+
+
+                        } else {
+                            req.status(401).json({
+                                status: "FAILED",
+                                mssg: "Incorrect Password"
+                            })
+                        }
+                    }).catch(err => {
+                        res.status(500).json({
                             status: "FAILED",
-                            mssg: "Incorrect Password"
+                            mssg: "Sever failed trying to compare passwords"
                         })
-                    }
-                }).catch(err => {
-                    res.status(500).json({
-                        status: "FAILED",
-                        mssg: "Sever failed trying to compare passwords"
                     })
-                })
+                } else {
+                    throw new Error("Your Email is yet not verified")
+                }
 
             } else {
                 // user doesnt exists, send error message
@@ -73,4 +131,7 @@ const signin = async (req, res) => {
 
 };
 
-export default signin;
+export {
+    signin,
+    verifyCode
+};

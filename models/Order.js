@@ -67,6 +67,21 @@ const OrdersSchema = new mongoose.Schema({
         type: String
     },
 
+    paymentStatus: {
+        type: String,
+        enum: {
+            values: ["PAID", "UNPAID", "PROCESSING"],
+            message: "Invalid Payment Status!"
+        },
+        default: "UNPAID"
+    },
+
+    paymentMethod: {
+        type: String,
+        enum: {
+            values: ["GRAB_WALLET", "BANK", "CREDIT_CARD"]
+        }
+    },
     date: {
         type: Date,
         default: Date.now

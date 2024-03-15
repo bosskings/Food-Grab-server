@@ -8,6 +8,10 @@ const UserSchema = new mongoose.Schema({
     email: {
         type: String
     },
+    emailVerificationStatus: {
+        type: String,
+        default: "Not Verified"
+    },
     phone: {
         type: String
     },

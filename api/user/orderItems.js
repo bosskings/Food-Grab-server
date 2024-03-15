@@ -2,7 +2,7 @@ import ShopModel from "../../models/Shop.js";
 import CuisineModel from "../../models/Cuisine.js";
 import OrdersModel from "../../models/Order.js";
 
-
+// display all shops
 const getShops = async (req, res) => {
 
     try {
@@ -43,6 +43,27 @@ const getShops = async (req, res) => {
 
 };
 
+// get a single shop
+const getSingleShop = async (req, res) => {
+
+    try {
+        const { id } = req.params;
+
+        const shop = await ShopModel.findById(id);
+        return res.status(200).json({
+            status: 'SUCCESS',
+            data: shop
+        });
+
+    } catch (error) {
+        return res.status(404).json({
+            status: 'FAILED',
+            mssg: error
+        })
+    }
+
+};
+
 const getCuisines = async (req, res) => {
 
     try {
@@ -50,7 +71,7 @@ const getCuisines = async (req, res) => {
         const { amount, search } = req.query;
         if (amount && Number(amount) && amount > 0) {
 
-            const cuisines = await CuisineModel.find({}, "__v").limit(Number(amount)).sort({ createdAt: -1 });
+            const cuisines = await CuisineModel.find({}, "-__v").limit(Number(amount)).sort({ createdAt: -1 });
             return res.status(200).json({
                 status: "SUCCESS.",
                 data: cuisines
@@ -157,6 +178,7 @@ const placeOrders = async (req, res) => {
 
 export {
     getShops,
+    getSingleShop,
     getCuisines,
     getSignleCousine,
     placeOrders
