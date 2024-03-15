@@ -3,6 +3,7 @@ import express from "express";
 import userRoutes from './routes/user.js'
 import merchantRoutes from './routes/merchant.js';
 import sendEmail from "./utils/sendMail.js";
+import cors from "cors";
 
 const app = express();
 const port = process.env.PORT || 9000;
@@ -12,6 +13,9 @@ app.use(express.json());
 
 // parse url encoded bodies
 app.use(express.urlencoded({ extended: true }));
+
+// Enable CORS for all routes
+app.use(cors());
 
 // user router
 app.use('/users/api/v1', userRoutes);
