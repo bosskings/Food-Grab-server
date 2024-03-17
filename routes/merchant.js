@@ -15,6 +15,9 @@ router.post('/signin', merchantSignin);
 // enable merchants signup
 router.post('/signup', merchantSignup);
 
+// test route for cors
+router.get('/test', (req, res) => { res.json({ message: "okay" }) });
+
 
 // authentication middleware for all routes excluding signup and signin
 router.use(requireAuth);
