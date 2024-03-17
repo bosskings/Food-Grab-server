@@ -82,7 +82,7 @@ const signin = async (req, res) => {
         UserModel.findOne({ $or: [{ email }, { phone }] }).then((data) => {
             if (data) {
 
-                if (data.emailVerificationStatus == "verified") {
+                if (data.emailVerificationStatus == "VERIFIED") {
 
                     // user exists, compare passwords
                     const hashedPassword = data.password;
@@ -111,7 +111,7 @@ const signin = async (req, res) => {
                         })
                     })
                 } else {
-                    throw new Error("Your Email is yet not verified")
+                    throw new Error("Your Email is not yet verified")
                 }
 
             } else {
@@ -124,7 +124,7 @@ const signin = async (req, res) => {
         }).catch(err => {
             res.status(500).json({
                 status: "FAILED",
-                mss: "Server failed to find user, check network and try again"
+                mssg: "Server failed to find user, check network and try again" + err
             })
         })
     }
