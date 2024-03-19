@@ -36,7 +36,7 @@ const verifyCode = async (req, res) => {
                     if (result.modifiedCount > 0) {
                         res.status(201).json({
                             status: "SUCCESS",
-                            mssg: "VErification successfull",
+                            mssg: "Verification successfull",
                         });
                     } else {
                         throw new Error("Verification update failed");

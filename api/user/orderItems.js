@@ -49,7 +49,7 @@ const getSingleShop = async (req, res) => {
     try {
         const { id } = req.params;
 
-        const shop = await ShopModel.findById(id);
+        const shop = await ShopModel.findById(id).populate('cuisines').exec();
         return res.status(200).json({
             status: 'SUCCESS',
             data: shop
@@ -111,7 +111,7 @@ const getSignleCousine = async (req, res) => {
 
     try {
         const { _id } = req.params;
-        const cousine = await CuisineModel.findById({ _id });
+        const cousine = await CuisineModel.findById({ _id })
         if (!cousine) {
             return res.status(404).json({
                 status: 'FAILED',
@@ -132,6 +132,33 @@ const getSignleCousine = async (req, res) => {
     }
 
 };
+
+
+
+
+// function to get cuisines from a certain shop
+// const getCuisinesFromShop = async (req, res) => {
+
+//     try {
+//         const { shopId } = req.query;
+
+//         const cuisines = await CuisineModel.find({ "shop": shopId })
+//             .populate('ingredients')
+//             .exec();
+
+//         return res.status(200).json({
+//             status: 'SUCCESS',
+//             count: cuisines.length,
+//             data: cuisines
+//         });
+
+
+//     } catch (error) {
+
+//     }
+
+
+// }
 
 const placeOrders = async (req, res) => {
     try {
