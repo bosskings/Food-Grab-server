@@ -1,7 +1,6 @@
 import bcrypt from "bcrypt";
 import validator from "validator";
 import UserModel from "../../models/User.js";
-import { Random } from "random-js";
 import sendEmail from "../../utils/sendMail.js";
 
 // signup
@@ -62,13 +61,12 @@ const signup = async (req, res) => {
                 bcrypt.hash(password, salt).then((hashedPass) => {
 
                     // send email with verification code
-                    const random = new Random(); // Create a new instance of the Random class
-                    const randomValue = random.integer(1, 100)
-                    bcrypt.hash(String(randomValue), salt).then(code => {
+                    const randomValue = Math.floor(1000 + Math.random() * 9000)
+                    bcrypt.hash(String(randomValue), salt).then(hashedCode => {
 
                         const message = `<div style="border:2px solid red; padding 20px; text-align:center; ">
                             <h>Account Verification</h1>
-                            <p>Welcome to FoodGrab, you verificatin code is <h2 style="color:red"> ${code} </h2> </p>   
+                            <p>Welcome to FoodGrab, you verificatin code is <h2 style="color:red"> ${randomValue} </h2> </p>   
                         </div> `;
                         sendEmail(email, message, "ACCOUNT VERIFICATION").then((success) => {
 
@@ -78,12 +76,12 @@ const signup = async (req, res) => {
                                 password: hashedPass,
                                 fullname,
                                 email,
-                                emailVerificationStatus: code
+                                emailVerificationStatus: hashedCode
                             }) : new UserModel({
                                 password: hashedPass,
                                 fullname,
                                 phone,
-                                emailVerificationStatus: code
+                                emailVerificationStatus: hashedCode
                             });
 
                             // Create a new user instance

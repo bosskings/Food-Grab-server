@@ -13,52 +13,47 @@ const createSignedToken = (_id, user) => {
 
 // function to verify code
 const verifyCode = async (req, res) => {
-
     try {
         const { code, email } = req.body;
 
         if (!code || !email) {
-            throw new Error("Invalid Code");
-
+            throw new Error("Provide code and email");
         } else {
-
-            // get the user by email and check the verification code
+            // get the user by email
             let user = await UserModel.findOne({ email });
+
             if (user) {
                 // compare the sent code with the stored one in DB
-                const isMatch = await bcrypt.compare(code, user.verificationCode);
+                const isMatch = await bcrypt.compare(code, user.emailVerificationStatus);
+
                 if (isMatch) {
-
                     // update the status of the user
-                    user = await UserModel.updateOne({ _id: user._id }, { $set: { emailVerificationStatus: 'verified' } }).then((result) => {
+                    const result = await UserModel.updateOne(
+                        { _id: user._id },
+                        { $set: { emailVerificationStatus: 'VERIFIED' } }
+                    );
 
-                        if (result.nModified > 0) {
-                            res.status(201).send({
-                                status: "SUCCESS",
-                                data: user,
-                            })
-                        } else {
-                            throw new Error("Verification Failed, please try again later.")
-                        }
-                    })
-                    // generate a signed token for this
-
+                    if (result.modifiedCount > 0) {
+                        res.status(201).json({
+                            status: "SUCCESS",
+                            mssg: "VErification successfull",
+                        });
+                    } else {
+                        throw new Error("Verification update failed");
+                    }
                 } else {
                     throw new Error('Wrong Verification Code!');
                 }
             } else {
-                throw new Error('No such user');
+                throw new Error('No user found with the provided email');
             }
-
         }
-
     } catch (error) {
-        res.status(401).send({
+        res.status(401).json({
             status: "FAILED",
-            mssg: error,
-        })
+            mssg: error.message,
+        });
     }
-
 }
 
 
