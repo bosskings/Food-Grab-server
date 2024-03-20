@@ -49,7 +49,7 @@ const getSingleShop = async (req, res) => {
     try {
         const { id } = req.params;
 
-        const shop = await ShopModel.findById(id).populate('cuisines').exec();
+        const shop = await ShopModel.findById(id).populate('cuisines').populate('reviews').exec();
         return res.status(200).json({
             status: 'SUCCESS',
             data: shop

@@ -1,3 +1,4 @@
+import { ObjectId } from "mongodb";
 import mongoose from "mongoose";
 
 const itemsSchema = new mongoose.Schema({
@@ -9,8 +10,7 @@ const itemsSchema = new mongoose.Schema({
 
 const OrdersSchema = new mongoose.Schema({
     userId: {
-        type: mongoose.Types.ObjectId,
-        ref: 'users'
+        type: ObjectId
     },
 
     items: {
@@ -19,17 +19,14 @@ const OrdersSchema = new mongoose.Schema({
     },
 
     shopId: {
-        type: mongoose.Types.ObjectId,
-        ref: 'shops',
+        type: ObjectId
     },
-    cuisineId: {
-        type: mongoose.Types.ObjectId,
-        ref: 'cuisines'
+    cuisineIds: {
+        type: [ObjectId]
     },
 
     courier: {
-        type: mongoose.Types.ObjectId,
-        ref: 'courier'
+        type: ObjectId
     },
 
     requestTime: {

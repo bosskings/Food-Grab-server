@@ -14,7 +14,6 @@ const ShopSchema = new mongoose.Schema({
     merchantId: {
         type: ObjectId
     },
-
     shopName: {
         type: String
     },

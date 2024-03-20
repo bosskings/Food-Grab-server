@@ -37,12 +37,22 @@ const RidersSchema = new mongoose.Schema({
         type: Number,
         unique: [true, 'a user with This NIN already exists']
     },
-    shops: [
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Shop'
-        }
-    ]
+    walletBalance: {
+        type: Number,
+        default: 0.00,
+    },
+    financeActivities: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Finance'
+    },
+    shops: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Shop'
+
+    },
+    regDate: {
+        type: Date
+    }
 
 
 });

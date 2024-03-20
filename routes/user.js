@@ -43,8 +43,6 @@ router.get("/cuisines", getCuisines);
 // route to get a single cuisine
 router.get("/cuisines/:id", getSignleCousine)
 
-// route to get a cuisine based on selected shop
-// router.get("/shopCuisines/:shopId")
 
 // route to take users orders
 // process items from cart, store them in DB and show to Merchant

@@ -15,6 +15,14 @@ const UserSchema = new mongoose.Schema({
     phone: {
         type: String
     },
+    walletBalance: {
+        type: Number,
+        default: 0.00,
+    },
+    financeActivities: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Finance'
+    },
     defaultLocation: {
         type: String
     },
