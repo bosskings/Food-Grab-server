@@ -7,7 +7,8 @@ import {
     getSignleCousine,
     placeOrders,
     getShops,
-    getSingleShop
+    getSingleShop,
+    viewOrders
 } from "../api/user/orderItems.js";
 import { getAllUsers, getSingleUser } from "../api/user/displayUsers.js";
 
@@ -47,5 +48,8 @@ router.get("/cuisines/:id", getSignleCousine)
 // route to take users orders
 // process items from cart, store them in DB and show to Merchant
 router.post("/checkout", placeOrders);
+
+// endpoint to display all orders
+router.get("/viewOrders", viewOrders)
 
 export default router
