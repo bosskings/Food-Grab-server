@@ -44,7 +44,6 @@ router.get("/cuisines", getCuisines);
 // route to get a single cuisine
 router.get("/cuisines/:id", getSignleCousine)
 
-
 // route to take users orders
 // process items from cart, store them in DB and show to Merchant
 router.post("/checkout", placeOrders);
