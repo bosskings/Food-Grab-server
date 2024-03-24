@@ -6,19 +6,19 @@ import MerchantModel from "../../models/Merchant.js";
 const merchantSignup = async (req, res) => {
     // get post/user input
 
-    let { email, password, firstName, lastName, phone } = req.body;
-    firstName = firstName.trim();
-    lastName = lastName.trim();
+    let { email, password, firstname, lastname, phone } = req.body;
+    firstname = firstname.trim();
+    lastname = lastname.trim();
     email = email.trim();
     password = password.trim();
 
-    if (lastName == "" || lastName == "" || password == "" || email == "" || phone == "") {
+    if (lastname == "" || lastname == "" || password == "" || email == "" || phone == "") {
         res.json({
             status: "FAILED",
             mssg: "All Inputs are requried"
         })
 
-    } else if (!/^[a-zA-Z\-,' ]+$/.test(firstName) || !/^[a-zA-Z\-,' ]+$/.test(lastName)) {
+    } else if (!/^[a-zA-Z\-,' ]+$/.test(firstname) || !/^[a-zA-Z\-,' ]+$/.test(lastname)) {
         // check if fullname properly formed
         res.json({
             status: "FAILED",
@@ -55,8 +55,8 @@ const merchantSignup = async (req, res) => {
                     // find out if the user registered with an email or phone
                     const newUser = new MerchantModel({ // Create a new user instance
                         password: hashedPass,
-                        firstName,
-                        lastName,
+                        firstname,
+                        lastname,
                         email,
                         phone
                     });

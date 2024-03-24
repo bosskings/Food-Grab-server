@@ -10,17 +10,18 @@ const contactAdressSchema = new mongoose.Schema({
 })
 
 const RidersSchema = new mongoose.Schema({
-    firstName: {
+    firstname: {
         type: String,
         required: [true, 'firstname must be provided']
     },
-    lastName: {
+    lastname: {
         type: String,
         required: [true, 'lastname must be provided']
     },
     email: {
         type: String,
-        required: [true, 'Email must be provided']
+        required: [true, 'Email must be provided'],
+        unique: true
     },
     password: {
         type: String,
@@ -28,13 +29,15 @@ const RidersSchema = new mongoose.Schema({
     },
     phone: {
         type: String,
-        required: [true, 'phone must be provided']
+        required: [true, 'phone must be provided'],
+        unique: true
     },
     contactAdress: {
         type: contactAdressSchema,
     },
     NIN: {
         type: Number,
+        required: true,
         unique: [true, 'a user with This NIN already exists']
     },
     walletBalance: {
