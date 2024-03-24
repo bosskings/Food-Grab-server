@@ -6,13 +6,13 @@ import MerchantModel from "../../models/Merchant.js";
 const merchantSignup = async (req, res) => {
     // get post/user input
 
-    let { email, password, firstname, lastname, phone } = req.body;
+    let { email, password, firstname, lastname, phone, NIN } = req.body;
     firstname = firstname.trim();
     lastname = lastname.trim();
     email = email.trim();
     password = password.trim();
 
-    if (lastname == "" || lastname == "" || password == "" || email == "" || phone == "") {
+    if (lastname == "" || lastname == "" || password == "" || email == "" || phone == "" || NIN == "") {
         res.json({
             status: "FAILED",
             mssg: "All Inputs are requried"
@@ -58,7 +58,8 @@ const merchantSignup = async (req, res) => {
                         firstname,
                         lastname,
                         email,
-                        phone
+                        phone,
+                        NIN
                     });
 
                     // Create a new user instance
