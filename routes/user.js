@@ -11,6 +11,7 @@ import {
     viewOrders
 } from "../api/user/orderItems.js";
 import { getAllUsers, getSingleUser } from "../api/user/displayUsers.js";
+import sendMessage from "../api/user/customerService.js";
 
 const router = express.Router();
 
@@ -50,5 +51,8 @@ router.post("/checkout", placeOrders);
 
 // endpoint to display all orders
 router.get("/viewOrders", viewOrders)
+
+// route to enable users send messages to customer care
+router.post("/sendMessage", sendMessage)
 
 export default router

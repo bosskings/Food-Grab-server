@@ -32,11 +32,9 @@ const sendEmail = (to, message, title) => {
 
         transporter.sendMail(mailOptions, (err, info) => {
             if (err) {
-                console.log(err)
                 reject('error' + err);
 
             } else {
-                console.log(`mail sent ${info}`);
                 resolve('sent');
             }
         })
