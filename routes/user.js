@@ -11,7 +11,7 @@ import {
     viewOrders
 } from "../api/user/orderItems.js";
 import { getAllUsers, getSingleUser } from "../api/user/displayUsers.js";
-import sendMessage from "../api/user/customerService.js";
+import { sendMessage, getSentMessage } from "../api/user/customerService.js";
 
 const router = express.Router();
 
@@ -19,40 +19,43 @@ const router = express.Router();
 router.post("/signin", signin);
 
 // verify email
-router.post("/verifyEmail", verifyCode)
+router.post("/verifyEmail", verifyCode);
 
 // route to sign users in
-router.post('/signup', signup)
+router.post('/signup', signup);
 
 // authentication middleware for all routes excluding signup and signin
 router.use(requireAuth);
 
 // get all the users
-router.get("/allUsers", getAllUsers)
+router.get("/allUsers", getAllUsers);
 
 //get single user
-router.get("/singleUser/:id", getSingleUser)
+router.get("/singleUser/:id", getSingleUser);
 
 // route to get restaurants and private chefs for user
 router.get("/shops", getShops);
 
 // get single shop
-router.get("/singleShop/:id", getSingleShop)
+router.get("/singleShop/:id", getSingleShop);
 
 // route to view all dished available 
 router.get("/cuisines", getCuisines);
 
 // route to get a single cuisine
-router.get("/cuisines/:id", getSignleCousine)
+router.get("/cuisines/:id", getSignleCousine);
 
 // route to take users orders
 // process items from cart, store them in DB and show to Merchant
 router.post("/checkout", placeOrders);
 
 // endpoint to display all orders
-router.get("/viewOrders", viewOrders)
+router.get("/viewOrders", viewOrders);
 
 // route to enable users send messages to customer care
-router.post("/sendMessage", sendMessage)
+router.post("/sendMessage", sendMessage);
+
+// get sent messages..
+router.get("/sendMessage", getSentMessage)
 
 export default router

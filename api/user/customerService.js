@@ -61,4 +61,28 @@ const sendMessage = async (req, res) => {
 
 
 
-export default sendMessage;
+// get sent messages
+const getSentMessage = async (req, res) => {
+    try {
+        const data = await CustomerServiceModel.find({}, "-__v");
+
+        if (!data) {
+            throw new Error('No document found')
+        }
+
+        return res.status(200).json({
+            status: "SUCCESS",
+            data
+        });
+
+    } catch (error) {
+        return res.status(404).json({
+            status: "FAILED",
+            mssg: error
+        });
+    }
+}
+
+
+
+export { sendMessage, getSentMessage };

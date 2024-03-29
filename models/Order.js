@@ -5,7 +5,7 @@ const itemsSchema = new mongoose.Schema({
     cuisineId: { type: mongoose.Types.ObjectId, ref: 'cuisine', required: true },
     name: { type: String, required: true },
     price: { type: Number, required: true },
-    amount: { type: Number }
+    amount: { type: Number, default: 0 }
 })
 
 const OrdersSchema = new mongoose.Schema({
@@ -21,6 +21,8 @@ const OrdersSchema = new mongoose.Schema({
     shopId: {
         type: ObjectId
     },
+
+
     cuisineIds: {
         type: [ObjectId]
     },

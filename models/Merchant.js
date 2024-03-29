@@ -48,6 +48,12 @@ const RidersSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Finance'
     },
+
+    pictureAddress: {
+        type: String
+
+    },
+
     shops: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Shop'
