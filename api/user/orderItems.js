@@ -169,8 +169,8 @@ const placeOrders = async (req, res) => {
 		items.map((item) => {
 			totalPrice += item.price * item.quantity;
 		})
-
-
+		res.json({ totalPrice })
+		return
 		let orderItem = new OrdersModel({
 
 			userId: req.user._id,
