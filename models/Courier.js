@@ -90,7 +90,7 @@ const CourierSchema = new mongoose.Schema({
         type: AccountInformation
     },
 
-    activityStatus: {
+    status: {
         type: String,
         enum: ['ONLINE', 'OFFLINE', 'BUSY'],
         default: "OFFLINE"
