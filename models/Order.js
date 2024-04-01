@@ -5,7 +5,7 @@ const itemsSchema = new mongoose.Schema({
     cuisineId: { type: mongoose.Types.ObjectId, ref: 'cuisine', required: true },
     name: { type: String, required: true },
     price: { type: Number, required: true },
-    amount: { type: Number, default: 0 }
+    quantity: { type: Number, default: 0 }
 })
 
 const OrdersSchema = new mongoose.Schema({
