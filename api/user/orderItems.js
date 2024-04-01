@@ -171,6 +171,8 @@ const placeOrders = async (req, res) => {
 			// totalPrice += item.price * item.quantity;
 		})
 
+		return
+
 
 		let orderItem = new OrdersModel({
 
