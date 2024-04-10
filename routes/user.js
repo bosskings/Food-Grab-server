@@ -1,7 +1,7 @@
 import express from "express"
 import { signin, verifyCode } from "../api/user/signin.js";
 import signup from "../api/user/signup.js";
-import requireAuth from "../middleware/requrieAuth.js";
+import { requireAuth, secureRoutes } from "../middleware/requrieAuth.js";
 import {
     getCuisines,
     getSignleCousine,
@@ -26,6 +26,8 @@ router.post('/signup', signup);
 
 // authentication middleware for all routes excluding signup and signin
 router.use(requireAuth);
+router.use(secureRoutes) //middleware to avoid nonexistent routes
+
 
 // get all the users
 router.get("/allUsers", getAllUsers);

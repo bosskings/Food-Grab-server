@@ -2,7 +2,7 @@ import "./config/db.js"
 import express from "express";
 import userRoutes from './routes/user.js'
 import merchantRoutes from './routes/merchant.js';
-import sendEmail from "./utils/sendMail.js";
+import courierRoutes from './routes/courier.js'
 import cors from "cors";
 
 const app = express();
@@ -23,8 +23,8 @@ app.use('/users/api/v1', userRoutes);
 //route for merchants
 app.use('/merchants/api/v1', merchantRoutes)
 
-
-app.use('/test', sendEmail)
+//route for couriers
+app.use('/couriers/api/v1', courierRoutes)
 
 // health check for AWS
 app.use('/healthCheck', (req, res) => {

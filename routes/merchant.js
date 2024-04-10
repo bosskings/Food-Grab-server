@@ -2,7 +2,7 @@ import express from "express";
 import merchantSignin from "../api/merchant/signin.js";
 import merchantSignup from "../api/merchant/signup.js";
 import createShop from "../api/merchant/shop.js";
-import requireAuth from "../middleware/requrieAuth.js"; //for authentication
+import { requireAuth, secureRoutes } from "../middleware/requrieAuth.js"; //for authentication
 import { createCuisine, deleteCuisine, updateCuisine } from "../api/merchant/cuisine.js";
 
 
@@ -18,6 +18,7 @@ router.post('/signup', merchantSignup);
 
 // authentication middleware for all routes excluding signup and signin
 router.use(requireAuth);
+router.use(secureRoutes) //middleware to avoid nonexistent routes
 
 // route to enable user to register a shop
 router.post('/createShop', createShop);

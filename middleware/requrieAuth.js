@@ -41,4 +41,14 @@ const requireAuth = async (req, res, next) => {
 
 }
 
-export default requireAuth;
+
+// for wrong pages
+const secureRoutes = (req, res, next) => {
+
+    const error = new Error(`Not found - ${req.originalUrl}`);
+    res.status(404).next(error);
+
+}
+
+
+export { requireAuth, secureRoutes };

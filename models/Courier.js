@@ -35,7 +35,7 @@ const CourierSchema = new mongoose.Schema({
     },
 
     NIN: {
-        type: Number,
+        type: String,
         unique: true,
         required: true
     },
@@ -58,7 +58,7 @@ const CourierSchema = new mongoose.Schema({
 
     vehicleType: {
         type: String,
-        enum: ['Car', 'Motorcycle', 'bicycle']
+        enum: ['CAR', 'MOTORCYCLE', 'BICYCLE']
     },
 
     gender: {
@@ -77,7 +77,7 @@ const CourierSchema = new mongoose.Schema({
     },
 
     walletBalance: {
-        type: Number,
+        type: String,
         default: 0.00,
     },
 
