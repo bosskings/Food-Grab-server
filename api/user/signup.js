@@ -64,11 +64,7 @@ const signup = async (req, res) => {
                     const randomValue = Math.floor(1000 + Math.random() * 9000)
                     bcrypt.hash(String(randomValue), salt).then(hashedCode => {
 
-                        const message = `<div style="border:2px solid red; padding 20px; text-align:center; ">
-                            <h>Account Verification</h1>
-                            <p>Welcome to FoodGrab, you verificatin code is <h2 style="color:red"> ${randomValue} </h2> </p>   
-                        </div> `;
-                        sendEmail(email, message, "ACCOUNT VERIFICATION").then((success) => {
+                        sendEmail(email, randomValue, "ACCOUNT VERIFICATION").then((success) => {
 
                             console.log(success)
                             // find out if the user registered with an email or phone

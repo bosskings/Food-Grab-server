@@ -1,10 +1,12 @@
 import bcrypt from "bcrypt";
 import validator from "validator";
+import sendEmail from "../../utils/sendMail.js";
 import MerchantModel from "../../models/Merchant.js";
 
 // signup
 const merchantSignup = async (req, res) => {
     // get post/user input
+
 
     let { email, password, firstname, lastname, phone, NIN } = req.body;
     firstname = firstname.trim();
@@ -52,27 +54,39 @@ const merchantSignup = async (req, res) => {
                 const salt = 10;
                 bcrypt.hash(password, salt).then((hashedPass) => {
 
-                    // find out if the user registered with an email or phone
-                    const newUser = new MerchantModel({ // Create a new user instance
-                        password: hashedPass,
-                        firstname,
-                        lastname,
-                        email,
-                        phone,
-                        NIN
-                    });
 
-                    // Create a new user instance
-                    newUser.save().then(result => {
-                        res.json({
-                            status: "SUCCESS",
-                            data: result
+                    // send email with verification code
+                    const randomValue = Math.floor(1000 + Math.random() * 9000);
 
-                        })
-                    }).catch((err) => {
-                        res.json({
-                            status: "FAILED",
-                            mssg: "Error uccured saving Merchant " + err
+                    bcrypt.hash(String(randomValue), salt).then(hashedCode => {
+
+                        sendEmail(email, randomValue, "ACCOUNT VERIFICATION").then((success) => {
+
+                            // find out if the user registered with an email or phone
+                            const newUser = new MerchantModel({ // Create a new user instance
+                                password: hashedPass,
+                                firstname,
+                                lastname,
+                                email,
+                                phone,
+                                NIN,
+                                emailVerificationStatus: hashedCode
+                            });
+
+                            // Create a new user instance
+                            newUser.save().then(result => {
+                                res.json({
+                                    status: "SUCCESS",
+                                    mssg: "email sent successfully to " + email,
+                                    data: result
+
+                                })
+                            }).catch((err) => {
+                                res.json({
+                                    status: "FAILED",
+                                    mssg: "Error uccured saving Merchant " + err
+                                })
+                            })
                         })
                     })
 

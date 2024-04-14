@@ -9,7 +9,7 @@ const contactAdressSchema = new mongoose.Schema({
 
 })
 
-const RidersSchema = new mongoose.Schema({
+const MerchantSchema = new mongoose.Schema({
     firstname: {
         type: String,
         required: [true, 'firstname must be provided']
@@ -22,6 +22,10 @@ const RidersSchema = new mongoose.Schema({
         type: String,
         required: [true, 'Email must be provided'],
         unique: true
+    },
+    emailVerificationStatus: {
+        type: String,
+        default: "Not Verified"
     },
     password: {
         type: String,
@@ -36,7 +40,7 @@ const RidersSchema = new mongoose.Schema({
         type: contactAdressSchema,
     },
     NIN: {
-        type: Number,
+        type: String,
         required: true,
         unique: [true, 'a user with This NIN already exists']
     },
@@ -50,8 +54,8 @@ const RidersSchema = new mongoose.Schema({
     },
 
     pictureAddress: {
-        type: String
-
+        type: String,
+        default: "https://food-grab-images.s3.amazonaws.com/email/top-view-table.jpg"
     },
 
     shops: {
@@ -66,6 +70,6 @@ const RidersSchema = new mongoose.Schema({
 
 });
 
-const MerchantModel = mongoose.model('Merchant', RidersSchema);
+const MerchantModel = mongoose.model('Merchant', MerchantSchema);
 
 export default MerchantModel;

@@ -22,9 +22,16 @@ const CuisinesSchema = new mongoose.Schema({
         },
         default: 'UNAVAILABLE'
     },
+
     description: {
         type: String
     },
+
+    quantity: {
+        type: Number,
+        default: 1
+    },
+
     thumbnail: {
         type: String
     }
