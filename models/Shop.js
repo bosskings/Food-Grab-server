@@ -49,14 +49,14 @@ const ShopSchema = new mongoose.Schema({
 
     cuisines: [
         {
-            type: mongoose.Schema.Types.Mixed,     //can contain multiple types like [String] or [{type : String}]
+            type: mongoose.Schema.Types.ObjectId,     //can contain multiple types like [String] or [{type : String}]
             ref: 'Cuisine'
         }
     ],
 
     reviews: [
         {
-            type: mongoose.Schema.Types.Mixed,
+            type: mongoose.Schema.Types.ObjectId,
             ref: 'Review'
         }
     ],

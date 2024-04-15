@@ -27,7 +27,6 @@ const getShops = async (req, res) => {
 		} else {
 
 			const shops = await ShopModel.find({}, "-__v").sort({ createdAt: -1 });
-			console.log(shops);
 			return res.status(200).json({
 				status: "SUCCESS",
 				data: shops
