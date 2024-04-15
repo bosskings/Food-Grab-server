@@ -4,11 +4,11 @@ import OrdersModel from "../../models/Order.js";
 
 // display all shops
 const getShops = async (req, res) => {
-
 	try {
 		//find out the amount of shops need from query param
 		const { amount, search } = req.query;
-		if (amount || Number(amount) || amount > 0) {
+
+		if (amount && Number(amount) > 0) {
 
 			const shops = await ShopModel.find({}, "-__v").limit(Number(amount)).sort({ createdAt: -1 });
 			return res.status(200).json({
@@ -25,12 +25,13 @@ const getShops = async (req, res) => {
 			});
 
 		} else {
+
 			const shops = await ShopModel.find({}, "-__v").sort({ createdAt: -1 });
+			console.log(shops);
 			return res.status(200).json({
 				status: "SUCCESS",
 				data: shops
 			});
-
 
 		}
 
