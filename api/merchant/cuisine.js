@@ -5,7 +5,7 @@ import CuisineModel from "../../models/Cuisine.js";
 const createCuisine = (req, res) => {
 
     try {
-        const { shopId, name, price, description } = req.body;
+        const { shopId, name, price, description, thumbnail } = req.body;
         if (!name || !price || !description) {
             res.status(400).json({
                 status: "FAILED",
@@ -18,7 +18,8 @@ const createCuisine = (req, res) => {
                 shopId,
                 name,
                 price,
-                description
+                description,
+                thumbnail
             });
 
             newCuisine.save().then((result) => {
