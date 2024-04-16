@@ -30,14 +30,16 @@ const ShopSchema = new mongoose.Schema({
         type: String
     },
     rating: {
-        type: Number
+        type: Number,
+        default: 0
     },  //out of 5 stars
     approvalStatus: {
         type: String,
         enum: {
             values: ['PENDING', 'APPROVED', 'DECLINED'],
             message: 'Invalid selection'
-        }
+        },
+        default: "PENDING"
     },
     type: {
         type: String,   //either can be present or not

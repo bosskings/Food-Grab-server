@@ -17,7 +17,6 @@ const requireAuth = async (req, res, next) => {
     const token = authorization.split(' ')[1];
     try {
         const { _id, user } = Jwt.verify(token, process.env.JWT_SECRET);
-
         if (user == "user") {
             req.user = await UserModel.findOne({ _id }).select('_id');
             next();
@@ -34,7 +33,7 @@ const requireAuth = async (req, res, next) => {
 
         res.status(401).json({
             status: "FAILED",
-            mssg: "Network error, could not verify token, please try again"
+            mssg: "Network error, could not verify token, please try again" + error
         })
 
     }
