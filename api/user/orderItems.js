@@ -10,7 +10,7 @@ const getShops = async (req, res) => {
 
 		if (amount && Number(amount) > 0) {
 
-			const shops = await ShopModel.find({}, "-__v").limit(Number(amount)).sort({ createdAt: -1 });
+			const shops = await ShopModel.find({}, "-__v").limit(Number(amount)).sort({ createdAt: -1 }).populate('cuisines').exec();
 			return res.status(200).json({
 				status: "SUCCESS",
 				data: shops
@@ -18,7 +18,7 @@ const getShops = async (req, res) => {
 
 		} else if (search) {
 
-			const shops = await ShopModel.find({}, "-__v").sort(search);
+			const shops = await ShopModel.find({}, "-__v").sort(search).populate('cuisines').exec();
 			return res.status(200).json({
 				status: "SUCCESS",
 				data: shops
@@ -26,7 +26,7 @@ const getShops = async (req, res) => {
 
 		} else {
 
-			const shops = await ShopModel.find({}, "-__v").sort({ createdAt: -1 });
+			const shops = await ShopModel.find({}, "-__v").sort({ createdAt: -1 }).populate('cuisines').exec();
 			return res.status(200).json({
 				status: "SUCCESS",
 				data: shops

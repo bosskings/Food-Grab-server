@@ -20,7 +20,7 @@ const CuisinesSchema = new mongoose.Schema({
             values: ['AVAILABLE', 'UNAVAILABLE'],
             message: '{values} is not a valid'
         },
-        default: 'UNAVAILABLE'
+        default: 'AVAILABLE'
     },
 
     description: {
