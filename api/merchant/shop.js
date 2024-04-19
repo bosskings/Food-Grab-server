@@ -2,18 +2,20 @@ import ShopModel from "../../models/Shop.js";
 
 const createShop = async (req, res) => {
     try {
-        console.log(req.user._id);
+        // console.log(req.user._id);
 
-        const { shopName, address, description, type } = req.body;
+        const { shopName, address, description, type, logo, backdropPic } = req.body;
 
         const newShop = await ShopModel({
 
             merchantId: req.user._id, // hardcoded for now as we don't
-            shopName: shopName,
-            address: address,
-            description: description,
+            shopName,
+            address,
+            description,
             approvalStatus: "PENDING",
-            type: type
+            type,
+            logo,
+            backdropPic
         });
 
         const result = await newShop.save();

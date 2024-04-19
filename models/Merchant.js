@@ -44,14 +44,6 @@ const MerchantSchema = new mongoose.Schema({
         required: true,
         unique: [true, 'a user with This NIN already exists']
     },
-    walletBalance: {
-        type: Number,
-        default: 0.00,
-    },
-    financeActivities: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Finance'
-    },
 
     pictureAddress: {
         type: String,

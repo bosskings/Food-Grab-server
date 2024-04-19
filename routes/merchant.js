@@ -4,6 +4,7 @@ import merchantSignup from "../api/merchant/signup.js";
 import createShop from "../api/merchant/shop.js";
 import { requireAuth, secureRoutes } from "../middleware/requrieAuth.js"; //for authentication
 import { createCuisine, deleteCuisine, updateCuisine } from "../api/merchant/cuisine.js";
+import createOverview from "../api/merchant/overview.js";
 
 
 const router = express.Router();
@@ -27,10 +28,26 @@ router.post('/createShop', createShop);
 router.post('/createCuisine', createCuisine);
 
 // router to enable merchants update cuisines
-router.post('/updateCuisine', updateCuisine);
+router.patch('/updateCuisine', updateCuisine);
 
 // router to delete cuisine
 router.post('/deleteCuisine', deleteCuisine);
+
+// get statistical overview
+router.get('/overview', createOverview);
+
+
+// get order history
+router.get('/getOrders',);
+
+// update order Status
+router.post('/orderStatus',);
+
+// update cuisine availability Status
+router.post('/cuisineStatus',);
+
+// get recent transactions
+router.get('/transaction',);
 
 
 

@@ -51,7 +51,7 @@ const merchantSignin = (req, res) => {
                 }).catch(err => {
                     res.status(500).json({
                         status: "FAILED",
-                        mssg: "Sever failed trying to compare passwords"
+                        mssg: "Sever failed trying to compare passwords" + err
                     })
                 })
 
