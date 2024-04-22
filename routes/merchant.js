@@ -41,10 +41,10 @@ router.get('/overview', createOverview);
 router.get('/getOrders',);
 
 // update order Status
-router.post('/orderStatus',);
+router.patch('/orderStatus',);
 
 // update cuisine availability Status
-router.post('/cuisineStatus',);
+router.patch('/cuisineStatus',);
 
 // get recent transactions
 router.get('/transaction',);

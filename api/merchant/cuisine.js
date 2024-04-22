@@ -53,13 +53,65 @@ const createCuisine = (req, res) => {
 };
 
 
-const updateCuisine = (req, res) => {
+const updateCuisine = async (req, res) => {
+
+    try {
+
+        const id = req.params.id; //get cuisine id
+
+        // patch object with specified id
+        let update = await CuisineModel.findByIdAndUpdate(id, req.body, { new: true });
+
+        if (!update) { //incase of errors
+
+            res.status(500).json({
+                status: "FAILED",
+                mssg: "Cuisine not found"
+            })
+        }
+
+        res.status(200).json({
+            status: "SUCCESS",
+            data: update
+        })
+    } catch (error) {
+        res.status(500).json({
+            status: "FAILED",
+            mssg: "Unexpected error " + error
+        })
+    }
+
 
 };
 
 
-const deleteCuisine = (req, res) => {
+const deleteCuisine = async (req, res) => {
 
+    try {
+
+        const id = req.params.id; //get cuisine id
+
+        // delete object with specified id
+        let deleted = await CuisineModel.findByIdAndDelete(id);
+
+        if (!deleted) { //incase of errors
+
+            res.status(500).json({
+                status: "FAILED",
+                mssg: "Cuisine not found"
+            })
+        }
+
+        res.status(200).json({
+            status: "SUCCESS",
+            data: deleted
+        })
+    } catch (error) {
+        res.status(500).json({
+            status: "FAILED",
+            mssg: "Unexpected error " + error
+        })
+    }
 };
 
 export {
