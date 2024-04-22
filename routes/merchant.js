@@ -31,7 +31,7 @@ router.post('/createCuisine', createCuisine);
 router.patch('/updateCuisine', updateCuisine);
 
 // router to delete cuisine
-router.post('/deleteCuisine', deleteCuisine);
+router.delete('/deleteCuisine', deleteCuisine);
 
 // get statistical overview
 router.get('/overview', createOverview);

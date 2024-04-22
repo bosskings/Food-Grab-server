@@ -22,11 +22,6 @@ const OrdersSchema = new mongoose.Schema({
         type: ObjectId
     },
 
-
-    cuisineIds: {
-        type: [ObjectId]
-    },
-
     courier: {
         type: ObjectId
     },

@@ -196,7 +196,7 @@ const placeOrders = async (req, res) => {
 	} catch (err) {
 		return res.status(500).json({
 			status: 'FAILED',
-			mssg: `Unexpected Server Error. Please try again. ${err}`
+			mssg: `Unexpected Server Error. Please try again. ${err + req.user}`
 		});
 	}
 };
