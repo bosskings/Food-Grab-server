@@ -27,6 +27,7 @@ const CuisinesSchema = new mongoose.Schema({
         type: String
     },
 
+    // ignore property below because of Brigt
     quantity: {
         type: Number,
         default: 1
