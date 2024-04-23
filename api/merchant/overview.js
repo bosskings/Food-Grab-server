@@ -1,4 +1,3 @@
-import MerchantModel from "../../models/Merchant.js";
 import OrdersModel from "../../models/Order.js";
 import ShopModel from "../../models/Shop.js";
 
@@ -70,4 +69,51 @@ const createOverview = async (req, res) => {
 
 }
 
-export default createOverview;
+
+
+// create function to get orders for merchants
+
+const getOrders = async (req, res) => {
+
+    try {
+
+        // check if any ids were sent as url params
+        // send a single order if soo
+        const id = req.query.id
+        if (id) {
+            let order = await OrdersModel.findById(id);
+
+            if (!order) {
+                throw new Error('Order not found');
+            } else {
+                return res.status(200).json({
+                    status: 'SUCCESS',
+                    data: order
+
+                });
+            }
+
+        } else {
+            // if no ids provided in the url, 
+            // then we will provide all of them
+
+            let orders = await OrdersModel.find({}, "-__v").sort({ date: -1 }).exec();
+            return res.status(200).json({
+                status: 'SUCCESS',
+                data: orders
+            })
+        }
+
+    } catch (error) {
+        return res.status(400).json({
+            status: "FAILED",
+            mssg: "An Error occurred" + error
+        })
+    }
+
+}
+
+export {
+    createOverview,
+    getOrders
+};

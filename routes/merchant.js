@@ -4,7 +4,7 @@ import merchantSignup from "../api/merchant/signup.js";
 import createShop from "../api/merchant/shop.js";
 import { requireAuth, secureRoutes } from "../middleware/requrieAuth.js"; //for authentication
 import { createCuisine, deleteCuisine, updateCuisine } from "../api/merchant/cuisine.js";
-import createOverview from "../api/merchant/overview.js";
+import { createOverview, getOrders } from "../api/merchant/overview.js";
 
 
 const router = express.Router();
@@ -37,8 +37,8 @@ router.delete('/deleteCuisine/:id', deleteCuisine);
 router.get('/overview', createOverview);
 
 
-// get order history
-router.get('/getOrders',);
+// get order history (same as getting all orders)
+router.get('/getOrders', getOrders);
 
 // update order Status
 router.patch('/orderStatus',);
