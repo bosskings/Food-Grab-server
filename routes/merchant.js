@@ -28,10 +28,10 @@ router.post('/createShop', createShop);
 router.post('/createCuisine', createCuisine);
 
 // router to enable merchants update cuisines
-router.patch('/updateCuisine', updateCuisine);
+router.patch('/updateCuisine/:id', updateCuisine);
 
 // router to delete cuisine
-router.delete('/deleteCuisine', deleteCuisine);
+router.delete('/deleteCuisine/:id', deleteCuisine);
 
 // get statistical overview
 router.get('/overview', createOverview);

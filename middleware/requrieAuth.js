@@ -18,11 +18,13 @@ const requireAuth = async (req, res, next) => {
     try {
         const { _id, user } = Jwt.verify(token, process.env.JWT_SECRET);
         if (user == "user") {
-            req.user = await UserModel.findOne({ _id }).select('_id');
+            req.user = { type: "USER" };
+            req.user._id = (await UserModel.findById(_id, '_id'))._id;
             next();
 
         } else if (user == "merchant") {
-            req.user = await MerchantModel.findOne({ _id }).select('_id');
+            req.user = { type: "MERCHANT" };
+            req.user._id = (await MerchantModel.findById(_id, '_id'))._id;
             next();
 
         } else {
