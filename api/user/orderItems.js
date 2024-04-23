@@ -181,11 +181,18 @@ const placeOrders = async (req, res) => {
 		let result = await orderItem.save();
 
 		if (result) {
-			return res.status(201).json({
-				status: "SUCCESS",
-				mssg: `${items.length} number of Orders Placed Successfully!`,
-				data: result
-			});
+
+			// update the order request status to PROCESSING
+			let updated = await OrdersModel.findByIdAndUpdate(data._id, { requestStatus: 'PROCESSING' }, { new: true })
+
+			if (updated) {
+
+				return res.status(201).json({
+					status: "SUCCESS",
+					mssg: `${items.length} number of Orders Placed Successfully!`,
+					data: result
+				});
+			}
 
 		} else {
 			return res.status(400).json({
