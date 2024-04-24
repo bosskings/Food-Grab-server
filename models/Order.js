@@ -11,7 +11,8 @@ const itemsSchema = new mongoose.Schema({
 
 const OrdersSchema = new mongoose.Schema({
     userId: {
-        type: ObjectId
+        type: ObjectId,
+        required: [true, "User id must be provided"]
     },
 
     items: {
@@ -20,11 +21,14 @@ const OrdersSchema = new mongoose.Schema({
     },
 
     shopId: {
-        type: ObjectId
+        type: ObjectId,
+        required: [true, "Shop sid must be provided"]
+
     },
 
     courier: {
-        type: ObjectId
+        type: ObjectId,
+        ref: 'courier'
     },
 
     requestTime: {
@@ -34,6 +38,7 @@ const OrdersSchema = new mongoose.Schema({
 
     deliveryTime: {
         type: Date,
+        default: ""
     },
 
     requestStatus: {
@@ -55,11 +60,13 @@ const OrdersSchema = new mongoose.Schema({
     },
 
     totalPrice: {
-        type: Number
+        type: Number,
+        default: 0
     },
 
     requestNote: {
-        type: String
+        type: String,
+        default: ""
     },
 
     paymentStatus: {
@@ -75,7 +82,8 @@ const OrdersSchema = new mongoose.Schema({
         type: String,
         enum: {
             values: ["GRAB_WALLET", "BANK", "CREDIT_CARD"]
-        }
+        },
+        default: "",
     },
     date: {
         type: Date,

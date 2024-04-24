@@ -2,18 +2,49 @@ import mongoose from "mongoose";
 
 const ContactAddress = new mongoose.Schema({
 
-    city: { type: String, required: true },
-    state: { type: String, required: false },
-    street: { type: String, required: true },
-    number: { type: Number, required: true }
+    city: {
+        type: String,
+        required: true,
+        default: ""
+    },
+    state: {
+        type: String,
+        required: false,
+        default: ""
+    }
+    ,
+    street: {
+        type: String,
+        required: true,
+        default: ""
+    }
+    ,
+    number: {
+        type: Number,
+        required: true,
+        default: ""
+    }
+
 
 })
 
 
 const AccountInformation = new mongoose.Schema({
-    accountName: { type: String, required: true },
-    bank: { type: String, required: true },
-    accountNumber: { type: String, required: true },
+    accountName: {
+        type: String,
+        required: true,
+        default: ""
+    },
+    bank: {
+        type: String,
+        required: true,
+        default: ""
+    },
+    accountNumber: {
+        type: String,
+        required: true,
+        default: ""
+    },
 
 })
 
@@ -21,44 +52,51 @@ const AccountInformation = new mongoose.Schema({
 const CourierSchema = new mongoose.Schema({
     firstName: {
         type: String,
-        required: true
+        required: true,
+        default: ""
     },
 
     lastName: {
         type: String,
-        required: true
+        required: true,
+        default: ""
     },
 
     DOB: {
         type: Date,
-        required: true
+        required: true,
+        default: ""
     },
 
     NIN: {
         type: String,
         unique: true,
-        required: true
+        required: true,
+        default: ""
     },
 
     phoneNumber: {
         type: String,
         required: [true, "Phone number is required"],
-
+        default: ""
     },
 
     email: {
         type: String,
         required: [true, 'Please provide an email address'],
+        default: ""
     },
 
     password: {
         type: String,
-        require: [true, "Password is required"]
+        require: [true, "Password is required"],
+        default: ""
     },
 
     vehicleType: {
         type: String,
-        enum: ['CAR', 'MOTORCYCLE', 'BICYCLE']
+        enum: ['CAR', 'MOTORCYCLE', 'BICYCLE'],
+        default: ""
     },
 
     gender: {
@@ -83,7 +121,8 @@ const CourierSchema = new mongoose.Schema({
 
     rides: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'orders'
+        ref: 'orders',
+        default: ""
     },
 
     accountInfo: {
@@ -104,7 +143,8 @@ const CourierSchema = new mongoose.Schema({
 
     orders: {
         type: mongoose.Schema.Types.ObjectId,  //this will be the id of Order model
-        ref: 'Order'                          //the name of our model
+        ref: 'Order',                     //the name of our model
+        default: ""
     },
 
     financeActivities: {

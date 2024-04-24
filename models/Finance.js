@@ -8,12 +8,14 @@ const FinanceSchema = new mongoose.Schema({
 
     userType: {
         type: String,
-        enum: ['USER', 'MERCHANT', 'RIDER']
+        enum: ['USER', 'MERCHANT', 'RIDER'],
+        default: ""
     },
 
     activityType: {
         type: String,
-        enum: ['DEPOSIT', 'WITHDRAWAL']
+        enum: ['DEPOSIT', 'WITHDRAWAL'],
+        default: ""
     },
 
     amount: {
@@ -27,7 +29,8 @@ const FinanceSchema = new mongoose.Schema({
     },
 
     date: {
-        type: Date
+        type: Date,
+        default: Date.now
     }
 
 })

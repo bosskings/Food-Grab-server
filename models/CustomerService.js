@@ -19,7 +19,8 @@ const CustomerService = new mongoose.Schema({
     },
 
     phone: {
-        type: Number
+        type: String,
+        default: ""
     },
 
     email: {

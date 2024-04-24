@@ -12,22 +12,28 @@ const contactAdressSchema = new mongoose.Schema({
 const ShopSchema = new mongoose.Schema({
 
     merchantId: {
-        type: ObjectId
+        type: ObjectId,
+        required: [true, "merchant id is needed"]
     },
     shopName: {
-        type: String
+        type: String,
+        required: [true, "merchant id is needed"]
+
     },
     description: {
-        type: String
+        type: String,
+        required: [true, "Description is needed"]
     },
     address: {
         type: contactAdressSchema
     },
     logo: {
-        type: String
+        type: String,
+        default: ""
     },
     backdropPic: {
-        type: String
+        type: String,
+        default: ""
     },
     rating: {
         type: Number,
@@ -40,7 +46,8 @@ const ShopSchema = new mongoose.Schema({
     },
     financeActivities: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Finance'
+        ref: 'Finance',
+        default: ""
     },
 
     type: {
@@ -48,7 +55,8 @@ const ShopSchema = new mongoose.Schema({
         enum: {
             values: ['RESTAURANT', 'CHEFF'],
             message: "invalid selection"
-        }
+        },
+        default: "RESTAUTANT"
     },
 
     cuisines: [

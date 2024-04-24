@@ -2,17 +2,29 @@ import mongoose from "mongoose";
 
 
 const contactAdressSchema = new mongoose.Schema({
-    street: String,
-    city: String,
-    state: String,
-    houseNumber: String
+    street: {
+        type: String,
+        required: true
+    },
+    city: {
+        type: String,
+        required: true
+    },
+    state: {
+        type: String,
+        required: true
+    },
+    houseNumber: {
+        type: String,
+        required: true
+    }
 
 })
 
 const MerchantSchema = new mongoose.Schema({
     firstname: {
         type: String,
-        required: [true, 'firstname must be provided']
+        required: [true, 'firstname must be provided'],
     },
     lastname: {
         type: String,
@@ -52,11 +64,13 @@ const MerchantSchema = new mongoose.Schema({
 
     shops: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Shop'
+        ref: 'Shop',
+        default: ""
 
     },
     regDate: {
-        type: Date
+        type: Date,
+        default: Date.now
     }
 
 

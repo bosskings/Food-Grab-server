@@ -6,14 +6,17 @@ const UserSchema = new mongoose.Schema({
         required: [true, "Fullname must be provided"]
     },
     email: {
-        type: String
+        type: String,
+        required: [true, "Email must be provided"]
+
     },
     emailVerificationStatus: {
         type: String,
         default: "Not Verified"
     },
     phone: {
-        type: String
+        type: String,
+        default: ""
     },
     walletBalance: {
         type: Number,
@@ -24,13 +27,17 @@ const UserSchema = new mongoose.Schema({
         ref: 'Finance'
     },
     defaultLocation: {
-        type: String
+        type: String,
+        default: ""
     },
     currentLocation: {
-        type: String
+        type: String,
+        default: ""
+
     },
     password: {
-        type: String
+        type: String,
+        required: [true, "password is needed"]
     },
     createdAt: {
         type: Date,

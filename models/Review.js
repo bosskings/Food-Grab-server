@@ -1,13 +1,16 @@
 import mongoose from "mongoose";
 
 const ReviewsSchema = new mongoose.Schema({
-    user: {
+    userId: {
         type: mongoose.Types.ObjectId,
-        ref: 'User'
+        ref: 'User',
+        required: [true, "userid is needed"]
     },
-    shop: {
+    shopId: {
         type: mongoose.Types.ObjectId,
-        ref: 'Shop'
+        ref: 'Shop',
+        required: [true, "Shopid is needed"]
+
     },
     review: {
         type: String,

@@ -5,14 +5,16 @@ import mongoose from "mongoose";
 const CuisinesSchema = new mongoose.Schema({
 
     shopId: {
-        type: ObjectId
+        type: ObjectId,
+        requried: [true, "Shop id is requried"]
     },
     name: {
         type: String,
         required: true
     },
     price: {
-        type: Number
+        type: Number,
+        default: 0,
     },
     status: {
         type: String,
@@ -24,7 +26,8 @@ const CuisinesSchema = new mongoose.Schema({
     },
 
     description: {
-        type: String
+        type: String,
+        default: ""
     },
 
     // ignore property below because of Brigt
@@ -34,7 +37,8 @@ const CuisinesSchema = new mongoose.Schema({
     },
 
     thumbnail: {
-        type: String
+        type: String,
+        default: ""
     }
 
 });
