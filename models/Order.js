@@ -83,7 +83,7 @@ const OrdersSchema = new mongoose.Schema({
         enum: {
             values: ["GRAB_WALLET", "BANK", "CREDIT_CARD"]
         },
-        default: "",
+        default: "GRAB_WALLET",
     },
     date: {
         type: Date,

@@ -42,9 +42,6 @@ router.get('/getOrders', getOrders);
 // update order Status
 router.patch('/updateStatus/:id', updateOrderStatus);
 
-// update cuisine availability Status
-router.patch('/updateCuisineStatus/:id',);
-
 // get recent transactions
 router.get('/transaction',);
 
