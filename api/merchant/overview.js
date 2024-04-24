@@ -1,5 +1,7 @@
 import OrdersModel from "../../models/Order.js";
 import ShopModel from "../../models/Shop.js";
+import UserModel from "../../models/User.js";
+import sendEmail from "../../utils/sendMail.js";
 
 const createOverview = async (req, res) => {
 
@@ -113,7 +115,50 @@ const getOrders = async (req, res) => {
 
 }
 
+
+
+// create function to enable merchants shops update orderstatus
+const updateOrderStatus = async (req, res) => {
+    try {
+        const id = req.params.id;
+        const updates = Object.keys(req.body);
+        console.log("updates", updates);
+
+        if (updates.length === 0) {
+            throw new Error("Please select at least one field to be updated")
+        }
+
+        const order = await OrdersModel.findByIdAndUpdate(id, req.body, { new: true }).exec()
+
+        if (order) {
+
+            // send email notification when an order is delivered or cancelled
+            // first get users email address with the users id
+
+            let userEmailAddr = await UserModel.findOne({ _id: order.userId }, "email").exec();
+            userEmailAddr = userEmailAddr.email;
+
+            sendEmail(userEmailAddr, ` Dear User, your order from FoodGrab.africa is ${order.requestStatus} `, "Your Order From FoodGrab.africa");
+
+            return res.status(200).json({
+                status: "SUCCESS",
+                mssg: `Order status updated to ${order.requestStatus}`,
+                data: order
+            })
+        } else {
+            throw new Error(`No record found with the given ID ${id}`);
+        }
+    } catch (error) {
+
+        return res.status(400).json({
+            status: "FAILED",
+            mssg: "An error occorred " + error
+        });
+    }
+}
+
 export {
     createOverview,
-    getOrders
+    getOrders,
+    updateOrderStatus
 };
