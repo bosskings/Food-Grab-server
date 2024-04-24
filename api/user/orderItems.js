@@ -183,7 +183,7 @@ const placeOrders = async (req, res) => {
 		if (result) {
 
 			// update the order request status to PROCESSING
-			let updated = await OrdersModel.findByIdAndUpdate(data._id, { requestStatus: 'PROCESSING' }, { new: true })
+			let updated = await OrdersModel.findByIdAndUpdate(result._id, { requestStatus: 'PROCESSING' }, { new: true })
 
 			if (updated) {
 

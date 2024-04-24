@@ -43,7 +43,7 @@ router.get('/getOrders', getOrders);
 router.patch('/updateStatus/:id', updateOrderStatus);
 
 // update cuisine availability Status
-router.patch('/cuisineStatus',);
+router.patch('/updateCuisineStatus/:id',);
 
 // get recent transactions
 router.get('/transaction',);

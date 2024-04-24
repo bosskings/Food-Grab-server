@@ -1,3 +1,4 @@
+import CuisineModel from "../../models/Cuisine.js";
 import OrdersModel from "../../models/Order.js";
 import ShopModel from "../../models/Shop.js";
 import UserModel from "../../models/User.js";
@@ -157,8 +158,40 @@ const updateOrderStatus = async (req, res) => {
     }
 }
 
+
+// create a function to update cuisine status
+const updateCuisineStatus = async (req, res) => {
+
+    const cusId = req.params.id;
+    try {
+
+        const cusine = await CuisineModel.findByIdAndUpdate(id, req.body).exec();
+
+        if (!cusine) {
+            throw new Error("The specified cuisine does not exist");
+        } else {
+
+            return res.status(201).json({
+                status: 'SUCCES',
+                message: 'cuisine has been updated',
+                data: cusine
+            })
+        }
+
+    } catch (err) {
+        console.log('Error in updating cuisine ', err);
+        return res.status(500).json({
+            status: 'ERROR',
+            message: 'Internal Server Error',
+            data: undefined,
+            field: req.file
+        })
+    }
+};
+
 export {
     createOverview,
     getOrders,
-    updateOrderStatus
+    updateOrderStatus,
+    updateCuisineStatus
 };
