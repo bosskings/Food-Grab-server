@@ -31,11 +31,6 @@ const OrdersSchema = new mongoose.Schema({
         ref: 'courier'
     },
 
-    requestTime: {
-        type: Date,
-        default: Date.now
-    },
-
     deliveryTime: {
         type: Date,
         default: ""
