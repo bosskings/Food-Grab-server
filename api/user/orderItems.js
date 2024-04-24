@@ -162,6 +162,7 @@ const getSignleCousine = async (req, res) => {
 
 const placeOrders = async (req, res) => {
 	try {
+
 		const { shopId, requestNote, deliveryAddress, items } = req.body
 
 		let totalPrice = 0;

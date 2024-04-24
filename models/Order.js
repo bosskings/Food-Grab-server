@@ -31,11 +31,6 @@ const OrdersSchema = new mongoose.Schema({
         ref: 'courier'
     },
 
-    deliveryTime: {
-        type: Date,
-        default: ""
-    },
-
     requestStatus: {
         type: String,
         enum: {
@@ -85,6 +80,7 @@ const OrdersSchema = new mongoose.Schema({
         type: String,
         requried: [true, "address is needed"]
     },
+
     date: {
         type: Date,
         default: Date.now
