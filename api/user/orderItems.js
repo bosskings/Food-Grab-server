@@ -190,7 +190,7 @@ const placeOrders = async (req, res) => {
 				return res.status(201).json({
 					status: "SUCCESS",
 					mssg: `${items.length} number of Orders Placed Successfully!`,
-					data: result
+					data: updated
 				});
 			}
 

@@ -85,6 +85,11 @@ const OrdersSchema = new mongoose.Schema({
         },
         default: "GRAB_WALLET",
     },
+
+    deliveryAddress: {
+        type: String,
+        requried: [true, "address is needed"]
+    },
     date: {
         type: Date,
         default: Date.now
