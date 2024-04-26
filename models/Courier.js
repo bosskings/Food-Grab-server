@@ -160,5 +160,5 @@ const CourierSchema = new mongoose.Schema({
 
 })
 
-const CuisineModel = mongoose.model('Courier', CourierSchema);
-export default CuisineModel;  
+const CourierModel = mongoose.model('Courier', CourierSchema);
+export default CourierModel;  

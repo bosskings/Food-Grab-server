@@ -3,7 +3,7 @@ import Jwt from "jsonwebtoken";
 import UserModel from "../../models/User.js";
 
 
-// functino to sign jwt
+// function to sign jwt
 const createSignedToken = (_id, user) => {
     return Jwt.sign({ _id, user },
         process.env.JWT_SECRET,

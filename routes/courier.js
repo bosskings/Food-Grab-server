@@ -13,6 +13,6 @@ router.post('/signup', upload.single('photo'), courierSignup);
 
 // authemticate couriers 
 router.use(requireAuth)
-router.use(secureRoutes) //block users from visited nonexixtent routes
+// router.use(secureRoutes) //block users from visited nonexixtent routes
 
 export default router;
