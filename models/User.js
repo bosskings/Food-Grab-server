@@ -26,6 +26,16 @@ const UserSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Finance'
     },
+
+    isSuspended: {
+        type: String,
+        enum: {
+            values: [true, false],
+            message: "invalid selection"
+        },
+        default: false
+    },
+
     defaultLocation: {
         type: String,
         default: ""

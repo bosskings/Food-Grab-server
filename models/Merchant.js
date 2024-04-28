@@ -57,6 +57,24 @@ const MerchantSchema = new mongoose.Schema({
         unique: [true, 'a user with This NIN already exists']
     },
 
+    verificationStatus: {
+        type: String,
+        enum: {
+            values: [true, false],
+            message: "invalid selection"
+        },
+        default: false
+    },
+
+    isSuspended: {
+        type: String,
+        enum: {
+            values: [true, false],
+            message: "invalid selection"
+        },
+        default: false
+    },
+
     pictureAddress: {
         type: String,
         default: "https://food-grab-images.s3.amazonaws.com/email/top-view-table.jpg"

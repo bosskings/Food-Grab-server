@@ -147,6 +147,15 @@ const CourierSchema = new mongoose.Schema({
         default: ""
     },
 
+    isSuspended: {
+        type: String,
+        enum: {
+            values: [true, false],
+            message: "invalid selection"
+        },
+        default: false
+    },
+
     financeActivities: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Finance'
