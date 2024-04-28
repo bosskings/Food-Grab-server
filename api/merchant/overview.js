@@ -18,7 +18,7 @@ const createOverview = async (req, res) => {
         // get account balance from merchants collection
         let balance = await ShopModel.findById({ _id: shopId }).select('walletBalance');
 
-        if (!balance || balance.length == 0) {
+        if (!balance) {
             throw new Error("No Balance found");
         } else {
             // add the gotten value to object
@@ -27,13 +27,13 @@ const createOverview = async (req, res) => {
 
 
         // get totalOrders
-
-        let total = await OrdersModel.find({ shopId }).select();
-        if (!total || total.length == 0) {
-            throw new Error("No merchant found with provided id");
+        let orders = await OrdersModel.find({ shopId }).select();
+        console.log(orders);
+        if (!orders) {
+            throw new Error("No Orders found with ");
         } else {
             // add the gotten value to object
-            overview.totalOrders = total.length;
+            overview.totalOrders = orders.length;
 
         }
 
@@ -46,8 +46,8 @@ const createOverview = async (req, res) => {
             overview.pendingOrders = pending.length;
         }
 
-        // get successful orders
 
+        // get successful orders
         let success = await OrdersModel.find({ requestStatus: 'DELIVERED', shopId }, '_id')
         if (!success) {
             throw new Error("No successfull orders Found")
