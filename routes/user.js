@@ -16,13 +16,13 @@ import { sendMessage, getSentMessage } from "../api/user/customerService.js";
 const router = express.Router();
 
 // route to sign users in
-router.post("/signin", signin);
+router.post('/signup', signup);
 
 // verify email
 router.post("/verifyEmail", verifyCode);
 
 // route to sign users in
-router.post('/signup', signup);
+router.post("/signin", signin);
 
 // authentication middleware for all routes excluding signup and signin
 router.use(requireAuth);

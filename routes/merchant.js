@@ -9,15 +9,14 @@ import { createOverview, getOrders, updateOrderStatus } from "../api/merchant/ov
 
 const router = express.Router();
 
-
-// enable merchants to signin
-router.post('/signin', merchantSignin);
-
 // enable merchants signup
 router.post('/signup', merchantSignup);
 
 // verify email
 router.post("/verifyEmail", verifyCode);
+
+// enable merchants to signin
+router.post('/signin', merchantSignin);
 
 // authentication middleware for all routes excluding signup and signin
 router.use(requireAuth);

@@ -13,66 +13,55 @@ const createSignedToken = (_id, user) => {
 }
 
 
-const merchantSignin = (req, res) => {
+const merchantSignin = async (req, res) => {
 
-    const { firstName, lastName, email, password } = req.body;
+    const { email, password } = req.body;
 
-    if (!email || !password) {
+    try {
 
-        res.status(401).json({
-            status: 'FAILED',
-            mssg: 'All Fields are requried'
-        });
+        if (!email || !password) {
 
-    } else {
+            res.status(401).json({
+                status: 'FAILED',
+                mssg: 'All Fields are requried'
+            });
 
-        // check if user already exists
-        MerchantModel.findOne({ email }).then((data) => {
+        } else {
 
-            if (data) {
+            // check if user already exists
+            const data = await MerchantModel.findOne({ email })
 
-                // user exists, compare passwords
-                const hashedPassword = data.password;
-                bcrypt.compare(password, hashedPassword).then((result) => {
-                    if (result) {
+            if (!data) {
+                throw new Error("Failed to find user with email")
 
-                        const token = createSignedToken(data._id, 'merchant')
-                        res.status(200).json({
-                            status: 'SUCCESS',
-                            token,
-                            data: data
-                        })
-                    } else {
-                        req.status(401).json({
-                            status: "FAILED",
-                            mssg: "Incorrect Password"
-                        })
-                    }
-                }).catch(err => {
-                    res.status(500).json({
-                        status: "FAILED",
-                        mssg: "Sever failed trying to compare passwords" + err
-                    })
-                })
-
-            } else {
-                // user doesnt exists, send error message
-                res.status(401).json({
-                    status: "FAILED",
-                    mssg: "No Merchant has these details",
-                })
             }
 
+            // check if email is verified
+            if (data.emailVerificationStatus != "VERIFIED") {
+                throw new Error("Your Email is not yet verified")
+            }
 
-        }).catch((err) => {
-            res.status(500).json({
-                status: "FAILED",
-                mss: "Server failed to find user, check network and try again"
+            // user exists, compare passwords
+            const hashedPassword = data.password;
+            const result = await bcrypt.compare(password, hashedPassword)
+
+            if (!result) {
+                throw new Error("Incorrect Password")
+            }
+
+            const token = createSignedToken(data._id, 'merchant')
+            res.status(200).json({
+                status: 'SUCCESS',
+                token,
+                data: data
             })
+        }
+
+    } catch (error) {
+        res.status(500).json({
+            status: "FAILED",
+            mssg: "Error occured " + error
         })
-
-
-
     }
 
 };
