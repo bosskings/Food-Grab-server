@@ -8,7 +8,7 @@ const approveMerchants = async (req, res) => {
 
         const { action, merchantId } = req.body
 
-        const merchant = await MerchantModel.findByIdAndUpdate(_id, { verificationStatus: action }, { new: true })
+        const merchant = await MerchantModel.findByIdAndUpdate(merchantId, { verificationStatus: action }, { new: true })
 
         if (!merchant) {
             throw new Error("No such Merchant exists!")
