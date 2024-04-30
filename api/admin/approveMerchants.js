@@ -6,7 +6,7 @@ const approveMerchants = async (req, res) => {
 
     try {
 
-        const { action, _id } = req.body
+        const { action, merchantId } = req.body
 
         const merchant = await MerchantModel.findByIdAndUpdate(_id, { verificationStatus: action }, { new: true })
 
