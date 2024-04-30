@@ -77,7 +77,7 @@ const MerchantSchema = new mongoose.Schema({
 
     pictureAddress: {
         type: String,
-        default: "https://food-grab-images.s3.amazonaws.com/email/top-view-table.jpg"
+        default: "https://food-grab-images.s3.amazonaws.com/merchants/avatar.gif"
     },
 
     shops: {

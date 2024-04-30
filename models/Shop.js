@@ -29,7 +29,7 @@ const ShopSchema = new mongoose.Schema({
     },
     logo: {
         type: String,
-        default: ""
+        default: "https://food-grab-images.s3.amazonaws.com/shops/shop.jpg"
     },
     backdropPic: {
         type: String,
