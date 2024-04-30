@@ -60,34 +60,38 @@ const merchantSignup = async (req, res) => {
 
                     bcrypt.hash(String(randomValue), salt).then(hashedCode => {
 
-                        sendEmail(email, randomValue, "ACCOUNT VERIFICATION").then((success) => {
 
-                            // find out if the user registered with an email or phone
-                            const newUser = new MerchantModel({ // Create a new user instance
-                                password: hashedPass,
-                                firstname,
-                                lastname,
-                                email,
-                                phone,
-                                NIN,
-                                emailVerificationStatus: hashedCode
-                            });
+                        // find out if the user registered with an email or phone
+                        const newUser = new MerchantModel({ // Create a new user instance
+                            password: hashedPass,
+                            firstname,
+                            lastname,
+                            email,
+                            phone,
+                            NIN,
+                            emailVerificationStatus: hashedCode
+                        });
 
-                            // Create a new user instance
-                            newUser.save().then(result => {
+                        // Create a new user instance
+                        newUser.save().then(result => {
+
+                            sendEmail(email, randomValue, "ACCOUNT VERIFICATION").then((success) => {
+
                                 res.json({
                                     status: "SUCCESS",
                                     mssg: "email sent successfully to " + email,
                                     data: result
 
                                 })
-                            }).catch((err) => {
-                                res.json({
-                                    status: "FAILED",
-                                    mssg: "Error uccured saving Merchant " + err
-                                })
+                            })
+
+                        }).catch((err) => {
+                            res.json({
+                                status: "FAILED",
+                                mssg: "Error uccured saving Merchant " + err
                             })
                         })
+
                     })
 
                 }).catch((err) => {
@@ -116,4 +120,52 @@ const merchantSignup = async (req, res) => {
 };
 
 
-export default merchantSignup
+
+// verify mercant email
+// function to verify code
+const verifyCode = async (req, res) => {
+    try {
+        const { code, email } = req.body;
+
+        if (!code || !email) {
+            throw new Error("Provide code and email");
+        } else {
+            // get the user by email
+            let user = await MerchantModel.findOne({ email });
+
+            if (user) {
+                // compare the sent code with the stored one in DB
+                const isMatch = await bcrypt.compare(code, user.emailVerificationStatus);
+
+                if (isMatch) {
+                    // update the status of the user
+                    const result = await MerchantModel.updateOne(
+                        { _id: user._id },
+                        { $set: { emailVerificationStatus: 'VERIFIED' } }
+                    );
+
+                    if (result.modifiedCount > 0) {
+                        res.status(201).json({
+                            status: "SUCCESS",
+                            mssg: "Verification successfull",
+                        });
+                    } else {
+                        throw new Error("Verification update failed");
+                    }
+                } else {
+                    throw new Error('Wrong Verification Code!');
+                }
+            } else {
+                throw new Error('No user found with the provided email');
+            }
+        }
+    } catch (error) {
+        res.status(401).json({
+            status: "FAILED",
+            mssg: error.message,
+        });
+    }
+}
+
+
+export { merchantSignup, verifyCode }

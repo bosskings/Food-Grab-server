@@ -81,7 +81,7 @@ const MerchantSchema = new mongoose.Schema({
     },
 
     shops: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: mongoose.Schema.Types.Mixed,
         ref: 'Shop',
         default: ""
 

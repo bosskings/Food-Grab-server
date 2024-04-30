@@ -9,7 +9,7 @@ const createOverview = async (req, res) => {
     try {
 
         //create an object to store different informations and give em default values
-        let overview = { accountBalance: 0, totalOrders: 0, pendingOrders: 0, successfulOrders: 0 }
+        let overview = { accountBalance: 0.00, totalOrders: 0.00, pendingOrders: 0.00, successfulOrders: 0.00 }
 
 
         // get shop id belonging to this merchant
