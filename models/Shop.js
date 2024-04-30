@@ -45,7 +45,7 @@ const ShopSchema = new mongoose.Schema({
         default: 0.00,
     },
     financeActivities: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: mongoose.Schema.Types.Mixed,
         ref: 'Finance',
         default: ""
     },

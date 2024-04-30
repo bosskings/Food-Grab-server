@@ -13,7 +13,19 @@ const createOverview = async (req, res) => {
 
 
         // get shop id belonging to this merchant
-        let { _id: shopId } = await ShopModel.findOne({ merchantId: req.user._id }).select('_Id');
+        let result = await ShopModel.findOne({ merchantId: req.user._id }).select('_id');
+        let shopId;
+        if (result) {
+            shopId = result._id;
+
+        } else {
+
+            return res.status(201).json({
+                status: "SUCCESS",
+                mssg: 'No shop found for the user',
+                data: overview
+            })
+        }
 
         // get account balance from merchants collection
         let balance = await ShopModel.findById({ _id: shopId }).select('walletBalance');
