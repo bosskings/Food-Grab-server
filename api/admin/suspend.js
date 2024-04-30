@@ -5,7 +5,7 @@ import UserModel from "../../models/User.js";
 const suspend = async (req, res) => {
 
     try {
-        const { userType, userId, action } = req.body
+        const { userType, id, action } = req.body
 
         // check user type
 
