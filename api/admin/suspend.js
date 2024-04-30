@@ -15,24 +15,39 @@ const suspend = async (req, res) => {
 
         if (userType == "USER") {
 
-            const user = await UserModel.findByIdAndUpdate(id, { isSuspended: true }, { new: true });
+            const user = await UserModel.findByIdAndUpdate(id, { isSuspended: action }, { new: true });
             if (!user) {
                 throw new Error('Could not find the user')
             }
 
+            return res.status(200).json({
+                status: "SUCCESS",
+                data: user
+            })
+
         } else if (userType == "MERCHANT") {
 
-            const merchant = await MerchantModel.findByIdAndUpdate(id, { isSuspended: true }, { new: true });
+            const merchant = await MerchantModel.findByIdAndUpdate(id, { isSuspended: action }, { new: true });
             if (!merchant) {
                 throw new Error('Could not find the Merchants')
             }
 
+            return res.status(200).json({
+                status: "SUCCESS",
+                data: merchant
+            })
+
         } else if (userType == "COURIER") {
 
-            const courier = await CourierModel.findByIdAndUpdate(id, { isSuspended: true }, { new: true });
+            const courier = await CourierModel.findByIdAndUpdate(id, { isSuspended: action }, { new: true });
             if (!courier) {
                 throw new Error('Could not find the Courier')
             }
+
+            return res.status(200).json({
+                status: "SUCCESS",
+                data: courier
+            })
 
         }
 
