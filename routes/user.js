@@ -2,14 +2,9 @@ import express from "express"
 import { signin, verifyCode } from "../api/user/signin.js";
 import signup from "../api/user/signup.js";
 import { requireAuth, secureRoutes } from "../middleware/requrieAuth.js";
-import {
-    getCuisines,
-    getSignleCousine,
-    placeOrders,
-    getShops,
-    getSingleShop,
-    viewOrders
-} from "../api/user/orderItems.js";
+import { placeOrders, viewOrders } from "../api/user/orderItems.js";
+import { getCuisines, getSingleCousine } from "../api/user/cuisines.js";
+import { getShops, getSingleShop } from "../api/user/shops.js";
 import { getAllUsers, getSingleUser } from "../api/user/displayUsers.js";
 import { sendMessage, getSentMessage } from "../api/user/customerService.js";
 
@@ -35,7 +30,7 @@ router.get("/allUsers", getAllUsers);
 //get single user
 router.get("/singleUser/:id", getSingleUser);
 
-// route to get restaurants and private chefs for user
+// route to search or get restaurants and private chefs for user
 router.get("/shops", getShops);
 
 // get single shop
@@ -45,7 +40,7 @@ router.get("/singleShop/:id", getSingleShop);
 router.get("/cuisines", getCuisines);
 
 // route to get a single cuisine
-router.get("/cuisines/:id", getSignleCousine);
+router.get("/cuisines/:id", getSingleCousine);
 
 // route to take users orders
 // process items from cart, store them in DB and show to Merchant

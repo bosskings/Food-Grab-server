@@ -1,15 +1,23 @@
 import mongoose from "mongoose";
 
 const UserSchema = new mongoose.Schema({
+
     fullname: {
         type: String,
         required: [true, "Fullname must be provided"]
     },
+
     email: {
         type: String,
         required: [true, "Email must be provided"]
 
     },
+
+    pictureAddress: {
+        type: String,
+        default: "https://food-grab-images.s3.amazonaws.com/users/userAvater.jpg",
+    },
+
     emailVerificationStatus: {
         type: String,
         default: "Not Verified"
