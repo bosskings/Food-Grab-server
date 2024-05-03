@@ -17,7 +17,7 @@ const getShops = async (req, res) => {
 
         } else if (search) {
 
-            const shops = await ShopModel.find({ shopName: { $regex: search, $options: 'i' } });
+            const shops = await ShopModel.find({ shopName: { $regex: search, $options: 'i' } }).populate('cuisines');
 
             if (!shops) {
                 throw new Error("No shops found, please check spelling and try again")

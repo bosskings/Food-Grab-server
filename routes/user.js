@@ -36,7 +36,7 @@ router.get("/shops", getShops);
 // get single shop
 router.get("/singleShop/:id", getSingleShop);
 
-// route to view all dished available 
+// route to search and view all dished available 
 router.get("/cuisines", getCuisines);
 
 // route to get a single cuisine

@@ -15,7 +15,7 @@ const getCuisines = async (req, res) => {
 
         } else if (search) {
 
-            const cuisines = await CuisineModel.find({}, "-__v").sort(search);
+            const cuisines = await CuisineModel.find({ name: { $regex: search, $options: 'i' } });
             return res.status(200).json({
                 status: "SUCCESS..",
                 data: cuisines
