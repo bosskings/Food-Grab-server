@@ -49,6 +49,8 @@ const suspend = async (req, res) => {
                 data: courier
             })
 
+        } else {
+            throw new Error('Unexpected user type')
         }
 
     } catch (error) {

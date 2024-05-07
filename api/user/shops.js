@@ -17,7 +17,7 @@ const getShops = async (req, res) => {
 
         } else if (search) {
 
-            const shops = await ShopModel.find({ shopName: { $regex: search, $options: 'i' } }).populate('cuisines');
+            const shops = await ShopModel.find({ shopName: { $regex: search, $options: 'i' } }).sort({ createdAt: -1 }).populate('cuisines');
 
             if (!shops) {
                 throw new Error("No shops found, please check spelling and try again")
@@ -40,7 +40,7 @@ const getShops = async (req, res) => {
     } catch (error) {
         return res.status(404).json({
             status: "FAILED",
-            data: "shops could not be fetched"
+            mssg: "shops could not be fetched"
         });
     }
 
@@ -50,13 +50,14 @@ const getShops = async (req, res) => {
 const getSingleShop = async (req, res) => {
 
     try {
-        const { id } = req.params;
 
+        const { id } = req.params;
         const shop = await ShopModel.findById(id).populate('cuisines').exec();
         return res.status(200).json({
             status: 'SUCCESS',
             data: shop
         });
+
 
     } catch (error) {
         return res.status(404).json({

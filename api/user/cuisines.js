@@ -42,7 +42,7 @@ const getCuisines = async (req, res) => {
 
 
 // get a single cuisine
-const getSingleCousine = async (req, res) => {
+const getSingleCuisine = async (req, res) => {
     // fetch a single item based on id
 
     try {
@@ -70,7 +70,40 @@ const getSingleCousine = async (req, res) => {
 };
 
 
+
+// seearch for for cuisines in a particular shop
+const searchCuisineInShop = async (req, res) => {
+
+    // collect shopId and search term from user
+
+    const { search, shopId } = req.query
+
+    try {
+
+        // search for cuisines with the provided shopId
+        let results = await CuisineModel.find({
+            name: { $regex: search, $options: 'i' }, // Case-insensitive search
+            shopId
+        });
+
+        if (results.length == 0) {
+            throw new Error("could not find any result")
+        }
+        return res.status(200).json({
+            status: "SUCCESS",
+            data: results
+        })
+    } catch (error) {
+        return res.status(500).json({
+            status: "FAILED",
+            mssg: "An error occored " + error.message
+        })
+    }
+}
+
+
 export {
     getCuisines,
-    getSingleCousine
+    getSingleCuisine,
+    searchCuisineInShop
 }

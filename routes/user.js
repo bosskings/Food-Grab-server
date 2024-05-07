@@ -3,7 +3,7 @@ import { signin, verifyCode } from "../api/user/signin.js";
 import signup from "../api/user/signup.js";
 import { requireAuth, secureRoutes } from "../middleware/requrieAuth.js";
 import { placeOrders, viewOrders } from "../api/user/orderItems.js";
-import { getCuisines, getSingleCousine } from "../api/user/cuisines.js";
+import { getCuisines, getSingleCuisine, searchCuisineInShop } from "../api/user/cuisines.js";
 import { getShops, getSingleShop } from "../api/user/shops.js";
 import { getAllUsers, getSingleUser } from "../api/user/displayUsers.js";
 import { sendMessage, getSentMessage } from "../api/user/customerService.js";
@@ -40,7 +40,10 @@ router.get("/singleShop/:id", getSingleShop);
 router.get("/cuisines", getCuisines);
 
 // route to get a single cuisine
-router.get("/cuisines/:id", getSingleCousine);
+router.get("/cuisines/:id", getSingleCuisine);
+
+// route to search for cusisines in a shop
+router.get("/searchCuisines", searchCuisineInShop)
 
 // route to take users orders
 // process items from cart, store them in DB and show to Merchant
