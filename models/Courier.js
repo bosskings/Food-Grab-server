@@ -1,7 +1,6 @@
 import mongoose from "mongoose";
 
 const ContactAddress = new mongoose.Schema({
-
     city: {
         type: String,
         required: true,
@@ -11,21 +10,17 @@ const ContactAddress = new mongoose.Schema({
         type: String,
         required: false,
         default: ""
-    }
-    ,
+    },
     street: {
         type: String,
         required: true,
         default: ""
-    }
-    ,
+    },
     number: {
         type: Number,
         required: true,
         default: ""
     }
-
-
 })
 
 

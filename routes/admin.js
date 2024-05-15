@@ -1,6 +1,6 @@
 import express from "express";
 import adminSignin from "../api/admin/signin.js";
-import { requireAuth } from "../middleware/requrieAuth.js";
+import { requireAuth, secureRoutes } from "../middleware/requrieAuth.js";
 import getTotals from "../api/admin/overview.js";
 import { approveMerchants, getMerchants, getUsers } from "../api/admin/approveMerchants.js";
 import suspend from "../api/admin/suspend.js";
@@ -13,7 +13,6 @@ const router = express.Router()
 
 // enable admin sigin
 router.post("/signin", adminSignin);
-
 
 // authenticate
 router.use(requireAuth);
@@ -34,11 +33,7 @@ router.get('/allMerchants', getMerchants)
 router.patch('/suspend', suspend)
 
 
-
-
-
-
-
+router.use(secureRoutes) //middleware to avoid nonexistent routes
 
 
 

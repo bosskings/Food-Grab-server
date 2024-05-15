@@ -20,7 +20,6 @@ router.post('/signin', merchantSignin);
 
 // authentication middleware for all routes excluding signup and signin
 router.use(requireAuth);
-// router.use(secureRoutes) //middleware to avoid nonexistent routes
 
 // route to enable user to register a shop
 router.post('/createShop', createShop);
@@ -46,6 +45,6 @@ router.patch('/updateStatus/:id', updateOrderStatus);
 // get recent transactions
 router.get('/transaction',);
 
-
+router.use(secureRoutes) //middleware to avoid nonexistent routes
 
 export default router;

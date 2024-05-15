@@ -109,10 +109,22 @@ const getOrders = async (req, res) => {
             }
 
         } else {
-            // if no ids provided in the url, 
-            // then we will provide all of them
+            // we will provide all of them from d user logged in
 
-            let orders = await OrdersModel.find({}, "-__v").sort({ date: -1 }).exec();
+            // get shopId from merchants
+            let shopId = req.user.shops;
+
+            //check if user has any shop
+            if (!shopId) {
+                throw new Error("Merchant doesn't have any shops");
+            }
+
+            let orders = await OrdersModel.findOne({ shops: shopId }, "-__v");
+
+            if (!orders) {
+                throw new Error("Merchant Shop doesn't have any orders yet")
+            }
+
             return res.status(200).json({
                 status: 'SUCCESS',
                 data: orders

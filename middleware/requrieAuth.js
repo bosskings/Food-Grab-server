@@ -20,7 +20,7 @@ const requireAuth = async (req, res, next) => {
 
         if (user == "user") {
             req.user = { type: "USER" };
-            req.user._id = (await UserModel.findById(_id, '_id'))._id;
+            req.user = (await UserModel.findById(_id));
             if (!req.user._id) {
                 throw new Error('Wrong token, please try to login again')
             }
@@ -28,7 +28,7 @@ const requireAuth = async (req, res, next) => {
 
         } else if (user == "merchant") {
             req.user = { type: "MERCHANT" };
-            req.user._id = (await MerchantModel.findById(_id, '_id'))._id;
+            req.user = (await MerchantModel.findById(_id));
             if (!req.user._id) {
                 throw new Error('Wrong token, please try to login again')
             }
@@ -66,8 +66,13 @@ const requireAuth = async (req, res, next) => {
 const secureRoutes = (req, res, next) => {
 
     const error = new Error(`Not found - ${req.originalUrl}`);
-    res.status(404).send(error);
-    next();
+    error.status = 404;
+
+    res.status(404).json({
+        status: "FAILED",
+        mssg: error.message
+    });
+    next(error);
 
 }
 

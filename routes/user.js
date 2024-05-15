@@ -21,8 +21,6 @@ router.post("/signin", signin);
 
 // authentication middleware for all routes excluding signup and signin
 router.use(requireAuth);
-// router.use(secureRoutes) //middleware to avoid nonexistent routes
-
 
 // get all the users
 router.get("/allUsers", getAllUsers);
@@ -57,5 +55,8 @@ router.post("/sendMessage", sendMessage);
 
 // get sent messages..
 router.get("/sendMessage", getSentMessage)
+
+router.use(secureRoutes) //middleware to avoid nonexistent routes
+
 
 export default router

@@ -17,7 +17,7 @@ const ShopSchema = new mongoose.Schema({
     },
     shopName: {
         type: String,
-        required: [true, "merchant id is needed"]
+        required: [true, "shop name is needed"]
 
     },
     description: {

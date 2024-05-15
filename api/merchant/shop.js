@@ -1,4 +1,6 @@
+import MerchantModel from "../../models/Merchant.js";
 import ShopModel from "../../models/Shop.js";
+import sendEmail from "../../utils/sendMail.js";
 
 const createShop = async (req, res) => {
     try {
@@ -25,15 +27,24 @@ const createShop = async (req, res) => {
 
         const result = await newShop.save();
         if (result) {
+
+            // update merchants to contain new shop Id.
+            let updatedMerchants = await MerchantModel.findOneAndUpdate({ _id: req.user._id }, { shops: result._id }, { new: true })
+
+
+            if (!updatedMerchants) {
+                throw new Error('Unexpected error occored, please try again')
+            }
+
+            // send email
+            sendEmail(updatedMerchants.email, ` Dear User, your Shop ${shopName} at FoodGrab.africa has been create`, "FoodGrab.africa");
+
             return res.status(201).json({
                 status: "SUCCESS",
                 data: result
             })
         } else {
-            return res.status(401).json({
-                status: "FAILED",
-                mssg: "Network error, could not create shop."
-            })
+            throw new Error("Network error, could not create shop.")
         }
 
     } catch (err) {
