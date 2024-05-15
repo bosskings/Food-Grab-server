@@ -5,6 +5,7 @@ import ShopModel from "../../models/Shop.js";
 
 const createCuisine = (req, res) => {
     try {
+
         const { shopId, name, price, description, thumbnail } = req.body;
         if (!name || !price || !description) {
             return res.status(400).json({
@@ -14,7 +15,7 @@ const createCuisine = (req, res) => {
         }
 
         let newCuisine = new CuisineModel({
-            shopId,
+            shopId: req.user.shopId,
             name,
             price,
             description,

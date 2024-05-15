@@ -29,7 +29,7 @@ const createShop = async (req, res) => {
         if (result) {
 
             // update merchants to contain new shop Id.
-            let updatedMerchants = await MerchantModel.findOneAndUpdate({ _id: req.user._id }, { shops: result._id }, { new: true })
+            let updatedMerchants = await MerchantModel.findOneAndUpdate({ _id: req.user._id }, { shopId: result._id }, { new: true })
 
 
             if (!updatedMerchants) {

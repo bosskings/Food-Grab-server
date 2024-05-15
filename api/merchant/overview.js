@@ -112,14 +112,14 @@ const getOrders = async (req, res) => {
             // we will provide all of them from d user logged in
 
             // get shopId from merchants
-            let shopId = req.user.shops;
+            let shopId = req.user.shopId;
 
             //check if user has any shop
             if (!shopId) {
                 throw new Error("Merchant doesn't have any shops");
             }
 
-            let orders = await OrdersModel.findOne({ shops: shopId }, "-__v");
+            let orders = await OrdersModel.findOne({ shopId }, "-__v");
 
             if (!orders) {
                 throw new Error("Merchant Shop doesn't have any orders yet")
