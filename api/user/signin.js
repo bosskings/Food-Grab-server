@@ -81,6 +81,9 @@ const signin = async (req, res) => {
 
                     // user exists, compare passwords
                     const hashedPassword = data.password;
+
+                    console.log(password, hashedPassword);
+
                     bcrypt.compare(password, hashedPassword).then((result) => {
                         if (result) {
 
@@ -102,7 +105,7 @@ const signin = async (req, res) => {
                     }).catch(err => {
                         res.status(500).json({
                             status: "FAILED",
-                            mssg: "Sever failed trying to compare passwords"
+                            mssg: "Sever failed to compare passwords, please confirm password"
                         })
                     })
                 } else {

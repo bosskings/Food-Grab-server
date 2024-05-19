@@ -47,45 +47,38 @@ const AccountInformation = new mongoose.Schema({
 const CourierSchema = new mongoose.Schema({
     firstName: {
         type: String,
-        required: true,
-        default: ""
+        required: true
     },
 
     lastName: {
         type: String,
         required: true,
-        default: ""
     },
 
     DOB: {
         type: Date,
-        required: true,
-        default: ""
+        required: true
     },
 
     NIN: {
         type: String,
         unique: true,
-        required: true,
-        default: ""
+        required: true
     },
 
     phoneNumber: {
         type: String,
         required: [true, "Phone number is required"],
-        default: ""
     },
 
     email: {
         type: String,
-        required: [true, 'Please provide an email address'],
-        default: ""
+        required: [true, 'Please provide an email address']
     },
 
     password: {
         type: String,
-        require: [true, "Password is required"],
-        default: ""
+        require: [true, "Password is required"]
     },
 
     vehicleType: {
@@ -105,6 +98,16 @@ const CourierSchema = new mongoose.Schema({
         required: true
     },
 
+    driversLicensePhoto: {
+        type: String,
+        required: [true, 'Drivers license must be provded']
+    },
+
+    vehicleParticularsPhoto: {
+        type: String,
+        required: [true, 'A picture of your vehicl particulars are needed']
+    },
+
     address: {
         type: ContactAddress
     },
@@ -112,12 +115,6 @@ const CourierSchema = new mongoose.Schema({
     walletBalance: {
         type: String,
         default: 0.00,
-    },
-
-    rides: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'orders',
-        default: ""
     },
 
     accountInfo: {

@@ -8,7 +8,7 @@ const merchantSignup = async (req, res) => {
     // get post/user input
 
 
-    let { email, password, firstname, lastname, phone, NIN } = req.body;
+    let { email, password, firstname, lastname, phone, NIN, passport } = req.body;
     firstname = firstname.trim();
     lastname = lastname.trim();
     email = email.trim();

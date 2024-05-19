@@ -64,16 +64,12 @@ const requireAuth = async (req, res, next) => {
 
 // for wrong pages
 const secureRoutes = (req, res, next) => {
-
-    const error = new Error(`Not found - ${req.originalUrl}`);
-    error.status = 404;
-
     res.status(404).json({
         status: "FAILED",
-        mssg: error.message
+        mssg: "Route not found"
     });
-    next(error);
 
+    next()
 }
 
 

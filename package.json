@@ -25,6 +25,7 @@
     "nodemailer": "^6.9.12",
     "nodemon": "^3.0.3",
     "random-js": "^2.1.0",
+    "sharp": "^0.33.4",
     "uuid": "^9.0.1",
     "validator": "^13.11.0"
   }
