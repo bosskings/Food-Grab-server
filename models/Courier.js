@@ -16,8 +16,8 @@ const ContactAddress = new mongoose.Schema({
         required: true,
         default: ""
     },
-    number: {
-        type: Number,
+    houseNumber: {
+        type: String,
         required: true,
         default: ""
     }
@@ -89,23 +89,26 @@ const CourierSchema = new mongoose.Schema({
 
     gender: {
         type: String,
-        enum: ['male', 'female'],
+        enum: ['MALE', 'FEMALE'],
         required: true
     },
 
     passportPhoto: {
         type: String,
-        required: true
+        // required: true
+        default: ""
     },
 
     driversLicensePhoto: {
         type: String,
-        required: [true, 'Drivers license must be provded']
+        // required: [true, 'Drivers license must be provded']
+        default: ""
     },
 
     vehicleParticularsPhoto: {
         type: String,
-        required: [true, 'A picture of your vehicl particulars are needed']
+        // required: [true, 'A picture of your vehicl particulars are needed']
+        default: ""
     },
 
     address: {
@@ -134,7 +137,7 @@ const CourierSchema = new mongoose.Schema({
     },
 
     orders: {
-        type: mongoose.Schema.Types.ObjectId,  //this will be the id of Order model
+        type: mongoose.Schema.Types.Mixed,  //this will be the id of Order model
         ref: 'Order',                     //the name of our model
         default: ""
     },

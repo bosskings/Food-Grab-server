@@ -9,7 +9,11 @@ const storage = multer.memoryStorage()
 const upload = multer({ storage: storage })
 
 // couriers signup
-router.post('/signup', upload.array([{ name: 'photo', maxCount: 1 }, { name: 'license', maxCount: 1 }, { name: 'particulars', maxCount: 1 }]), courierSignup);
+router.post('/signup', upload.fields([
+    { name: 'photo' },
+    { name: 'license' },
+    { name: 'particulars' }
+]), courierSignup);
 
 // authemticate couriers 
 router.use(requireAuth)

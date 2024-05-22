@@ -1,4 +1,5 @@
-import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
+import { S3Client, PutObjectCommand, GetObjectCommand } from "@aws-sdk/client-s3";
+import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import CourierModel from "../../models/Courier.js";
 
 const courierSignup = async (req, res) => {
@@ -13,56 +14,66 @@ const courierSignup = async (req, res) => {
             region: process.env.BUCKET_REGION
         });
 
-
-        res.json('file ---> ', req.file)
-        console.log('file ---> ', req);
-
-
-        return;
-
-        // get user input
+        // get user text input
         const {
             firstName, lastName, DOB, NIN,
             phoneNumber, email, password, vehicleType,
-            gender, photo, city, state, street, houseNumber
+            gender, address
         } = req.body
 
-        const { buffer } = req.file;
-        const { fieldname } = req.file;
 
-        let fileExtension = req.file.originalname.split('.')[1]; //get file extension
+        // get user file input
+        const { files } = req
 
-        // decide where to store the file on s3 bucket depending on user input
-        let s3Folder = "";
-        if (fieldname == "photo") {
-            s3Folder = "riders/photos/"
+        let filesToBeStored = {} // get a combination of all uploaded file names;
+        for (const file in files) {
 
-        } else if (fieldname == "license") {
-            s3Folder = "riders/license/"
+            const { buffer } = files[file][0];
+            const { fieldname } = files[file][0];
+            const { originalname } = files[file][0]
+            const { mimetype } = files[file][0]
 
-        } else {
-            s3Folder = "riders/particulars/"
+            let fileExtension = originalname.split('.')[1]; //get file extension
+            let randomStr = Date.parse(new Date) //just creates a random string for file names
+
+            // decide where to store the file on s3 bucket depending on user input
+            let s3Folder = "";
+            if (fieldname == "photo") {
+                s3Folder = "riders/photos/"
+                filesToBeStored.passportPhoto = s3Folder + randomStr + '.' + fileExtension
+
+            } else if (fieldname == "license") {
+                s3Folder = "riders/license/"
+                filesToBeStored.driversLicensePhoto = s3Folder + randomStr + '.' + fileExtension
+
+            } else {
+                s3Folder = "riders/particulars/"
+                filesToBeStored.vehicleParticularsPhoto = s3Folder + randomStr + '.' + fileExtension
+
+            }
+
+            // send image buffer to aws s3
+            const command = new PutObjectCommand({
+                Bucket: process.env.BUCKET_NAME,
+                Key: s3Folder + randomStr + '.' + fileExtension,
+                Body: buffer,
+                ContentType: mimetype
+            });
+
+            await s3.send(command) //send values to s3
+
         }
 
+        // generate url for every image and store it
+        // const command = new GetObjectCommand({
+        //     Bucket: process.env.BUCKET_NAME,
+        //     Key: filesToBeStored.passportPhoto,
 
-        let randomStr = Date.parse(new Date) //just creates a random string for file names
-
-        // send image buffer to aws s3
-        const command = new PutObjectCommand({
-            Bucket: process.env.BUCKET_NAME,
-            Key: s3Folder + randomStr + '.' + fileExtension,
-            Body: buffer,
-            ContentType: req.file.mimetype
-        });
-
-        console.log(s3Folder, randomStr + '.' + fileExtension);
-
-        await s3.send(command) //send values to s3
-
+        // });
+        // const url = await getSignedUrl(s3, command, { expiresIn: 3600 });
 
         // store in mongodb 
-
-        const ridersRetails = new CourierModel({
+        const ridersDetails = new CourierModel({
             firstName,
             lastName,
             DOB,
@@ -72,14 +83,31 @@ const courierSignup = async (req, res) => {
             password,
             vehicleType,
             gender,
-            passportPhoto: buffer,
+            address,
+            passportPhoto: filesToBeStored.passportPhoto,
+            driversLicensePhoto: filesToBeStored.driversLicensePhoto,
+            vehicleParticularsPhoto: filesToBeStored.vehicleParticularsPhoto
+        })
+
+        const data = await ridersDetails.save()
+
+        if (!data) {
+            throw new Error('form datas could not be saved, please reload and try again')
+        }
+
+
+        // send a response to the frontend
+        return res.status(201).json({
+            status: 'SUCCESS',
+            mssg: "Riders details saves successfully",
+            data
         })
 
 
     } catch (error) {
         return res.status(400).json({
             stauts: 'FAILED',
-            mssg: "An Error Occured " + error
+            mssg: error
         })
     }
 

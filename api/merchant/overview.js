@@ -134,7 +134,7 @@ const getOrders = async (req, res) => {
     } catch (error) {
         return res.status(400).json({
             status: "FAILED",
-            mssg: "An Error occurred" + error
+            mssg: error
         })
     }
 
