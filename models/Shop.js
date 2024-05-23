@@ -53,7 +53,7 @@ const ShopSchema = new mongoose.Schema({
     type: {
         type: String,   //either can be present or not
         enum: {
-            values: ['RESTAURANT', 'CHEFF'],
+            values: ['RESTAURANT', 'CHEF'],
             message: "invalid selection"
         },
         default: "RESTAUTANT"
