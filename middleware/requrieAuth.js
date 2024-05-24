@@ -27,8 +27,9 @@ const requireAuth = async (req, res, next) => {
             next();
 
         } else if (user == "merchant") {
-            req.user = { type: "MERCHANT" };
             req.user = (await MerchantModel.findById(_id));
+            req.user.userType = "MERCHANT";
+
             if (!req.user._id) {
                 throw new Error('Wrong token, please try to login again')
             }

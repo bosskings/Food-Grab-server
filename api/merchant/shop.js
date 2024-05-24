@@ -57,4 +57,38 @@ const createShop = async (req, res) => {
 
 };
 
-export default createShop;
+
+// function to display shop
+const getShop = async (req, res) => {
+    try {
+
+        // use the users logged in ID to search for shops matching that ID
+        let { userType } = req.user;
+        const merchantId = req.user._id;
+
+        if (userType != "MERCHANT") {
+            throw new Error("Wrong Access, please login as a merchant")
+        }
+
+        // find shop with ID gotten
+        let shop = await ShopModel.findOne({ merchantId }).populate('cuisines').exec();
+        if (!shop) {
+            throw new Error("No shop was found for this merchant")
+        }
+
+        return res.status(200).json({
+            status: "SUCCESS",
+            data: shop
+        })
+
+    } catch (error) {
+
+        res.status(500).json({
+            status: "FAILED",
+            mssg: "An error occored, " + error
+        })
+
+    }
+}
+
+export { createShop, getShop };

@@ -18,7 +18,7 @@ const courierSignup = async (req, res) => {
         const {
             firstName, lastName, DOB, NIN,
             phoneNumber, email, password, vehicleType,
-            gender, address
+            gender, state, street, city, houseNumber
         } = req.body
 
 
@@ -83,7 +83,12 @@ const courierSignup = async (req, res) => {
             password,
             vehicleType,
             gender,
-            address,
+            address: {
+                state,
+                street,
+                city,
+                houseNumber
+            },
             passportPhoto: filesToBeStored.passportPhoto,
             driversLicensePhoto: filesToBeStored.driversLicensePhoto,
             vehicleParticularsPhoto: filesToBeStored.vehicleParticularsPhoto
@@ -107,7 +112,7 @@ const courierSignup = async (req, res) => {
     } catch (error) {
         return res.status(400).json({
             stauts: 'FAILED',
-            mssg: error
+            mssg: 'error occored' + error
         })
     }
 

@@ -63,7 +63,7 @@ const CourierSchema = new mongoose.Schema({
     NIN: {
         type: String,
         unique: true,
-        required: true
+        required: [true, 'This NIN is already in use by another Rider']
     },
 
     phoneNumber: {
@@ -84,13 +84,14 @@ const CourierSchema = new mongoose.Schema({
     vehicleType: {
         type: String,
         enum: ['CAR', 'MOTORCYCLE', 'BICYCLE'],
-        default: ""
+        require: [true, "Please select a valid vehicle type"]
+
     },
 
     gender: {
         type: String,
         enum: ['MALE', 'FEMALE'],
-        required: true
+        required: [true, 'Please select a valid gender']
     },
 
     passportPhoto: {
