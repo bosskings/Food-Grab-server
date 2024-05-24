@@ -1,6 +1,6 @@
 import express from "express";
 import multer from 'multer';
-import courierSignup from "../api/courier/signup.js";
+import { courierSignup, sendVerificationEmail } from "../api/courier/signup.js";
 import { requireAuth, secureRoutes } from "../middleware/requrieAuth.js";
 
 const router = express.Router();
@@ -14,6 +14,10 @@ router.post('/signup', upload.fields([
     { name: 'license' },
     { name: 'particulars' }
 ]), courierSignup);
+
+// route to verify user email
+router.post('/verifyEmail', sendVerificationEmail)
+
 
 // authemticate couriers 
 router.use(requireAuth)

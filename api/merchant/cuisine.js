@@ -3,10 +3,13 @@ import ShopModel from "../../models/Shop.js";
 
 
 
-const createCuisine = (req, res) => {
+const createCuisine = async (req, res) => {
+
+
     try {
 
-        const { shopId, name, price, description, thumbnail } = req.body;
+        const { name, price, description, thumbnail } = req.body;
+        const shopId = req.user.shopId
         if (!name || !price || !description) {
             return res.status(400).json({
                 status: "FAILED",
@@ -15,7 +18,7 @@ const createCuisine = (req, res) => {
         }
 
         let newCuisine = new CuisineModel({
-            shopId: req.user.shopId,
+            shopId,
             name,
             price,
             description,
@@ -23,6 +26,8 @@ const createCuisine = (req, res) => {
         });
 
         newCuisine.save().then((result) => {
+
+
             // Get referenced shop and update the ID of this cuisine in the shop
             ShopModel.findById(shopId).then((shop) => {
                 shop.cuisines.push(result._id);
@@ -35,25 +40,26 @@ const createCuisine = (req, res) => {
             }).catch((err) => {
                 res.status(500).json({
                     status: "FAILED",
-                    message: "Could not save cuisine to a shop: " + err
+                    mssg: "Could not save cuisine to a shop: " + err
                 });
             });
         }).catch((err) => {
             res.status(500).json({
                 status: "FAILED",
-                message: "Could not save cuisine: " + err
+                mssg: "Could not save cuisine: " + err
             });
         });
 
     } catch (err) {
         res.status(500).json({
             status: "FAILED",
-            message: 'Unexpected error, please try again: ' + err
+            mssg: 'Unexpected error, please try again: ' + err
         });
     }
 };
 
 
+// function to update cuisine
 const updateCuisine = async (req, res) => {
 
     try {

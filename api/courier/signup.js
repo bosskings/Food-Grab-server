@@ -118,4 +118,23 @@ const courierSignup = async (req, res) => {
 
 }
 
-export default courierSignup;
+
+// function to send verification email to courier
+const sendVerificationEmail = async (req, res) => {
+
+    try {
+        const { email } = req.body;
+        const { token } = req.body
+
+    } catch (error) {
+        return res.status(401).json({
+            status: "FAILED",
+            mssg: "error occured, " + error
+        })
+    }
+
+}
+
+
+
+export { sendVerificationEmail, courierSignup };

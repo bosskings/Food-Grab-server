@@ -1,6 +1,7 @@
 import Jwt from "jsonwebtoken";
 import UserModel from "../models/User.js";
 import MerchantModel from "../models/Merchant.js";
+import CourierModel from "../models/Courier.js";
 
 const requireAuth = async (req, res, next) => {
     // verify authentication
@@ -37,7 +38,12 @@ const requireAuth = async (req, res, next) => {
 
         } else if (user == 'courier') {
             // create one for courier
-            console.log('courier logged in');
+            req.user = (await CourierModel.findById(_id));
+            req.user.userType = "COURIER"
+
+            if (!req.user._id) {
+                throw new Error('Wrong token, please try to login again')
+            }
             next();
 
         } else if (user == "admin") {
