@@ -67,7 +67,7 @@ const getCuisines = async (req, res) => {
         const shopId = req.user.shopId
 
         // get all cuisines with shop Id from the merchant
-        const cuisines = await CuisineModel.findById({ shopId });
+        const cuisines = await CuisineModel.find({ shopId });
 
         if (!cuisines) {
             throw new Error('No cuisines found for this merchants');
