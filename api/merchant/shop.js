@@ -91,4 +91,31 @@ const getShop = async (req, res) => {
     }
 }
 
-export { createShop, getShop };
+
+// create function to update shop details like shop status e.t.c
+const updateShop = async (req, res) => {
+
+    try {
+        // get the shop ID from the loggedin user details
+        const shopId = req.user.shopId;
+
+        if (!shopId) {
+            throw new Error("No shop was found for this merchant")
+        }
+
+        // update shopModel with user input
+        const result = await ShopModel.findByIdAndUpdate(shopId, req.body, { new: true })
+
+        res.status(200).json({
+            status: "SUCCESS",
+            data: result
+        })
+
+    } catch (error) {
+        res.status(200).json({
+            status: "FAILED",
+            mssg: "an error occured " + error
+        })
+    }
+}
+export { createShop, getShop, updateShop };

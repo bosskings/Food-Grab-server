@@ -58,6 +58,35 @@ const createCuisine = async (req, res) => {
     }
 };
 
+// function to get all cuisines by logged in merchant
+const getCuisines = async (req, res) => {
+
+    try {
+
+        //get ID or logged in merchant
+        const shopId = req.user.shopId
+
+        // get all cuisines with shop Id from the merchant
+        const cuisines = await CuisineModel.findById({ shopId });
+
+        if (!cuisines) {
+            throw new Error('No cuisines found for this merchants');
+        }
+
+        res.status(200).json({
+            status: "SUCCESS",
+            data: cuisines
+        })
+
+    } catch (error) {
+
+        res.status(400).json({
+            status: "FAILED",
+            mssg: "an error occured " + error
+        })
+    }
+
+}
 
 // function to update cuisine
 const updateCuisine = async (req, res) => {
@@ -70,11 +99,7 @@ const updateCuisine = async (req, res) => {
         let update = await CuisineModel.findByIdAndUpdate(id, req.body, { new: true });
 
         if (!update) { //incase of errors
-
-            res.status(500).json({
-                status: "FAILED",
-                mssg: "Cuisine not found"
-            })
+            throw new Error("Cuisine not found");
         }
 
         res.status(200).json({
@@ -123,6 +148,7 @@ const deleteCuisine = async (req, res) => {
 
 export {
     createCuisine,
+    getCuisines,
     updateCuisine,
     deleteCuisine
 };

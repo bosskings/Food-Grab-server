@@ -1,9 +1,9 @@
 import express from "express";
 import merchantSignin from "../api/merchant/signin.js";
 import { merchantSignup, verifyCode } from "../api/merchant/signup.js";
-import { createShop, getShop } from "../api/merchant/shop.js";
+import { createShop, getShop, updateShop } from "../api/merchant/shop.js";
 import { requireAuth, secureRoutes } from "../middleware/requrieAuth.js"; //for authentication
-import { createCuisine, deleteCuisine, updateCuisine } from "../api/merchant/cuisine.js";
+import { createCuisine, deleteCuisine, getCuisines, updateCuisine } from "../api/merchant/cuisine.js";
 import { createOverview, getOrders, updateOrderStatus } from "../api/merchant/overview.js";
 
 
@@ -24,11 +24,17 @@ router.use(requireAuth);
 // route to enable user to register a shop
 router.post('/createShop', createShop);
 
-// route to view shop
+// route to update shop details
+router.put('/updateShop', updateShop);
+
+// route to view shop created by a particular merchant
 router.get('/getShop', getShop)
 
-// route to enable merchants shops create cuisin
+// route to enable merchants shops create cuisine
 router.post('/createCuisine', createCuisine);
+
+// route to get all cuisines made by aa certain merchant
+router.get('/getCuisine', getCuisines);
 
 // router to enable merchants update cuisines
 router.patch('/updateCuisine/:id', updateCuisine);

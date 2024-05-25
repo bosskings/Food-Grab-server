@@ -59,6 +59,15 @@ const ShopSchema = new mongoose.Schema({
         default: "RESTAUTANT"
     },
 
+    status: {
+        type: String,
+        enum: {
+            values: ['ACTIVE', 'INACTIVE'],
+            message: "Your selection for status is wrong."
+        },
+        default: "INACTIVE"
+    },
+
     cuisines: [
         {
             type: mongoose.Schema.Types.ObjectId,     //can contain multiple types like [String] or [{type : String}]
