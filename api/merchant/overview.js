@@ -40,7 +40,6 @@ const createOverview = async (req, res) => {
 
         // get totalOrders
         let orders = await OrdersModel.find({ shopId }).select();
-        console.log(orders);
         if (!orders) {
             throw new Error("No Orders found with ");
         } else {
@@ -69,7 +68,7 @@ const createOverview = async (req, res) => {
 
 
         // send back the data in a json format
-        return res.status(400).json({
+        return res.status(200).json({
             status: "SUCCESS",
             data: overview
         })
