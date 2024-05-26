@@ -94,6 +94,7 @@ const getOrders = async (req, res) => {
         // check if any ids were sent as url params
         // send a single order if soo
         const id = req.query.id
+
         if (id) {
             let order = await OrdersModel.findById(id);
 
@@ -118,9 +119,10 @@ const getOrders = async (req, res) => {
                 throw new Error("Merchant doesn't have any shops");
             }
 
-            let orders = await OrdersModel.findOne({ shopId }, "-__v");
+            let orders = await OrdersModel.find({ shopId }, "-__v");
 
-            if (!orders) {
+            if (!orders || orders.length < 1) {
+                console.log(orders.length);
                 throw new Error("Merchant Shop doesn't have any orders yet")
             }
 
@@ -133,7 +135,7 @@ const getOrders = async (req, res) => {
     } catch (error) {
         return res.status(400).json({
             status: "FAILED",
-            mssg: error
+            mssg: "error occured: " + error
         })
     }
 
