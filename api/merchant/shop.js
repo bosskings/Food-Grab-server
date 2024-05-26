@@ -69,11 +69,11 @@ const createShop = async (req, res) => {
             // decide where to store the file on s3 bucket depending on user input
             let s3Folder = "";
             if (fieldname == "logo") {
-                s3Folder = "shop/logo/"
+                s3Folder = "shops/logo/"
                 filesToBeStored.logo = s3Folder + randomStr + '.' + fileExtension
 
             } else if (fieldname == "backDrop") {
-                s3Folder = "shop/backDrop/"
+                s3Folder = "shops/backDrop/"
                 filesToBeStored.backDrop = s3Folder + randomStr + '.' + fileExtension
 
             }
