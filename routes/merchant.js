@@ -1,4 +1,5 @@
 import express from "express";
+import multer from 'multer';
 import merchantSignin from "../api/merchant/signin.js";
 import { merchantSignup, verifyCode } from "../api/merchant/signup.js";
 import { createShop, getShop, updateShop } from "../api/merchant/shop.js";
@@ -8,6 +9,11 @@ import { createOverview, getOrders, updateOrderStatus } from "../api/merchant/ov
 
 
 const router = express.Router();
+
+// to get uploade files
+const storage = multer.memoryStorage()
+const upload = multer({ storage: storage })
+
 
 // enable merchants signup
 router.post('/signup', merchantSignup);
@@ -22,7 +28,10 @@ router.post('/signin', merchantSignin);
 router.use(requireAuth);
 
 // route to enable user to register a shop
-router.post('/createShop', createShop);
+router.post('/createShop', upload.fields([
+    { name: 'logo' },
+    { name: 'backDrop' }
+]), createShop);
 
 // route to update shop details
 router.put('/updateShop', updateShop);

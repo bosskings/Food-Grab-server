@@ -1,6 +1,34 @@
 import MerchantModel from "../../models/Merchant.js";
 import ShopModel from "../../models/Shop.js";
 import sendEmail from "../../utils/sendMail.js";
+import { S3Client, PutObjectCommand, GetObjectCommand } from "@aws-sdk/client-s3";
+import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
+
+
+// Function to convert AWS S3 photo object names to URLs
+const s3PhotoUrl = async (photo) => {
+    // Set up S3 bucket
+    const s3 = new S3Client({
+        credentials: {
+            accessKeyId: process.env.ACCESS_KEY,
+            secretAccessKey: process.env.SECRET_KEY
+        },
+        region: process.env.BUCKET_REGION
+    });
+
+    // Generate URL for the image
+    const command = new GetObjectCommand({
+        Bucket: process.env.BUCKET_NAME,
+        Key: photo,
+    });
+
+    try {
+        const url = await getSignedUrl(s3, command, { expiresIn: 604800 });
+        return url;
+    } catch (error) {
+        return "Error generating signed URL:" + error;
+    }
+}
 
 const createShop = async (req, res) => {
     try {
@@ -10,19 +38,73 @@ const createShop = async (req, res) => {
         const existing_shop = await ShopModel.findOne({ merchantId: req.user._id });
         if (existing_shop) throw new Error("You have already created a shop.");
 
+        // get user input
+        const { shopName, street, city, state, houseNumber, description, type } = req.body;
 
-        const { shopName, address, description, type, logo, backdropPic } = req.body;
+
+        // set up s3 bucket
+        const s3 = new S3Client({
+            credentials: {
+                accessKeyId: process.env.ACCESS_KEY,
+                secretAccessKey: process.env.SECRET_KEY
+            },
+            region: process.env.BUCKET_REGION
+        });
+
+
+        const { files } = req
+
+        let filesToBeStored = {} // get a combination of all uploaded file names;
+        for (const file in files) {
+
+            const { buffer } = files[file][0];
+            const { fieldname } = files[file][0];
+            const { originalname } = files[file][0];
+            const { mimetype } = files[file][0];
+
+            let fileExtension = originalname.split('.')[1]; //get file extension
+            let randomStr = Date.parse(new Date) //just creates a random string for file names
+
+
+            // decide where to store the file on s3 bucket depending on user input
+            let s3Folder = "";
+            if (fieldname == "logo") {
+                s3Folder = "shop/logo/"
+                filesToBeStored.logo = s3Folder + randomStr + '.' + fileExtension
+
+            } else if (fieldname == "backDrop") {
+                s3Folder = "shop/backDrop/"
+                filesToBeStored.backDrop = s3Folder + randomStr + '.' + fileExtension
+
+            }
+
+            // send image buffer to aws s3
+            const command = new PutObjectCommand({
+                Bucket: process.env.BUCKET_NAME,
+                Key: s3Folder + randomStr + '.' + fileExtension,
+                Body: buffer,
+                ContentType: mimetype
+            });
+
+            await s3.send(command) //send values to s3
+        }
+
 
         const newShop = await ShopModel({
 
             merchantId: req.user._id, // hardcoded for now as we don't
             shopName,
-            address,
+            address: {
+                street,
+                city,
+                state,
+                houseNumber
+            },
             description,
             approvalStatus: "PENDING",
             type,
-            logo,
-            backdropPic
+            logo: filesToBeStored.logo,
+            backdropPic: filesToBeStored.backDrop
         });
 
         const result = await newShop.save();
@@ -75,6 +157,10 @@ const getShop = async (req, res) => {
         if (!shop) {
             throw new Error("No shop was found for this merchant")
         }
+
+        // convert picture names to s3 object urls
+        shop.logo = await s3PhotoUrl(shop.logo);
+        shop.backdropPic = await s3PhotoUrl(shop.backdropPic);
 
         return res.status(200).json({
             status: "SUCCESS",
