@@ -29,11 +29,12 @@ const ShopSchema = new mongoose.Schema({
     },
     logo: {
         type: String,
-        default: "https://food-grab-images.s3.amazonaws.com/shops/shop.jpg"
+        required: [true, 'shop logo is needed']
     },
     backdropPic: {
         type: String,
-        default: ""
+        required: [true, 'shop cover image is needed']
+
     },
     rating: {
         type: Number,
