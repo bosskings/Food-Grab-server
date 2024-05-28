@@ -38,7 +38,7 @@ const CuisinesSchema = new mongoose.Schema({
 
     thumbnail: {
         type: String,
-        default: ""
+        requried: [true, "Cuisine thumbnail is needed"]
     }
 
 });

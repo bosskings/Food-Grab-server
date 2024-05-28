@@ -40,7 +40,7 @@ router.put('/updateShop', updateShop);
 router.get('/getShop', getShop)
 
 // route to enable merchants shops create cuisine
-router.post('/createCuisine', createCuisine);
+router.post('/createCuisine', upload.single('thumbnail'), createCuisine);
 
 // route to get all cuisines made by aa certain merchant
 router.get('/getCuisine', getCuisines);

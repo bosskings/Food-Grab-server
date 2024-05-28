@@ -30,17 +30,21 @@ const s3PhotoUrl = async (photo) => {
     }
 }
 
+
+// function to create a shop
+
 const createShop = async (req, res) => {
     try {
         // console.log(req.user._id);
 
         // check if a shop  already exists for the user
         const existing_shop = await ShopModel.findOne({ merchantId: req.user._id });
-        if (existing_shop) throw new Error("You have already created a shop.");
+        if (existing_shop) {
+            throw new Error("You have already created a shop.");
+        }
 
         // get user input
         const { shopName, street, city, state, houseNumber, description, type } = req.body;
-
 
         // set up s3 bucket
         const s3 = new S3Client({
@@ -62,7 +66,13 @@ const createShop = async (req, res) => {
             const { originalname } = files[file][0];
             const { mimetype } = files[file][0];
 
-            let fileExtension = originalname.split('.')[1]; //get file extension
+            let fileExtension = originalname.slice((originalname.lastIndexOf(".") - 1 >>> 0) + 2).toLowerCase(); //get file extension
+
+            // make sure file extension is for picture file
+            if (fileExtension !== 'jpg' && fileExtension !== 'png' && fileExtension !== 'jpeg', fileExtension !== 'gif') {
+                throw new Error("Only jpg, png, jpeg picture files allowed")
+            }
+
             let randomStr = Date.parse(new Date) //just creates a random string for file names
 
 
