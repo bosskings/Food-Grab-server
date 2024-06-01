@@ -68,6 +68,11 @@ const getShops = async (req, res) => {
                     shops[key].logo = await s3PhotoUrl(value.logo);
                     shops[key].backdropPic = await s3PhotoUrl(value.backdropPic);
 
+
+                    for (const [key_, value_] of Object.entries(shops[key].cuisines)) {
+                        shops[key].cuisines[key_].thumbnail = await s3PhotoUrl(value_.thumbnail)
+                    }
+
                 }
             }
 
