@@ -143,7 +143,7 @@ const getOrders = async (req, res) => {
 
 
 
-// create function to enable merchants shops update orderstatus
+// create function to enable merchants update shops orderstatus
 const updateOrderStatus = async (req, res) => {
     try {
         const id = req.params.id;
@@ -161,10 +161,16 @@ const updateOrderStatus = async (req, res) => {
             // send email notification when an order is delivered or cancelled
             // first get users email address with the users id
 
-            let userEmailAddr = await UserModel.findOne({ _id: order.userId }, "email").exec();
-            userEmailAddr = userEmailAddr.email;
+            let user = await UserModel.findOne({ _id: order.userId }, "email")
+            if (!user) {
+                // Handle the case where no user was found with the given _id
+                throw new Error("User That own this order was not found.")
+            } else {
 
-            sendEmail(userEmailAddr, ` Dear User, your order from FoodGrab.africa is ${order.requestStatus} `, "Your Order From FoodGrab.africa");
+                userEmailAddr = user.email;
+
+                sendEmail(userEmailAddr, ` Dear User, your order from FoodGrab.africa is ${order.requestStatus} `, "Your Order From FoodGrab.africa");
+            }
 
             return res.status(200).json({
                 status: "SUCCESS",
