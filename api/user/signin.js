@@ -82,7 +82,7 @@ const signin = async (req, res) => {
                     // user exists, compare passwords
                     const hashedPassword = data.password;
 
-                    console.log(password, hashedPassword);
+                    // console.log(password, hashedPassword);
 
                     bcrypt.compare(password, hashedPassword).then((result) => {
                         if (result) {

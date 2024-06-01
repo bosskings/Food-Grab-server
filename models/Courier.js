@@ -81,6 +81,11 @@ const CourierSchema = new mongoose.Schema({
         require: [true, "Password is required"]
     },
 
+    emailVerificationStatus: {
+        type: String,
+        default: ""
+    },
+
     vehicleType: {
         type: String,
         enum: ['CAR', 'MOTORCYCLE', 'BICYCLE'],

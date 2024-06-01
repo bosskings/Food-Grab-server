@@ -136,7 +136,6 @@ const getCuisines = async (req, res) => {
 
         // inject the s3 url into all cuisines gotten from mongodb
         for (let index = 0; index < cuisines.length; index++) {
-
             cuisines[index].thumbnail = await s3PhotoUrl(cuisines[index].thumbnail);
         }
 

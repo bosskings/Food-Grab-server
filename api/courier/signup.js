@@ -1,10 +1,14 @@
 import { S3Client, PutObjectCommand, GetObjectCommand } from "@aws-sdk/client-s3";
-// import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import CourierModel from "../../models/Courier.js";
+import sendEmail from "../../utils/sendMail.js";
+import bcrypt from "bcrypt"
 
+
+// function to held riders signup
 const courierSignup = async (req, res) => {
 
     try {
+
         // set up s3 bucket
         const s3 = new S3Client({
             credentials: {
@@ -64,13 +68,21 @@ const courierSignup = async (req, res) => {
 
         }
 
-        // generate url for every image and store it
-        // const command = new GetObjectCommand({
-        //     Bucket: process.env.BUCKET_NAME,
-        //     Key: filesToBeStored.passportPhoto,
+        // encrypt password
+        const salt = await bcrypt.genSalt(10);
+        const hashedPass = await bcrypt.hash(password, salt);
 
-        // });
-        // const url = await getSignedUrl(s3, command, { expiresIn: 3600 });
+
+        // generate random value for email
+        let randomValue = Math.floor(1000 + Math.random() * 9000).toString();
+        const salt_ = await bcrypt.genSalt(10);
+        let emailVerificationStatus = await bcrypt.hash(randomValue, salt_);
+
+        let sentEmail = await sendEmail(email, randomValue, "ACCOUNT VERIFICATION")
+
+        if (!sentEmail) {
+            throw new Error('email could not be sent, please reload and try again')
+        }
 
         // store in mongodb 
         const ridersDetails = new CourierModel({
@@ -80,7 +92,8 @@ const courierSignup = async (req, res) => {
             NIN,
             phoneNumber,
             email,
-            password,
+            emailVerificationStatus,
+            hashedPass,
             vehicleType,
             gender,
             address: {
@@ -94,12 +107,12 @@ const courierSignup = async (req, res) => {
             vehicleParticularsPhoto: filesToBeStored.vehicleParticularsPhoto
         })
 
+
         const data = await ridersDetails.save()
 
         if (!data) {
             throw new Error('form datas could not be saved, please reload and try again')
         }
-
 
         // send a response to the frontend
         return res.status(201).json({
@@ -120,21 +133,43 @@ const courierSignup = async (req, res) => {
 
 
 // function to send verification email to courier
-const sendVerificationEmail = async (req, res) => {
-
+const verifyEmail = async (req, res) => {
     try {
-        const { email } = req.body;
-        const { token } = req.body
+        // get code and email from form body
+        const { email, token } = req.body
+
+        // get token from db to see if its matches current user input
+        const user = await CourierModel.findOne({ email })
+        if (!user) {
+            throw new Error('No user with email ' + email);
+        }
+
+        // compare tokens
+        let isMatch = await bcrypt.compare(token, user.emailVerificationStatus)
+        if (!isMatch) {
+            throw new Error('Invalid token')
+        }
+
+        // update user email verification status to true
+        const result = await CourierModel.findOneAndUpdate({ email, emailVerificationStatus: "VERIFIED" }, { new: true });
+        if (!result) {
+            throw new Error('Email verification failed, please try again')
+        }
+
+        return res.status(201).json({
+            status: "SUCCESS",
+            data: result
+
+        })
 
     } catch (error) {
-        return res.status(401).json({
-            status: "FAILED",
-            mssg: "error occured, " + error
+        return res.status(400).json({
+            stauts: "FAILED",
+            mssg: "error occured " + error
         })
     }
-
 }
 
 
 
-export { sendVerificationEmail, courierSignup };
+export { courierSignup, verifyEmail };
