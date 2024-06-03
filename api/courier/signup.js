@@ -78,6 +78,7 @@ const courierSignup = async (req, res) => {
         const salt_ = await bcrypt.genSalt(10);
         let emailVerificationStatus = await bcrypt.hash(randomValue, salt_);
 
+        // send email containing 4 digit code
         let sentEmail = await sendEmail(email, randomValue, "ACCOUNT VERIFICATION")
 
         if (!sentEmail) {
@@ -92,10 +93,10 @@ const courierSignup = async (req, res) => {
             NIN,
             phoneNumber,
             email,
-            emailVerificationStatus,
-            hashedPass,
+            password: hashedPass,
             vehicleType,
             gender,
+            emailVerificationStatus,
             address: {
                 state,
                 street,
@@ -151,13 +152,14 @@ const verifyEmail = async (req, res) => {
         }
 
         // update user email verification status to true
-        const result = await CourierModel.findOneAndUpdate({ email, emailVerificationStatus: "VERIFIED" }, { new: true });
+        const result = await CourierModel.findOneAndUpdate({ email }, { emailVerificationStatus: "VERIFIED" }, { new: true });
         if (!result) {
             throw new Error('Email verification failed, please try again')
         }
 
         return res.status(201).json({
             status: "SUCCESS",
+            mssg: "email verified successfully!",
             data: result
 
         })
