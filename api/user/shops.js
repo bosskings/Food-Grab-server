@@ -104,6 +104,16 @@ const getSingleShop = async (req, res) => {
 
         const { id } = req.params;
         const shop = await ShopModel.findById(id).populate('cuisines').exec();
+
+
+        if (!shop) {
+            throw new Error('Shop with provied ID does not exists')
+        }
+
+        // convert picture names to s3 object urls
+        shop.logo = await s3PhotoUrl(shop.logo);
+        shop.backdropPic = await s3PhotoUrl(shop.backdropPic);
+
         return res.status(200).json({
             status: 'SUCCESS',
             data: shop
