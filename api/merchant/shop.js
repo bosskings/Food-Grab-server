@@ -34,9 +34,8 @@ const s3PhotoUrl = async (photo) => {
 // function to create a shop
 
 const createShop = async (req, res) => {
-    try {
-        // console.log(req.user._id);
 
+    try {
         // check if a shop  already exists for the user
         const existing_shop = await ShopModel.findOne({ merchantId: req.user._id });
         if (existing_shop) {
@@ -68,9 +67,12 @@ const createShop = async (req, res) => {
 
             let fileExtension = originalname.slice((originalname.lastIndexOf(".") - 1 >>> 0) + 2).toLowerCase(); //get file extension
 
+
+            console.log(fileExtension);
+
             // make sure file extension is for picture file
-            if (fileExtension !== 'jpg' && fileExtension !== 'png' && fileExtension !== 'jpeg', fileExtension !== 'gif') {
-                throw new Error("Only jpg, png, jpeg picture files allowed")
+            if (fileExtension !== 'jpg' && fileExtension !== 'png' && fileExtension !== 'jpeg' && fileExtension !== 'gif') {
+                throw new Error("Only  jpg, png, jpeg and gif picture files allowed")
             }
 
             let randomStr = Date.parse(new Date) //just creates a random string for file names

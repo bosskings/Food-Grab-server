@@ -3,6 +3,7 @@ import multer from 'multer';
 import { courierSignup, verifyEmail } from "../api/courier/signup.js";
 import { requireAuth, secureRoutes } from "../middleware/requrieAuth.js";
 import courierSignin from "../api/courier/signin.js";
+import status from "../api/courier/riderStatus.js";
 
 const router = express.Router();
 
@@ -19,9 +20,11 @@ router.post('/signup', upload.fields([
 // route to verify email
 router.post('/verifyEmail', verifyEmail)
 
-
-// route  to signup
+// route to signup
 router.post('/signin', courierSignin)
+
+// route to update rider status (ONLINE or OFFLINE).
+router.patch('/updateStatus', status)
 
 
 // authenticate couriers 
