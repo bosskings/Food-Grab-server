@@ -114,6 +114,15 @@ const getSingleShop = async (req, res) => {
         shop.logo = await s3PhotoUrl(shop.logo);
         shop.backdropPic = await s3PhotoUrl(shop.backdropPic);
 
+
+        // loop into the cuisines in the shop and add the s3 url
+        for (const [index, value] of shop.cuisines.entries()) {
+            shop.cuisines[index].thumbnail = await s3PhotoUrl(value.thumbnail);
+
+        }
+
+
+
         return res.status(200).json({
             status: 'SUCCESS',
             data: shop

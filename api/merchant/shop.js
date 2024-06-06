@@ -131,7 +131,7 @@ const createShop = async (req, res) => {
             }
 
             // send email
-            sendEmail(updatedMerchants.email, ` Dear User, your Shop ${shopName} at FoodGrab.africa has been create`, "FoodGrab.africa");
+            sendEmail(updatedMerchants.email, ` Dear User, your Shop ${shopName} at FoodGrab.africa has been created`, "FoodGrab.africa");
 
             return res.status(201).json({
                 status: "SUCCESS",
