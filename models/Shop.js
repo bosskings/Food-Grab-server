@@ -57,7 +57,7 @@ const ShopSchema = new mongoose.Schema({
             values: ['RESTAURANT', 'CHEF'],
             message: "invalid selection for merchant type"
         },
-        default: "RESTAUTANT"
+        default: "RESTAURANT"
     },
 
     status: {
