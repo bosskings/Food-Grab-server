@@ -26,6 +26,9 @@ const courierSignup = async (req, res) => {
         } = req.body
 
 
+        return res.status(200).json(req.body)
+
+
         // get user file input
         const { files } = req
 
