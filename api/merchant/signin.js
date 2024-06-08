@@ -17,6 +17,9 @@ const merchantSignin = async (req, res) => {
 
     const { email, password } = req.body;
 
+    return res.status(200).json(req.body)
+
+
     try {
 
         if (!email || !password) {

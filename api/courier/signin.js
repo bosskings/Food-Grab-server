@@ -15,6 +15,9 @@ const courierSignin = async (req, res) => {
     try {
         const { email, password } = req.body;
 
+        return res.status(200).json(req.body)
+
+
         // check if a user exists with email
         const rider = await CourierModel.findOne({ email });
         if (!rider) {
