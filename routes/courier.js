@@ -23,12 +23,16 @@ router.post('/verifyEmail', verifyEmail)
 // route to signup
 router.post('/signin', courierSignin)
 
+// authenticate couriers 
+router.use(requireAuth)
+
 // route to update rider status (ONLINE or OFFLINE).
 router.patch('/updateStatus', status)
 
 
-// authenticate couriers 
-router.use(requireAuth)
+router.use(secureRoutes) //middleware to avoid nonexistent routes
+
+
 
 
 

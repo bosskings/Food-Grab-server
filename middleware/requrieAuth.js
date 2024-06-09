@@ -20,8 +20,9 @@ const requireAuth = async (req, res, next) => {
         const { _id, user } = Jwt.verify(token, process.env.JWT_SECRET);
 
         if (user == "user") {
-            req.user = { type: "USER" };
             req.user = (await UserModel.findById(_id));
+            req.user.userType = "USER";
+
             if (!req.user._id) {
                 throw new Error('Wrong token, please try to login again')
             }
