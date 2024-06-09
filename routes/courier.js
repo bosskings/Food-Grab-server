@@ -3,7 +3,7 @@ import multer from 'multer';
 import { courierSignup, verifyEmail } from "../api/courier/signup.js";
 import { requireAuth, secureRoutes } from "../middleware/requrieAuth.js";
 import courierSignin from "../api/courier/signin.js";
-import status from "../api/courier/riderStatus.js";
+import courierStatus from "../api/courier/riderStatus.js";
 
 const router = express.Router();
 
@@ -27,7 +27,11 @@ router.post('/signin', courierSignin)
 router.use(requireAuth)
 
 // route to update rider status (ONLINE or OFFLINE).
-router.patch('/updateStatus', status)
+router.patch('/updateStatus', courierStatus);
+
+
+// route to enable riders accept or decline orders
+router.patch('/handleOrders',)
 
 
 router.use(secureRoutes) //middleware to avoid nonexistent routes

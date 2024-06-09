@@ -1,7 +1,7 @@
 import CourierModel from "../../models/Courier.js"
 
 // function to change rider status to offline or online
-const status = async (req, res) => {
+const courierStatus = async (req, res) => {
 
     try {
         const ridersId = req.user._id;
@@ -28,4 +28,4 @@ const status = async (req, res) => {
     }
 }
 
-export default status
+export default courierStatus

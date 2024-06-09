@@ -58,13 +58,13 @@ const viewOrders = async (req, res) => {
 	try {
 
 		// display orders from a certain user who's id has been parsed in as a query param
-		const { id } = req.query
+		const id = req.user._id
 
 		if (id) {
 
 			// get orders only made  by that specific user and return them if they exist
 
-			let userOrders = await OrdersModel.find({ userId: id }).populate('courier');
+			let userOrders = await OrdersModel.find({ userId: id }).populate('courier').populate('shopId');
 
 			if (!userOrders || userOrders.length === 0) {
 				throw new Error("User does not have any orders");
@@ -78,7 +78,7 @@ const viewOrders = async (req, res) => {
 
 		}
 
-		const allOrders = await OrdersModel.find({}, "-__v").sort({ createdAt: -1 })
+		const allOrders = await OrdersModel.find({}, "-__v").sort({ createdAt: -1 }).populate('shopId')
 		if (!allOrders) {
 			throw new Error("No orders found")
 		} else {

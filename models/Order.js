@@ -22,13 +22,14 @@ const OrdersSchema = new mongoose.Schema({
 
     shopId: {
         type: ObjectId,
+        ref: 'Shop',
         required: [true, "Shop sid must be provided"]
 
     },
 
     courier: {
         type: ObjectId,
-        ref: 'courier'
+        ref: 'Courier'
     },
 
     requestStatus: {
