@@ -101,20 +101,20 @@ const CourierSchema = new mongoose.Schema({
 
     passportPhoto: {
         type: String,
-        // required: true
-        default: ""
+        required: [true, 'Passport photo must be provided'],
+        // default: ""
     },
 
     driversLicensePhoto: {
         type: String,
-        // required: [true, 'Drivers license must be provded']
-        default: ""
+        required: [true, 'Drivers license must be provded']
+        // default: ""
     },
 
     vehicleParticularsPhoto: {
         type: String,
-        // required: [true, 'A picture of your vehicl particulars are needed']
-        default: ""
+        required: [true, 'A picture of your vehicl particulars are needed']
+        // default: ""
     },
 
     address: {

@@ -96,7 +96,7 @@ const getOrders = async (req, res) => {
         const id = req.query.id
 
         if (id) {
-            let order = await OrdersModel.findById(id);
+            let order = await OrdersModel.findById(id).populate('userId');
 
             if (!order) {
                 throw new Error('Order not found');
@@ -119,7 +119,7 @@ const getOrders = async (req, res) => {
                 throw new Error("Merchant doesn't have any shops");
             }
 
-            let orders = await OrdersModel.find({ shopId }, "-__v");
+            let orders = await OrdersModel.find({ shopId }, "-__v").populate('userId');
 
             if (!orders || orders.length < 1) {
                 console.log(orders.length);

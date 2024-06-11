@@ -12,6 +12,7 @@ const itemsSchema = new mongoose.Schema({
 const OrdersSchema = new mongoose.Schema({
     userId: {
         type: ObjectId,
+        ref: 'User',
         required: [true, "User id must be provided"]
     },
 
