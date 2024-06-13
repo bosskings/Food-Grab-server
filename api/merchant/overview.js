@@ -143,34 +143,45 @@ const getOrders = async (req, res) => {
 
 
 
+// function to find courier for a certain order
+const findCourier = async (orderId) => {
+
+    // get the address of the shop 
+
+    // find any courier within the area
+
+    // when rider accepts, get his details send to the merchant
+
+
+    //then the rest will be handles on the courier area
+
+}
+
+
 // create function to enable merchants update shops orderstatus
 const updateOrderStatus = async (req, res) => {
     try {
         const id = req.params.id;
         const updates = Object.keys(req.body);
-        console.log("updates", updates);
 
         if (updates.length === 0) {
             throw new Error("Please select at least one field to be updated")
         }
 
-        const order = await OrdersModel.findByIdAndUpdate(id, req.body, { new: true }).exec()
+        const order = await OrdersModel.findByIdAndUpdate(id, req.body, { new: true }).populate('userId').exec()
 
         if (order) {
 
             // send email notification when an order is delivered or cancelled
             // first get users email address with the users id
+            let userEmailAddr = order.userId.email;
 
-            let user = await UserModel.findOne({ _id: order.userId }, "email")
-            if (!user) {
-                // Handle the case where no user was found with the given _id
-                throw new Error("User That own this order was not found.")
-            } else {
-
-                userEmailAddr = user.email;
-
-                sendEmail(userEmailAddr, ` Dear User, your order from FoodGrab.africa is ${order.requestStatus} `, "Your Order From FoodGrab.africa");
+            if (!userEmailAddr) {
+                throw new Error("an error occured trying to find user who made this order")
             }
+
+            sendEmail(userEmailAddr, ` Dear User, your order from FoodGrab.africa is ${order.requestStatus} `, "Your Order From FoodGrab.africa");
+
 
             return res.status(200).json({
                 status: "SUCCESS",
