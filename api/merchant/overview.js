@@ -145,15 +145,28 @@ const getOrders = async (req, res) => {
 
 // function to find courier for a certain order
 const findCourier = async (orderId) => {
+    console.log(orderId, 'Tryoid');
+    try {
 
-    // get the address of the shop 
+        // get the address of the shop 
+        const shop = await OrdersModel.findById(orderId).populate('userId').populate('shopId');
 
-    // find any courier within the area
+        console.log(shop);
+        return
+        // find any courier within the area
 
-    // when rider accepts, get his details send to the merchant
+        // when rider accepts, get his details send to the merchant
 
 
-    //then the rest will be handles on the courier area
+        //then the rest will be handles on the courier area
+    } catch (error) {
+
+        return res.status(500).json({
+            status: "FAILED",
+            mssg: "unexpected error: " + error
+        })
+
+    }
 
 }
 
@@ -171,6 +184,13 @@ const updateOrderStatus = async (req, res) => {
         const order = await OrdersModel.findByIdAndUpdate(id, req.body, { new: true }).populate('userId').exec()
 
         if (order) {
+
+            // when the status is being updated to PACKAGED, find courier within vicinity
+            if (req.body.requestStatus == 'PACKAGED') {
+                console.log(req.body.requestStatus, 'came--------------');
+                findCourier(id) //call function to find couriers
+                return;
+            }
 
             // send email notification when an order is delivered or cancelled
             // first get users email address with the users id

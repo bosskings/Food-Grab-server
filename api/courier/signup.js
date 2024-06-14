@@ -29,10 +29,13 @@ const courierSignup = async (req, res) => {
         // get user file input
         const { files } = req
 
+        console.log(files)
         return res.status(201).json({
             data1: files,
             data2: req.body
         })
+
+        return
 
         let filesToBeStored = {} // get a combination of all uploaded file names;
         for (const file in files) {
