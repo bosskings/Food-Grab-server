@@ -145,13 +145,12 @@ const getOrders = async (req, res) => {
 
 // function to find courier for a certain order
 const findCourier = async (orderId) => {
-    console.log(orderId, 'Tryoid');
     try {
 
         // get the address of the shop 
         const shop = await OrdersModel.findById(orderId).populate('userId').populate('shopId');
 
-        console.log(shop);
+        console.log(shop.shopId.address, '----');
         return
         // find any courier within the area
 
@@ -187,9 +186,9 @@ const updateOrderStatus = async (req, res) => {
 
             // when the status is being updated to PACKAGED, find courier within vicinity
             if (req.body.requestStatus == 'PACKAGED') {
-                console.log(req.body.requestStatus, 'came--------------');
+
                 findCourier(id) //call function to find couriers
-                return;
+
             }
 
             // send email notification when an order is delivered or cancelled
