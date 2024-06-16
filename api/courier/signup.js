@@ -44,7 +44,16 @@ const courierSignup = async (req, res) => {
             const { originalname } = files[file][0]
             const { mimetype } = files[file][0]
 
-            let fileExtension = originalname.split('.')[1]; //get file extension
+            //get file extension
+            let fileExtension = originalname.slice((originalname.lastIndexOf(".") - 1 >>> 0) + 2).toLowerCase();
+
+            // block non picture files via extension
+            // make sure file extension is for picture file
+            if (fileExtension !== 'jpg' && fileExtension !== 'png' && fileExtension !== 'jpeg' && fileExtension !== 'gif') {
+                throw new Error("Only  jpg, png, jpeg and gif picture files allowed")
+            }
+
+
             let randomStr = Date.parse(new Date) //just creates a random string for file names
 
             // decide where to store the file on s3 bucket depending on user input
