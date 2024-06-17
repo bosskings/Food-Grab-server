@@ -152,7 +152,7 @@ const findCourier = async (orderId) => {
 
         console.log(shop.shopId.address, '----');
         return
-        // find any courier within the area
+        // find any courier within the shops area
 
         // when rider accepts, get his details send to the merchant
 

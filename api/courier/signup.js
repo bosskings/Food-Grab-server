@@ -91,8 +91,8 @@ const courierSignup = async (req, res) => {
 
         // generate random value for email
         let randomValue = Math.floor(1000 + Math.random() * 9000).toString();
-        const salt_ = await bcrypt.genSalt(10);
-        let emailVerificationStatus = await bcrypt.hash(randomValue, salt_);
+        let emailVerificationStatus = await bcrypt.hash(randomValue, salt);
+
 
         // send email containing 4 digit code
         let sentEmail = await sendEmail(email, randomValue, "ACCOUNT VERIFICATION")
@@ -157,6 +157,8 @@ const verifyEmail = async (req, res) => {
 
         // get token from db to see if its matches current user input
         const user = await CourierModel.findOne({ email })
+
+
         if (!user) {
             throw new Error('No user with email ' + email);
         }
@@ -168,7 +170,13 @@ const verifyEmail = async (req, res) => {
         }
 
         // update user email verification status to true
-        const result = await CourierModel.findOneAndUpdate({ email }, { emailVerificationStatus: "VERIFIED" }, { new: true });
+        const result = await CourierModel.findOneAndUpdate(
+            { email },
+            { emailVerificationStatus: "VERIFIED" },
+            { new: true }
+        );
+
+
         if (!result) {
             throw new Error('Email verification failed, please try again')
         }
