@@ -6,6 +6,7 @@ import { createShop, getShop, updateShop } from "../api/merchant/shop.js";
 import { requireAuth, secureRoutes } from "../middleware/requrieAuth.js"; //for authentication
 import { createCuisine, deleteCuisine, getCuisines, updateCuisine } from "../api/merchant/cuisine.js";
 import { createOverview, getOrders, updateOrderStatus } from "../api/merchant/overview.js";
+import { dispayMerchantsProfile } from "../api/merchant/profile.js";
 
 
 const router = express.Router();
@@ -59,6 +60,9 @@ router.get('/getOrders', getOrders);
 
 // update order Status
 router.patch('/updateStatus/:id', updateOrderStatus);
+
+//route to display merchants profile details
+router.get('/getProfile', dispayMerchantsProfile)
 
 // get recent transactions
 router.get('/transaction',);
