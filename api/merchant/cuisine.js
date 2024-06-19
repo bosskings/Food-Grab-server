@@ -179,6 +179,7 @@ const deleteCuisine = async (req, res) => {
 
         res.status(200).json({
             status: "SUCCESS",
+            mssg: "cuisine deleted",
             data: deleted
         })
     } catch (error) {
