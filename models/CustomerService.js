@@ -18,6 +18,14 @@ const CustomerService = new mongoose.Schema({
         required: true
     },
 
+    userType: {
+        type: String,
+        enum: {
+            values: ['MERCHANT', 'USER'],
+            message: "invalid selection for user type"
+        }
+    },
+
     phone: {
         type: String,
         default: ""

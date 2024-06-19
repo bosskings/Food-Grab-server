@@ -1,4 +1,3 @@
-import express from "express";
 import validator from "validator";
 import sendEmail from "../../utils/sendMail.js";
 import CustomerServiceModel from "../../models/CustomerService.js";
@@ -10,7 +9,10 @@ const sendMessage = async (req, res) => {
 
     try {
 
-        const { message, phone, email, fullname, userId } = req.body;
+        const { message, phone, email, fullname } = req.body;
+        if (!message || !phone, !email || !fullname) {
+            throw new Error("Email, phone numbe, fullname and message must be provided")
+        }
 
         // validate phone and email then send an email to the admin
         const isEmail = validator.isEmail(email);
@@ -19,7 +21,7 @@ const sendMessage = async (req, res) => {
         if (isEmail && isNumber) {
             // send email to the admin
             let emailBody = `${message} \n ${phone} \n ${email} \n ${fullname} `;
-            let emailTitle = `Message From USER ${fullname}`;
+            let emailTitle = `Message From MERCHANT ${fullname}`;
 
             const mailSent = sendEmail('foodgrabafrica@gmail.com', emailBody, emailTitle);
 
@@ -27,7 +29,7 @@ const sendMessage = async (req, res) => {
 
                 // store message if email has been sent
                 let newCustomerServiceModel = new CustomerServiceModel({
-                    email, phone, userId, message, fullname, userType: "USER"
+                    email, phone, userId: req.user._id, message, fullname, userType: "MERCHANT"
                 });
 
                 const result = await newCustomerServiceModel.save()

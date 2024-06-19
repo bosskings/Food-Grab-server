@@ -7,6 +7,7 @@ import { requireAuth, secureRoutes } from "../middleware/requrieAuth.js"; //for 
 import { createCuisine, deleteCuisine, getCuisines, updateCuisine } from "../api/merchant/cuisine.js";
 import { createOverview, getOrders, updateOrderStatus } from "../api/merchant/overview.js";
 import { dispayMerchantsProfile, updateMerchantsProfile } from "../api/merchant/profile.js";
+import { getSentMessage, sendMessage } from "../api/merchant/customerSupport.js";
 
 
 const router = express.Router();
@@ -67,6 +68,11 @@ router.get('/getProfile', dispayMerchantsProfile)
 // route to update merchants profile
 router.patch('/updateProfile', upload.single('picture'), updateMerchantsProfile)
 
+// route to contact support
+router.post('/contactSupport', sendMessage)
+
+// route to get send messages
+router.get('/getMessages', getSentMessage)
 
 // get recent transactions
 router.get('/transaction',);
