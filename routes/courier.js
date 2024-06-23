@@ -4,6 +4,7 @@ import { courierSignup, verifyEmail } from "../api/courier/signup.js";
 import { requireAuth, secureRoutes } from "../middleware/requrieAuth.js";
 import courierSignin from "../api/courier/signin.js";
 import courierStatus from "../api/courier/riderStatus.js";
+import { getCouriersProfile } from "../api/courier/profile.js";
 
 const router = express.Router();
 
@@ -29,6 +30,8 @@ router.use(requireAuth)
 // route to update rider status (ONLINE or OFFLINE).
 router.patch('/updateStatus', courierStatus);
 
+// router to get couriers profile details
+router.get('/getProfile', getCouriersProfile)
 
 // route to enable riders accept or decline orders
 router.patch('/handleOrders',)
