@@ -125,8 +125,9 @@ const updatePassword = async (req, res) => {
             throw new Error('old and new passwords must be provided')
         }
 
+
         // confirm that old password matches the current existing password
-        const user = CourierModel.findOne({ _id: req.users._id })
+        const user = await CourierModel.findOne({ _id: req.user._id })
 
         const result = await bcrypt.compare(oldPassword, user.password)
 
@@ -136,7 +137,8 @@ const updatePassword = async (req, res) => {
 
         // if it does, then update the password to the new password provided
         const hashedPassword = await bcrypt.hash(newPassword, 10) //encrypting new password
-        const update = await CourierModel.findOneAndUpdate({ _id: req.users._id }, { password: hashedPassword }, { new: true })
+
+        const update = await CourierModel.findOneAndUpdate({ _id: req.user._id }, { password: hashedPassword }, { new: true })
 
         if (!update) {
             throw new Error('Password could not be updated, please try again')
