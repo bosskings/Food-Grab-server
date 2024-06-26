@@ -57,6 +57,12 @@ const UserSchema = new mongoose.Schema({
         type: String,
         required: [true, "password is needed"]
     },
+
+    testToken: {
+        type: String,
+        default: 'NULL'
+    },
+
     createdAt: {
         type: Date,
         default: Date.now

@@ -53,6 +53,9 @@ router.get("/viewOrders", viewOrders);
 // route to enable users send messages to customer care
 router.post("/sendMessage", sendMessage);
 
+// router to recover user password 
+router.post("/recoverPassword",)
+
 // get sent messages..
 router.get("/sendMessage", getSentMessage)
 

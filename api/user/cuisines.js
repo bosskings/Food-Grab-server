@@ -46,12 +46,15 @@ const getSingleCuisine = async (req, res) => {
     // fetch a single item based on id
 
     try {
-        const { _id } = req.params;
-        const cousine = await CuisineModel.findById({ _id })
+        const { id } = req.params;
+
+
+        console.log(req.params);
+        const cousine = await CuisineModel.findById({ id })
         if (!cousine) {
             return res.status(404).json({
                 status: 'FAILED',
-                message: `No cuisine with the id of ${_id}`
+                message: `No cuisine with the id of ${id}`
             });
 
         } else {
@@ -63,7 +66,7 @@ const getSingleCuisine = async (req, res) => {
     } catch (error) {
         return res.status(404).json({
             status: 'FAILED',
-            message: `Network Error Please try again`
+            message: `Unexpected error: ${error}`
         });
     }
 
