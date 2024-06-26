@@ -80,6 +80,11 @@ const MerchantSchema = new mongoose.Schema({
         default: "https://food-grab-images.s3.amazonaws.com/merchants/avatar.gif"
     },
 
+    recoveryToken: {
+        type: String,
+        default: "NULL"
+    },
+
     shopId: {
         type: mongoose.Schema.Types.Mixed,
         ref: 'Shop',

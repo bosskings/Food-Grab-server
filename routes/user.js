@@ -7,7 +7,7 @@ import { getCuisines, getSingleCuisine, searchCuisineInShop } from "../api/user/
 import { getShops, getSingleShop } from "../api/user/shops.js";
 import { getAllUsers, getSingleUser } from "../api/user/displayUsers.js";
 import { sendMessage, getSentMessage } from "../api/user/customerService.js";
-import { recoverPassword } from "../api/user/updatePass.js";
+import { recoverPassword, updatePassword } from "../api/user/recoverPass.js";
 
 const router = express.Router();
 
@@ -59,6 +59,9 @@ router.post("/sendMessage", sendMessage);
 
 // get sent messages..
 router.get("/sendMessage", getSentMessage)
+
+// route to enable users update their passwords
+router.patch('/updatePassword', updatePassword)
 
 router.use(secureRoutes) //middleware to avoid nonexistent routes
 

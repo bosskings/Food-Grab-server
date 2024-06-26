@@ -8,6 +8,7 @@ import { createCuisine, deleteCuisine, getCuisines, updateCuisine } from "../api
 import { createOverview, getOrders, updateOrderStatus } from "../api/merchant/overview.js";
 import { dispayMerchantsProfile, updateMerchantsProfile } from "../api/merchant/profile.js";
 import { getSentMessage, sendMessage } from "../api/merchant/customerSupport.js";
+import { recoverPassword, updatePassword } from "../api/merchant/recoverPass.js";
 
 
 const router = express.Router();
@@ -25,6 +26,9 @@ router.post("/verifyEmail", verifyCode);
 
 // enable merchants to signin
 router.post('/signin', merchantSignin);
+
+// router to recover user password 
+router.post("/recoverPassword", recoverPassword)
 
 // authentication middleware for all routes excluding signup and signin
 router.use(requireAuth);
@@ -73,6 +77,9 @@ router.post('/contactSupport', sendMessage)
 
 // route to get send messages
 router.get('/getMessages', getSentMessage)
+
+// route to enable Merchants update their passwords
+router.patch('/updatePassword', updatePassword)
 
 // get recent transactions
 router.get('/transaction',);

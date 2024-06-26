@@ -114,4 +114,49 @@ const recoverPassword = async (req, res) => {
 
 }
 
-export { recoverPassword }
+
+// function to enable user update/change their password
+
+const updatePassword = async (req, res) => {
+
+    try {
+
+        const { oldPassword, newPassword } = req.body
+
+        if (!oldPassword && !newPassword) {
+            throw new Error('old and new passwords must be provided')
+        }
+
+        // confirm that old password matches the current existing password
+        const user = UserModel.findOne({ _id: req.users._id })
+
+        const result = await bcrypt.compare(oldPassword, user.password)
+
+        if (!result) {
+            throw new Error('old password does not match')
+        }
+
+        // if it does, then update the password to the new password provided
+        const hashedPassword = await bcrypt.hash(newPassword, 10) //encrypting new password
+        const update = await UserModel.findOneAndUpdate({ _id: req.users._id }, { password: hashedPassword }, { new: true })
+
+        if (!update) {
+            throw new Error('Password could not be updated, please try again')
+        }
+
+        return res.status(201).json({
+            status: "SUCCESS",
+            mssg: "Password updated successfully, please login again",
+            data: update
+        })
+
+    } catch (error) {
+        return res.status(501).json({
+            status: "FAILED",
+            mssg: " error occured: " + error
+        })
+    }
+
+}
+
+export { recoverPassword, updatePassword }

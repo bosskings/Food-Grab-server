@@ -162,6 +162,11 @@ const CourierSchema = new mongoose.Schema({
         ref: 'Finance'
     },
 
+    recoveryToken: {
+        type: String,
+        default: "NULL"
+    },
+
     regDate: {
         type: Date,
         default: Date.now

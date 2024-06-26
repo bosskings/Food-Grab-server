@@ -58,7 +58,7 @@ const UserSchema = new mongoose.Schema({
         required: [true, "password is needed"]
     },
 
-    testToken: {
+    recoveryToken: {
         type: String,
         default: 'NULL'
     },
