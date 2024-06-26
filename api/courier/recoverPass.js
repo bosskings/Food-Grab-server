@@ -27,7 +27,7 @@ const recoverPassword = async (req, res) => {
                 const message = `Your verification token is ${random}`;
 
                 // store in database
-                const result = await CourierModel.findOneAndUpdate({ email }, { testToken: hashedToken }, { new: true })
+                const result = await CourierModel.findOneAndUpdate({ email }, { recoveryToken: hashedToken }, { new: true })
 
                 if (!result) {
                     throw new Error("User not found")
@@ -61,14 +61,14 @@ const recoverPassword = async (req, res) => {
             // verify the tokens, confirm it matches the one stored in DB already
             const user = await CourierModel.findOne({ email })
 
-            const result = await bcrypt.compare(token, user.testToken);
+            const result = await bcrypt.compare(token, user.recoveryToken);
 
             if (!result) {
                 throw new Error('The token provided in not correct')
             }
 
             // store in database
-            await CourierModel.findOneAndUpdate({ email }, { testToken: 'NULL' }, { new: true })
+            await CourierModel.findOneAndUpdate({ email }, { recoveryToken: 'NULL' }, { new: true })
 
             return res.status(200).json({
                 status: "SUCCESS",

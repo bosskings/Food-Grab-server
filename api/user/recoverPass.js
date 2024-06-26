@@ -60,14 +60,14 @@ const recoverPassword = async (req, res) => {
             // verify the tokens, confirm it matches the one stored in DB already
             const user = await UserModel.findOne({ email })
 
-            const result = await bcrypt.compare(token, user.testToken);
+            const result = await bcrypt.compare(token, user.recoveryToken);
 
             if (!result) {
                 throw new Error('The token provided in not correct')
             }
 
             // store in database
-            await UserModel.findOneAndUpdate({ email }, { testToken: 'NULL' }, { new: true })
+            await UserModel.findOneAndUpdate({ email }, { recoveryToken: 'NULL' }, { new: true })
 
             return res.status(200).json({
                 status: "SUCCESS",
