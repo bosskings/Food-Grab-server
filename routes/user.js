@@ -7,6 +7,7 @@ import { getCuisines, getSingleCuisine, searchCuisineInShop } from "../api/user/
 import { getShops, getSingleShop } from "../api/user/shops.js";
 import { getAllUsers, getSingleUser } from "../api/user/displayUsers.js";
 import { sendMessage, getSentMessage } from "../api/user/customerService.js";
+import { recoverPassword } from "../api/user/updatePass.js";
 
 const router = express.Router();
 
@@ -18,6 +19,9 @@ router.post("/verifyEmail", verifyCode);
 
 // route to sign users in
 router.post("/signin", signin);
+
+// router to recover user password 
+router.post("/recoverPassword", recoverPassword)
 
 // authentication middleware for all routes excluding signup and signin
 router.use(requireAuth);
@@ -52,9 +56,6 @@ router.get("/viewOrders", viewOrders);
 
 // route to enable users send messages to customer care
 router.post("/sendMessage", sendMessage);
-
-// router to recover user password 
-router.post("/recoverPassword",)
 
 // get sent messages..
 router.get("/sendMessage", getSentMessage)

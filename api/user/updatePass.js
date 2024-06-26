@@ -8,12 +8,13 @@ const recoverPassword = async (req, res) => {
 
     // first, send get the email address of the user,
     // send em a verification email with a token
-    const { step, email } = req.query
+    const { step } = req.query
 
     try {
 
         // check what step the system is on via a query param
         if (step == 'FIRST') {
+            const { email } = req.body
             // collect email address from user and verify it by sendin a token
 
             // create token, encrypt it and send to user via email
@@ -24,7 +25,7 @@ const recoverPassword = async (req, res) => {
                 const message = `Your verification token is ${random}`;
 
                 // store in database
-                const result = await UserModel.findOneAndUpdate({ _id: req.users._id }, { testToken: hashedToken }, { new: true })
+                const result = await UserModel.findOneAndUpdate({ email }, { testToken: hashedToken }, { new: true })
 
                 if (!result) {
                     throw new Error("User not found")
@@ -49,7 +50,7 @@ const recoverPassword = async (req, res) => {
 
         if (step == 'SECOND') {
 
-            const { token } = req.query
+            const { token, email } = req.body
 
             // get token and verify it 
             if (!token) {
@@ -57,29 +58,36 @@ const recoverPassword = async (req, res) => {
             }
 
             // verify the tokens, confirm it matches the one stored in DB already
-            const storedToken = await UserModel.findById(req.users._id, testToken)
+            const user = await UserModel.findOne({ email })
 
-            const result = await bcrypt.compare(token, storedToken);
+            const result = await bcrypt.compare(token, user.testToken);
 
             if (!result) {
                 throw new Error('The token provided in not correct')
             }
 
+            // store in database
+            await UserModel.findOneAndUpdate({ email }, { testToken: 'NULL' }, { new: true })
+
             return res.status(200).json({
                 status: "SUCCESS",
-                mssg: "Verification token sent successfully, please check your email ",
+                mssg: "Token was verified successfully please proceed to update password ",
             })
 
         }
 
         if (step == 'THIRD') {
 
-            const { newPassword } = req.query
+            const { newPassword, email } = req.body
+
+            if (!newPassword) {
+                throw new Error('Please provide a new password')
+            }
 
             // when verified, hash the new password and update the user's password in the database
 
             const hashedPassword = await bcrypt.hash(newPassword, 10)
-            const result = await UserModel.findByIdAndUpdate(req.users._id, { password: hashedPassword }, { new: true })
+            const result = await UserModel.findOneAndUpdate({ email }, { password: hashedPassword }, { new: true })
 
             if (!result) {
                 throw new Error('Password could not be updated, please try again')
