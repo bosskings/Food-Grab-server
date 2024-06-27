@@ -25,7 +25,7 @@ const recoverPassword = async (req, res) => {
                 const message = `Your verification token is ${random}`;
 
                 // store in database
-                const result = await UserModel.findOneAndUpdate({ email }, { testToken: hashedToken }, { new: true })
+                const result = await UserModel.findOneAndUpdate({ email }, { recoveryToken: hashedToken }, { new: true })
 
                 if (!result) {
                     throw new Error("User not found")
