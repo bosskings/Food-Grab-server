@@ -5,7 +5,7 @@ import { merchantSignup, verifyCode } from "../api/merchant/signup.js";
 import { createShop, getShop, updateShop } from "../api/merchant/shop.js";
 import { requireAuth, secureRoutes } from "../middleware/requrieAuth.js"; //for authentication
 import { createCuisine, deleteCuisine, getCuisines, updateCuisine } from "../api/merchant/cuisine.js";
-import { createOverview, getOrders, updateOrderStatus } from "../api/merchant/overview.js";
+import { createOverview, getOrders, updateOrderStatus } from "../api/merchant/orders.js";
 import { dispayMerchantsProfile, updateMerchantsProfile } from "../api/merchant/profile.js";
 import { getSentMessage, sendMessage } from "../api/merchant/customerSupport.js";
 import { recoverPassword, updatePassword } from "../api/merchant/recoverPass.js";
