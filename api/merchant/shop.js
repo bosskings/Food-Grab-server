@@ -1,7 +1,7 @@
 import MerchantModel from "../../models/Merchant.js";
 import ShopModel from "../../models/Shop.js";
 import sendEmail from "../../utils/sendMail.js";
-import { PutObjectCommand } from "@aws-sdk/client-s3";
+import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 import s3PhotoUrl from "../../utils/awsPhotoUrl.js";
 
 // function to create a shop

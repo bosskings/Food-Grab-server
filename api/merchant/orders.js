@@ -185,9 +185,9 @@ const updateOrderStatus = async (req, res) => {
         if (order) {
 
             // when the status is being updated to PACKAGED, find courier within vicinity
-            if (req.body.requestStatus == 'PACKAGED') {
+            if (req.body.requestStatus == 'FIND-COURIER') {
 
-                findCourier(id) //call function to find couriers
+                await findCourier(id) //call function to find couriers
 
             }
 

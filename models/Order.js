@@ -36,7 +36,7 @@ const OrdersSchema = new mongoose.Schema({
     requestStatus: {
         type: String,
         enum: {
-            values: ['DECLINED', 'PENDING', 'PROCESSING', 'PACKAGED', 'IN-TRANSIT', 'DELIVERED'],
+            values: ['DECLINED', 'PENDING', 'PROCESSING', 'PACKAGED', 'FIND-COURIER', 'IN-TRANSIT', 'DELIVERED'],
             message: "invalid selection"
         },
         default: "PENDING"
