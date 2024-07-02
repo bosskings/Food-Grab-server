@@ -22,6 +22,9 @@ router.post('/signup', upload.fields([
 // route to verify email
 router.post('/verifyEmail', verifyEmail)
 
+// router to recover user password 
+router.post("/recoverPassword", recoverPassword)
+
 // route to signup
 router.post('/signin', courierSignin)
 
@@ -33,12 +36,6 @@ router.patch('/updateStatus', courierStatus);
 
 // router to get couriers profile details
 router.get('/getProfile', getCouriersProfile)
-
-// router to recover user password 
-router.post("/recoverPassword", recoverPassword)
-
-// authentication middleware for all routes excluding signup and signin
-router.use(requireAuth);
 
 // route to enable riders update their passwords
 router.patch('/updatePassword', updatePassword)
