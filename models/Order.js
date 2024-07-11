@@ -83,6 +83,10 @@ const OrdersSchema = new mongoose.Schema({
         requried: [true, "address is needed"]
     },
 
+    deliveryCoordinate: {
+        type: [Number]
+    },
+
     date: {
         type: Date,
         default: Date.now
