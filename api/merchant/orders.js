@@ -1,8 +1,9 @@
+import UserModel from "../../models/User.js";
 import CuisineModel from "../../models/Cuisine.js";
 import OrdersModel from "../../models/Order.js";
 import ShopModel from "../../models/Shop.js";
-import UserModel from "../../models/User.js";
 import sendEmail from "../../utils/sendMail.js";
+import findCourier from "./findCourier.js";
 
 const createOverview = async (req, res) => {
 
@@ -142,32 +143,6 @@ const getOrders = async (req, res) => {
 }
 
 
-
-// function to find courier for a certain order
-const findCourier = async (orderId) => {
-    try {
-
-        // get the address of the shop 
-        const shop = await OrdersModel.findById(orderId).populate('userId').populate('shopId');
-
-        console.log(shop.shopId.address, '----');
-        return
-        // find any courier within the shops area
-
-        // when rider accepts, get his details send to the merchant
-
-
-        //then the rest will be handles on the courier area
-    } catch (error) {
-
-        return res.status(500).json({
-            status: "FAILED",
-            mssg: "unexpected error: " + error
-        })
-
-    }
-
-}
 
 
 // create function to enable merchants update shops orderstatus

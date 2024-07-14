@@ -4,7 +4,7 @@ import OrdersModel from "../../models/Order.js";
 const placeOrders = async (req, res) => {
 	try {
 
-		const { shopId, requestNote, deliveryAddress, items } = req.body
+		const { shopId, requestNote, deliveryAddress, deliveryCoordinate, items } = req.body
 
 		let totalPrice = 0;
 
@@ -16,6 +16,7 @@ const placeOrders = async (req, res) => {
 			userId: req.user._id,
 			shopId, // Assuming shopId is defined somewhere in your code
 			totalPrice,
+			deliveryCoordinate,
 			deliveryAddress,
 			requestNote, // Assuming requestNote is defined somewhere in your code
 			items
