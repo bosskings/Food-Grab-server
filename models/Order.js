@@ -86,16 +86,16 @@ const OrdersSchema = new mongoose.Schema({
     deliveryCoordinate: {
         type: {
             type: String,
-            required: [true, "Coordinate type is required"]
+            // required: [true, "Coordinate type is required"]
         },
         coordinates: {
             lat: {
                 type: String,
-                required: [true, "Latitude is required"]
+                // required: [true, "Latitude is required"]
             },
             long: {
                 type: String,
-                required: [true, "Longitude is required"]
+                // required: [true, "Longitude is required"]
             }
         }
     },
