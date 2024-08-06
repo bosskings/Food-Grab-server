@@ -28,4 +28,39 @@ const courierStatus = async (req, res) => {
     }
 }
 
-export default courierStatus
+
+// function to collect riders curent location
+
+const currentLocation = async (req, res) => {
+    const { lat, long } = req.body;
+    const _id = req.user._id;
+
+    try {
+        // Update courier with new location
+        const update = await CourierModel.findOneAndUpdate(
+            { _id },
+            { $set: { 'currentLocationCoordinated.lat': lat, 'currentLocationCoordinated.long': long } },
+            { new: true }
+        );
+
+        res.status(200).json(
+            {
+                status: "SUCCESS",
+                data: update
+            }
+        )
+    } catch (err) {
+        res.status(501).json(
+            {
+                status: "FAILED",
+                mssg: "Error occured " + err
+            }
+        )
+    }
+};
+
+
+export {
+    courierStatus,
+    currentLocation
+}

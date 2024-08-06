@@ -16,7 +16,7 @@ const createShop = async (req, res) => {
         }
 
         // get user input
-        const { shopName, street, city, state, houseNumber, description, type } = req.body;
+        const { shopName, shopAddress, lat, long, description, type } = req.body;
 
         // set up s3 bucket
         const s3 = new S3Client({
@@ -77,11 +77,10 @@ const createShop = async (req, res) => {
 
             merchantId: req.user._id, // hardcoded for now as we don't
             shopName,
-            address: {
-                street,
-                city,
-                state,
-                houseNumber
+            shopAddress,
+            shopCoordinate: {
+                lat,
+                long
             },
             description,
             approvalStatus: "PENDING",

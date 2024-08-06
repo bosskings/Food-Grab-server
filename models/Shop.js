@@ -1,13 +1,13 @@
 import { ObjectId } from "mongodb";
 import mongoose from "mongoose";
 
-const contactAdressSchema = new mongoose.Schema({
-    street: String,
-    city: String,
-    state: String,
-    houseNumber: String
+// const contactAdressSchema = new mongoose.Schema({
+//     street: String,
+//     city: String,
+//     state: String,
+//     houseNumber: String
 
-})
+// })
 
 const ShopSchema = new mongoose.Schema({
 
@@ -24,9 +24,24 @@ const ShopSchema = new mongoose.Schema({
         type: String,
         required: [true, "Description is needed"]
     },
-    address: {
-        type: contactAdressSchema
+    shopAddress: {
+        type: String,
+        default: "Mile 3 A231, Diobu, Port Harcourt",
     },
+    shopCoordinate: {
+        lat: {
+            type: String,
+            required: [true, "Latitude is required"],
+            default: "4.801833109864084"
+        },
+        long: {
+            type: String,
+            required: [true, "Longitude is required"],
+            default: "6.990486258631807"
+        }
+
+    },
+
     logo: {
         type: String,
         required: [true, 'shop logo is needed']

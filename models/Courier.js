@@ -167,6 +167,19 @@ const CourierSchema = new mongoose.Schema({
         default: "NULL"
     },
 
+    currentLocationCoordinated: {
+
+        lat: {
+            type: String,
+            default: '4.801833109864084'
+        },
+
+        long: {
+            type: String,
+            default: '6.990486258631807'
+        }
+    },
+
     regDate: {
         type: Date,
         default: Date.now

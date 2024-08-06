@@ -3,7 +3,7 @@ import multer from 'multer';
 import { courierSignup, verifyEmail } from "../api/courier/signup.js";
 import { requireAuth, secureRoutes } from "../middleware/requrieAuth.js";
 import courierSignin from "../api/courier/signin.js";
-import courierStatus from "../api/courier/riderStatus.js";
+import { courierStatus, currentLocation } from "../api/courier/riderStatus.js";
 import { getCouriersProfile } from "../api/courier/profile.js";
 import { recoverPassword, updatePassword } from "../api/courier/recoverPass.js";
 
@@ -35,7 +35,10 @@ router.use(requireAuth)
 router.patch('/updateStatus', courierStatus);
 
 // router to get couriers profile details
-router.get('/getProfile', getCouriersProfile)
+router.get('/getProfile', getCouriersProfile);
+
+// create route to collect riders current location when they're active;
+router.patch('/currentLocation', currentLocation);
 
 // route to enable riders update their passwords
 router.patch('/updatePassword', updatePassword)
